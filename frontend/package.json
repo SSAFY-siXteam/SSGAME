@@ -68,6 +68,8 @@
     "@storybook/preset-create-react-app": "^4.0.1",
     "@storybook/react": "^6.4.19",
     "@storybook/testing-library": "^0.0.9",
+    "babel-eslint": "8",
+    "eslint": "4.x",
     "prettier-eslint": "^13.0.0",
     "webpack": "^5.70.0"
   }
