@@ -4,57 +4,26 @@ import PropTypes from "prop-types";
 /**
  * Primary UI component for user interaction
  */
-export function Input({ primary, custom, size, label, img }) {
-  const mode = primary
-    ? "storybook-button--primary"
-    : "storybook-button--secondary";
-
-  // steam log in button
-  if (custom === "STEAM_LOG_IN_BUTTON") {
-    return (
-      <button>
-        <img src={img} />
-      </button>
-    );
-  }
+export function Input({ id, type, minLength, maxLength, size, placeholder }) {
   return (
-    <button
-      type="button"
-      className={["storybook-button", `storybook-button--${size}`, mode].join(
-        " "
-      )}
-    >
-      {label}
-    </button>
+    <input
+      type={type}
+      className={"inputBox"}
+      id={id}
+      minLength={minLength}
+      maxLength={maxLength}
+      placeholder={placeholder}
+      size={size}
+    ></input>
   );
 }
-
-Button.propTypes = {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary: PropTypes.bool,
-  /**
-   * What background color to use
-   */
-  backgroundColor: PropTypes.string,
-  /**
-   * How large should the button be?
-   */
-  size: PropTypes.oneOf(["small", "medium", "large"]),
-  /**
-   * Button contents
-   */
-  label: PropTypes.string.isRequired,
-  /**
-   * Optional click handler
-   */
-  onClick: PropTypes.func,
+Input.propTypes = {
+  id: PropTypes.string,
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
 };
 
-Button.defaultProps = {
-  backgroundColor: null,
-  primary: false,
-  size: "medium",
-  onClick: undefined,
+Input.defaultProps = {
+  size: 30,
+  placeholder: null,
 };
