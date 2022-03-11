@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 /**
  * Primary UI component for user interaction
  */
-export function Button({ primary, custom, size, label, img }) {
+export function Input({ primary, custom, size, label, img }) {
   const mode = primary
     ? "storybook-button--primary"
     : "storybook-button--secondary";
@@ -14,7 +14,6 @@ export function Button({ primary, custom, size, label, img }) {
     return (
       <button>
         <img src={img} />
-        {label}
       </button>
     );
   }
