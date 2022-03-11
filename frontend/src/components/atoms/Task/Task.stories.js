@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 // src/components/Task.stories.js
 
 import React from "react";
