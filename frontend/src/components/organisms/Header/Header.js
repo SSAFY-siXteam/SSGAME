@@ -3,12 +3,9 @@ import Nav from "../../atoms/Nav/Nav";
 import Logo from "../../atoms/Img/Logo/Logo";
 import { Menus, StyledHeader, HeaderGrid } from "./styled";
 import Button from "../../atoms/Buttons/Button";
+import { menus } from "./menus";
 
 const Header = () => {
-  const menus = [
-    { menu: "성향 분석", path: "/" },
-    { menu: "맞춤 게임 추천", path: "/" },
-  ];
   return (
     <StyledHeader>
       <HeaderGrid>
