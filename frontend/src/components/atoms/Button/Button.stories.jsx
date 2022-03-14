@@ -8,10 +8,7 @@ import steamLogInImg from "../../../assets/img/button/steambutton/sits_small.png
 export default {
   title: "Button",
   component: Button,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: "color" },
-  },
+  argTypes: { onClick: { action: "clicked" } },
 };
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
@@ -40,7 +37,19 @@ Small.args = {
   size: "small",
   label: "Button",
 };
-
+// 회원가입 Button
+export const LogInBtn = Template.bind({});
+LogInBtn.args = {
+  primary: true,
+  label: "가입하기",
+};
+export const IdCheckBtn = Template.bind({});
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+IdCheckBtn.args = {
+  primary: true,
+  label: "아이디 확인",
+};
+// Steam LogIn Button
 export const SteamLogIn = Template.bind({});
 SteamLogIn.args = {
   img: steamLogInImg,

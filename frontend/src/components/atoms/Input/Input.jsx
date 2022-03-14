@@ -1,20 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-/**
- * Primary UI component for user interaction
- */
-export function Input({ id, type, minLength, maxLength, size, placeholder }) {
+import { UserInput } from "./styles";
+
+export function Input({
+  label,
+  type,
+  minLength,
+  maxLength,
+  size,
+  placeholder,
+}) {
   return (
-    <input
+    <UserInput
       type={type}
       className={"inputBox"}
-      id={id}
+      id={label}
+      name={label}
       minLength={minLength}
       maxLength={maxLength}
       placeholder={placeholder}
       size={size}
-    ></input>
+    ></UserInput>
   );
 }
 Input.propTypes = {

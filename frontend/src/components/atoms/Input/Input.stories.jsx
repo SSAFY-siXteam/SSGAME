@@ -35,3 +35,14 @@ InputPassword.args = {
   size: 30,
   placeholder: "Password를 입력해주세요",
 };
+
+export const InputEmail = Template.bind({});
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+InputEmail.args = {
+  id: "EmailInput",
+  type: "email",
+  minLength: 8,
+  maxLength: 15,
+  size: 30,
+  placeholder: "E-mail을 입력해주세요",
+};
