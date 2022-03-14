@@ -1,17 +1,19 @@
 import styled from "styled-components";
 
+const purple = "#a12785";
+
 export const StyledButton = styled.button`
   margin: 10px;
-  padding: 5px;
-  padding-left: 12px;
-  padding-right: 12px;
-  background: #a12785;
-  color: white;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: ${purple};
+  color: black;
   border: rgba(255, 0, 0, 0.5);
   border-radius: 10px;
+  font-weight: bold;
   &:hover {
     cursor: pointer;
-    background: white;
-    color: black;
+    background: grey;
   }
 `;

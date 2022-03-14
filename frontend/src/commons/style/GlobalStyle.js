@@ -2,10 +2,11 @@ import { createGlobalStyle } from "styled-components";
 import "./font.css";
 
 const GlobalStyle = createGlobalStyle`
-  body {
+  * {
     font-family: "esamanru_Light";
-    background: black;
+    background: #090029;
     color: white;
+    text-decoration: none;
   }
 `;
 
