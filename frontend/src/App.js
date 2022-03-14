@@ -1,11 +1,11 @@
 import React from "react";
-import Logo from "./components/atoms/Logo/Logo";
+import GlobalStyle from "./commons/style/GlobalStyle";
 
 function App() {
   return (
     <div className="App">
-      <>HelloWorld</>
-      <Logo />
+      <GlobalStyle />
+      <div>안녕하세요</div>
     </div>
   );
 }
