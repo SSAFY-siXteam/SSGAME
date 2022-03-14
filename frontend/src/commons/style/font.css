@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "esamanru_Medium";
+  font-weight: 100;
+  src: url("../../assets/fonts/esamanru_Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "esamanru_Light";
+  font-weight: 100;
+  src: url("../../assets/fonts/esamanru_Light.ttf") format("truetype");
+}
