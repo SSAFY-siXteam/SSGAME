@@ -1,5 +1,6 @@
 package com.sixteam.ssgame.api.member.service;
 
+import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,4 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberServiceImpl implements MemberService {
 
+    private final MemberRepository memberRepository;
+
+    @Override
+    public boolean hasId(String id) {
+        return memberRepository.existsById(id);
+    }
 }
