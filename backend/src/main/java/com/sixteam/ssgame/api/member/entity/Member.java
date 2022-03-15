@@ -1,28 +1,57 @@
 package com.sixteam.ssgame.api.member.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
-//@ToString(of = {"seq", "email", "password", "name", "nickname", "exp", "point", "role", "isDeleted"})
+@ToString(of = {"memberSeq", "id", "password", "name", "email", "steamID", "isDeleted", "createdDate"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@Table(
-//        name = "tb_member",
-//        uniqueConstraints = {
-//                @UniqueConstraint(columnNames = "email"),
-//                @UniqueConstraint(columnNames = "nickname"),
-//                @UniqueConstraint(columnNames = "phoneNumber")
-//        }
-//)
+@Table(
+        name = "tb_member",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "id"),
+                @UniqueConstraint(columnNames = "email"),
+                @UniqueConstraint(columnNames = "steam_id")
+        }
+)
 @Entity
 public class Member {
 
     @Column(columnDefinition = "BIGINT UNSIGNED")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long memberSeq;
 
+    @Column(nullable = false)
+    private String id;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(name = "steam_id", nullable = false)
+    private String steamID;
+
+    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdDate;
+
+    @Column(nullable = false)
+    private boolean isDeleted;
+
+    @Builder
+    public Member(Long memberSeq, String id, String password, String name, String email, String steamID) {
+        this.memberSeq = memberSeq;
+        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.steamID = steamID;
+    }
 }
