@@ -9,7 +9,7 @@ import {
 } from "../../molecules/InputWithLabel/InputWithLabel.stories";
 import { IdCheckBtn } from "../../atoms/Button/Button.stories";
 export default {
-  title: "InfoInput",
+  title: "Organisms/InfoInput",
   component: InfoInput,
   argTypes: {
     backgroundColor: { control: "color" },

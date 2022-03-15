@@ -6,7 +6,7 @@ import steamLogInImg from "../../../assets/img/button/steambutton/sits_small.png
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Button",
+  title: "Atoms/Button",
   component: Button,
   argTypes: { onClick: { action: "clicked" } },
 };

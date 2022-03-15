@@ -3,7 +3,7 @@ import React from "react";
 import { Label } from "./Label";
 
 export default {
-  title: "Label",
+  title: "Atoms/Label",
   component: Label,
   argTypes: {
     backgroundColor: { control: "color" },

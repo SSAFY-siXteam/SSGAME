@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router";
 import Header from "./components/organisms/Header/Header";
 import Main from "./components/pages/Main/Main";
+import SignUpPage from "./components/pages/SignUpPage/SignUpPage";
 import styled from "styled-components";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Grid>
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/SignUp" element={<SignUpPage />} />
         </Routes>
       </Grid>
     </>

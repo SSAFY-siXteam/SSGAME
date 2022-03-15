@@ -3,7 +3,7 @@ import React from "react";
 import { Input } from "./Input";
 
 export default {
-  title: "Input",
+  title: "Atoms/Input",
   component: Input,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {

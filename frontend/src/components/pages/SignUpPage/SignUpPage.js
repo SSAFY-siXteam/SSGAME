@@ -6,7 +6,7 @@ import { InfoInput } from "../../organisms/InfoInput/InfoInput";
 import steamLogInImg from "../../../assets/img/button/steambutton/sits_small.png";
 import { CheckBoxModule } from "../../organisms/CheckBoxModule/CheckBoxModule";
 // checkbox list 객체
-export function SignUpPage() {
+const SignUpPage = () => {
   const arg = {
     checkBox: CheckBoxModule({
       list: [
@@ -56,8 +56,8 @@ export function SignUpPage() {
       registerBtn={arg.registerBtn}
     ></SignUp>
   );
-}
-
+};
+export default SignUpPage;
 SignUpPage.propTypes = {};
 
 SignUpPage.defaultProps = {};

@@ -3,7 +3,7 @@ import React from "react";
 import { InputWithLabel } from "./InputWithLabel";
 
 export default {
-  title: "InputWithLabel",
+  title: "Molecules/InputWithLabel",
   component: InputWithLabel,
   argTypes: {
     backgroundColor: { control: "color" },

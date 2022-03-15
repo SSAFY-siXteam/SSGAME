@@ -3,7 +3,7 @@ import React from "react";
 import { CheckBoxItem } from "./CheckBoxItem";
 
 export default {
-  title: "CheckBoxItem",
+  title: "Molecules/CheckBoxItem",
   component: CheckBoxItem,
   argTypes: {
     backgroundColor: { control: "color" },

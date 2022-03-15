@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 // checkbox list 객체
-export function SignUp({ checkBox, steamID, infoInput, registerBtn }) {
+export default function SignUp({ checkBox, steamID, infoInput, registerBtn }) {
   return (
     <div>
       <p>회원가입</p>
