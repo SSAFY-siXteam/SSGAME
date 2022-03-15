@@ -6,6 +6,8 @@ import { InfoInputDiv } from "./styles";
 // checkbox list 객체
 export function InfoInput({ id, password, email, idCheckBtn }) {
   const [idInput, setIdInput] = useState();
+  const [passwordInput, setPasswordInput] = useState();
+  const [emailInput, setEmailInput] = useState();
   const checkID = (idInput) => {
     console.log(idInput);
   };
@@ -17,9 +19,15 @@ export function InfoInput({ id, password, email, idCheckBtn }) {
       />
       <Button {...idCheckBtn} onClick={checkID(idInput)} />
       <br />
-      <InputWithLabel {...password} />
+      <InputWithLabel
+        {...password}
+        onChange={(event) => setPasswordInput(event.target.value)}
+      />
       <br />
-      <InputWithLabel {...email} />
+      <InputWithLabel
+        {...email}
+        onChange={(event) => setEmailInput(event.target.value)}
+      />
     </InfoInputDiv>
   );
 }

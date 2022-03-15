@@ -38,10 +38,10 @@ Small.args = {
   label: "Button",
 };
 // 회원가입 Button
-export const LogInBtn = Template.bind({});
-LogInBtn.args = {
+export const SignUpBtn = Template.bind({});
+SignUpBtn.args = {
   primary: true,
-  label: "가입하기",
+  label: "회원가입",
 };
 export const IdCheckBtn = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
