@@ -1,6 +1,7 @@
 package com.sixteam.ssgame.api.member.service;
 
-import com.sixteam.ssgame.api.member.dto.RequestMemberDto;
+import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
+import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,5 +47,10 @@ public class MemberServiceImpl implements MemberService {
                 .email(requestMemberDto.getEmail())
                 .steamID(requestMemberDto.getSteamID())
                 .build());
+    }
+
+    @Override
+    public ResponseLoginMemberDto findResponseLoginMemberDto(String ssgameId) {
+        return memberRepository.findBySsgameId(ssgameId);
     }
 }
