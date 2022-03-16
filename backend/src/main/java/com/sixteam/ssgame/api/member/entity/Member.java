@@ -6,12 +6,12 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
-@ToString(of = {"memberSeq", "id", "password", "email", "steamID", "isDeleted", "createdDate"})
+@ToString(of = {"memberSeq", "ssgameId", "password", "email", "steamID", "isDeleted", "createdDate"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(
         name = "tb_member",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "id"),
+                @UniqueConstraint(columnNames = "ssgameId"),
                 @UniqueConstraint(columnNames = "email"),
                 @UniqueConstraint(columnNames = "steam_id")
         }
@@ -25,7 +25,7 @@ public class Member {
     private Long memberSeq;
 
     @Column(nullable = false)
-    private String id;
+    private String ssgameId;
 
     @Column(nullable = false)
     private String password;
@@ -43,9 +43,9 @@ public class Member {
     private boolean isDeleted;
 
     @Builder
-    public Member(Long memberSeq, String id, String password, String email, String steamID) {
+    public Member(Long memberSeq, String ssgameId, String password, String email, String steamID) {
         this.memberSeq = memberSeq;
-        this.id = id;
+        this.ssgameId = ssgameId;
         this.password = password;
         this.email = email;
         this.steamID = steamID;
