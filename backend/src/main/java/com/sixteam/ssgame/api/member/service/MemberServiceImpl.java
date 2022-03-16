@@ -1,6 +1,7 @@
 package com.sixteam.ssgame.api.member.service;
 
-import com.sixteam.ssgame.api.member.dto.RequestMemberDto;
+import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
+import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public boolean hasId(String id) {
-        return memberRepository.existsById(id);
+    public boolean hasSsgameId(String ssgameId) {
+        return memberRepository.existsBySsgameId(ssgameId);
     }
 
     @Override
@@ -41,10 +42,15 @@ public class MemberServiceImpl implements MemberService {
         log.debug("패스워드 암호화 " + encryptedPassword);
 
         memberRepository.save(Member.builder()
-                .id(requestMemberDto.getId())
+                .ssgameId(requestMemberDto.getSsgameId())
                 .password(encryptedPassword)
                 .email(requestMemberDto.getEmail())
                 .steamID(requestMemberDto.getSteamID())
                 .build());
+    }
+
+    @Override
+    public ResponseLoginMemberDto findResponseLoginMemberDto(String ssgameId) {
+        return memberRepository.findBySsgameId(ssgameId);
     }
 }
