@@ -17,8 +17,34 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public boolean hasId(String id) {
         return memberRepository.existsById(id);
+    }
+
+    @Override
+    public boolean hasEmail(String email) {
+        return memberRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean hasSteamID(String steamID) {
+        return memberRepository.existsBySteamID(steamID);
+    }
+
+    @Override
+    @Transactional
+    public void register(RequestMemberDto requestMemberDto) {
+        String encryptedPassword = passwordEncoder.encode(requestMemberDto.getPassword());
+        log.debug("패스워드 암호화 " + encryptedPassword);
+
+        memberRepository.save(Member.builder()
+                .id(requestMemberDto.getId())
+                .password(encryptedPassword)
+                .email(requestMemberDto.getEmail())
+                .steamID(requestMemberDto.getSteamID())
+                .build());
     }
 }
