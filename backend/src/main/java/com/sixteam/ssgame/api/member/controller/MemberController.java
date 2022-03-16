@@ -42,16 +42,16 @@ public class MemberController {
                 // global error
                 msg = "global error";
             }
-        } else if (memberService.hasId(requestMemberDto.getId())) {
+        } else if (memberService.hasSsgameId(requestMemberDto.getSsgameId())) {
             // 아이디 중복
             status = HttpStatus.CONFLICT.value();
             msg = "이미 존재하는 ID입니다.";
-            data.put("field", "id");
-        } else if (password.contains(requestMemberDto.getId())) {
+            data.put("field", "ssgameId");
+        } else if (password.contains(requestMemberDto.getSsgameId())) {
             // 패스워드에 아이디가 포함된 경우
             status = HttpStatus.BAD_REQUEST.value();
             msg = "패스워드에 아이디가 포함될 수 없습니다.";
-            data.put("field", "id into password");
+            data.put("field", "ssgameId into password");
         } else if (memberService.hasSteamID(requestMemberDto.getSteamID())) {
             // 스팀 아이디 중복
             status = HttpStatus.CONFLICT.value();
@@ -84,9 +84,9 @@ public class MemberController {
                 .build();
     }
 
-    @GetMapping("/id/{id}/exist")
-    public BaseResponseDto isExistId(@PathVariable String id) {
-        log.debug("아이디 중복 검사 api 호출 - MemberController.isExistId()");
+    @GetMapping("/ssgameId/{ssgameId}/exist")
+    public BaseResponseDto isExistSsgameId(@PathVariable String ssgameId) {
+        log.debug("아이디 중복 검사 api 호출 - MemberController.isExistSsgameId()");
 
         Integer status = null;
         String msg = null;
@@ -94,10 +94,10 @@ public class MemberController {
         String regx = "^[a-z]+[0-9a-z]{3,15}$";
         Pattern pattern = Pattern.compile(regx);
 
-        if (!pattern.matcher(id).matches()) {
+        if (!pattern.matcher(ssgameId).matches()) {
             status = HttpStatus.BAD_REQUEST.value();
             msg = "ID가 형식에 맞지 않습니다.";
-        } else if (memberService.hasId(id)) {
+        } else if (memberService.hasSsgameId(ssgameId)) {
             status = HttpStatus.OK.value();
             msg = "이미 존재하는 ID입니다.";
         } else {

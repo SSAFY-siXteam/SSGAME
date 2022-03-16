@@ -4,7 +4,7 @@ import com.sixteam.ssgame.api.member.dto.RequestMemberDto;
 
 public interface MemberService {
 
-    boolean hasId(String id);
+    boolean hasSsgameId(String ssgameId);
 
     boolean hasEmail(String email);
 
