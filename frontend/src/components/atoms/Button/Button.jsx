@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 /**
  * Primary UI component for user interaction
  */
-export function Button({ primary, custom, size, label, img }) {
+export function Button({ primary, custom, size, label, img, onClick }) {
   const mode = primary
     ? "storybook-button--primary"
     : "storybook-button--secondary";
@@ -13,7 +13,7 @@ export function Button({ primary, custom, size, label, img }) {
   // steam log in button
   if (custom === "STEAM_LOG_IN_BUTTON") {
     return (
-      <button>
+      <button onClick={onClick}>
         <img src={img} />
         {label}
       </button>

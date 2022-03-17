@@ -12,7 +12,7 @@ function App() {
       <Grid>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/SignUp" element={<SignUpPage />} />
+          <Route path="/register" element={<SignUpPage />} />
         </Routes>
       </Grid>
     </>

@@ -11,11 +11,9 @@ export default {
   },
 };
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template = (args) => <Input {...args} />;
 
 export const InputID = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
 InputID.args = {
   id: "idInput",
   type: "text",
@@ -26,7 +24,6 @@ InputID.args = {
 };
 
 export const InputPassword = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
 InputPassword.args = {
   id: "passwordInput",
   type: "password",
@@ -37,7 +34,6 @@ InputPassword.args = {
 };
 
 export const InputEmail = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
 InputEmail.args = {
   id: "EmailInput",
   type: "email",
@@ -45,4 +41,14 @@ InputEmail.args = {
   maxLength: 15,
   size: 30,
   placeholder: "E-mail을 입력해주세요",
+};
+
+export const InputUnmodifiable = Template.bind({});
+InputUnmodifiable.args = {
+  id: "unmodifiable",
+  type: "text",
+  minLength: 8,
+  maxLength: 15,
+  size: 30,
+  value: "StableText",
 };

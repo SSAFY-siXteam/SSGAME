@@ -1,15 +1,25 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { Header, CategoryHeader } from "./styles";
 
 // checkbox list 객체
-export default function SignUp({ checkBox, steamID, infoInput, registerBtn }) {
+export default function SignUp({
+  checkBox,
+  steamIDInput,
+  steamID,
+  infoInput,
+  registerBtn,
+}) {
   return (
     <div>
-      <p>회원가입</p>
-      <p>선호 게임 카테고리</p>
+      <Header>회원가입</Header>
+      <CategoryHeader>선호 게임 카테고리</CategoryHeader>
       <div>{checkBox}</div>
-      <p>Steam ID</p>
-      <div>{steamID}</div>
+      <CategoryHeader>Steam ID</CategoryHeader>
+      <div>
+        {steamIDInput}
+        {steamID}
+      </div>
       <div>{infoInput}</div>
       <div>{registerBtn}</div>
     </div>

@@ -10,6 +10,7 @@ export function Input({
   maxLength,
   size,
   placeholder,
+  value,
 }) {
   return (
     <UserInput
@@ -21,6 +22,7 @@ export function Input({
       maxLength={maxLength}
       placeholder={placeholder}
       size={size}
+      value={value}
     ></UserInput>
   );
 }
