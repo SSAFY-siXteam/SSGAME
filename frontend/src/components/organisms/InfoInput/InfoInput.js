@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { InputWithLabel } from "../../molecules/InputWithLabel/InputWithLabel";
-import { Button } from "../../atoms/Button/Button";
+import Button from "../../atoms/Buttons/Button";
 import { InfoInputDiv } from "./styles";
 // checkbox list 객체
 export function InfoInput({ id, password, email, idCheckBtn }) {
   const [idInput, setIdInput] = useState();
   const [passwordInput, setPasswordInput] = useState();
   const [emailInput, setEmailInput] = useState();
-  const checkID = (idInput) => {
-    console.log(idInput);
+  const idCheckBtnOnClick = () => {
+    console.log("test");
   };
   return (
     <InfoInputDiv>
@@ -17,7 +17,7 @@ export function InfoInput({ id, password, email, idCheckBtn }) {
         {...id}
         onChange={(event) => setIdInput(event.target.value)}
       />
-      <Button {...idCheckBtn} onClick={checkID(idInput)} />
+      <Button onClick={idCheckBtnOnClick} {...idCheckBtn} />
       <br />
       <InputWithLabel
         {...password}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import SignUp from "../../templates/SignUp/SignUp";
-import { Button } from "../../atoms/Button/Button";
+import Button from "../../atoms/Buttons/Button";
 import { Input } from "../../atoms/Input/Input";
 import { InfoInput } from "../../organisms/InfoInput/InfoInput";
 import steamLogInImg from "../../../assets/img/button/steambutton/sits_small.png";
@@ -29,11 +29,10 @@ const SignUpPage = () => {
       minLength: 8,
       maxLength: 15,
       size: 30,
-      value: steam,
+      value: "steamID",
     }),
     steamID: Button({
       img: steamLogInImg,
-      custom: "STEAM_LOG_IN_BUTTON",
       onClick: onSteamIDBtnClick,
     }),
     infoInput: InfoInput({
@@ -64,9 +63,9 @@ const SignUpPage = () => {
         placeholder: "이메일을 입력해주세요",
         content: "E-Mail",
       },
-      idCheckBtn: { primary: true, label: "아이디 확인" },
+      idCheckBtn: { text: "아이디 확인" },
     }),
-    registerBtn: Button({ primary: true, label: "회원가입" }),
+    registerBtn: Button({ text: "회원가입" }),
   };
   return (
     <SignUp
