@@ -11,4 +11,5 @@ const Template = (args) => <Button {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
   text: "테스트 버튼",
+  img: null,
 };
