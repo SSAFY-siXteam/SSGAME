@@ -1,3 +1,5 @@
 import styled from "styled-components";
 
-export const Labels = styled.label``;
+export const Labels = styled.label`
+  margin-right: 20px;
+`;

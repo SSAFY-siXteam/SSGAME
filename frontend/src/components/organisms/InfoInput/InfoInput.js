@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { InputWithLabel } from "../../molecules/InputWithLabel/InputWithLabel";
 import Button from "../../atoms/Buttons/Button";
-import { InfoInputDiv } from "./styles";
+import { StyledInfoInput, StyledInputWithLabel } from "./styles";
 // checkbox list 객체
 export function InfoInput({ id, password, email, idCheckBtn }) {
   const [idInput, setIdInput] = useState();
@@ -12,23 +12,27 @@ export function InfoInput({ id, password, email, idCheckBtn }) {
     console.log("test");
   };
   return (
-    <InfoInputDiv>
-      <InputWithLabel
-        {...id}
-        onChange={(event) => setIdInput(event.target.value)}
-      />
-      <Button onClick={idCheckBtnOnClick} {...idCheckBtn} />
-      <br />
-      <InputWithLabel
-        {...password}
-        onChange={(event) => setPasswordInput(event.target.value)}
-      />
-      <br />
-      <InputWithLabel
-        {...email}
-        onChange={(event) => setEmailInput(event.target.value)}
-      />
-    </InfoInputDiv>
+    <StyledInfoInput>
+      <StyledInputWithLabel>
+        <InputWithLabel
+          {...id}
+          onChange={(event) => setIdInput(event.target.value)}
+        />
+        <Button onClick={idCheckBtnOnClick} {...idCheckBtn} />
+      </StyledInputWithLabel>
+      <StyledInputWithLabel>
+        <InputWithLabel
+          {...password}
+          onChange={(event) => setPasswordInput(event.target.value)}
+        />
+      </StyledInputWithLabel>
+      <StyledInputWithLabel>
+        <InputWithLabel
+          {...email}
+          onChange={(event) => setEmailInput(event.target.value)}
+        />
+      </StyledInputWithLabel>
+    </StyledInfoInput>
   );
 }
 
