@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import SignUp from "../../templates/SignUp/SignUp";
 import Button from "../../atoms/Buttons/Button";
@@ -11,8 +11,18 @@ import { openIDLogIn } from "../../../apis/openID";
 const SignUpPage = () => {
   const [steam, setSteam] = useState();
 
+  useEffect(() => {
+    console.log(steam);
+    if (steam !== undefined) {
+      steam.addEventListener("keydown", (event) => {
+        event.preventDefault();
+        console.log("닫힘");
+      });
+    }
+  }, [steam]);
+
   const onSteamIDBtnClick = () => {
-    openIDLogIn();
+    setSteam(openIDLogIn());
   };
 
   const arg = {

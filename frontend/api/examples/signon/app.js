@@ -1,3 +1,6 @@
+const req = require("express/lib/request");
+const res = require("express/lib/response");
+
 /**
  * Basic example demonstrating passport-steam usage within Express framework
  */
@@ -68,8 +71,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(__dirname + "/../../public"));
 
+// 여기서 보내주면 되지 않을까?
+app.get("/user", function (req, res) {
+  res.send({ user: req.user });
+});
+
 app.get("/", function (req, res) {
-  res.render("index", { user: req.user });
+  // res.render("index", { user: req.user });
+
+  res.redirect("http://localhost:3000/register?userid=" + req.user.id);
 });
 
 app.get("/account", ensureAuthenticated, function (req, res) {
