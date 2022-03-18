@@ -1,5 +1,7 @@
 package com.sixteam.ssgame.api.member.dto.request;
 
+import com.sixteam.ssgame.api.analyze.enums.CategoryType;
+import com.sixteam.ssgame.global.common.validator.EnumListValidator;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,9 +10,11 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
-@ToString(of = {"ssgameId", "password", "steamID", "email"})
+@ToString(of = {"ssgameId", "password", "steamID", "email", "preferredCategories"})
 @NoArgsConstructor
 @Getter
 public class RequestMemberDto {
@@ -28,11 +32,15 @@ public class RequestMemberDto {
     @Email(regexp = "^[0-9a-z]+([.-]?[0-9a-z]+)*@[0-9a-z]+([.-]+[0-9a-z]+)*(\\.[0-9a-z]{2,3})+$", message = "이메일 형식에 맞지 않습니다.")
     private String email;
 
+    @EnumListValidator(enumClass = CategoryType.class, ignoreCase = true, message = "카테고리를 확인해주세요.")
+    private List<String> preferredCategories;
+
     @Builder
-    public RequestMemberDto(String ssgameId, String password, String steamID, String email) {
+    public RequestMemberDto(String ssgameId, String password, String steamID, String email, List<String> preferredCategories) {
         this.ssgameId = ssgameId;
         this.password = password;
         this.steamID = steamID;
         this.email = email;
+        this.preferredCategories = preferredCategories;
     }
 }
