@@ -4,6 +4,7 @@ import Header from "./components/organisms/Header/Header";
 import styled from "styled-components";
 
 import Main from "./components/pages/Main/Main";
+import SignUpPage from "./components/pages/SignUpPage/SignUpPage";
 import Analyze from "./components/pages/Analyze/Analyze";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/analyze" element={<Analyze />} />
+          <Route path="/register" element={<SignUpPage />} />
         </Routes>
       </Grid>
     </>
