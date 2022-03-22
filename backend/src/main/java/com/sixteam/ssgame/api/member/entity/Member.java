@@ -10,7 +10,7 @@ import java.util.List;
 import static javax.persistence.CascadeType.ALL;
 
 @Getter
-@ToString(of = {"memberSeq", "ssgameId", "password", "email", "steamID", "steamNickname", "avartarUrl", "isDeleted", "createdDate"})
+@ToString(of = {"memberSeq", "ssgameId", "password", "email", "steamID", "steamNickname", "avatarUrl", "isPublic", "gameCount", "isDeleted", "createdDate"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(
         name = "tb_member",
@@ -44,7 +44,13 @@ public class Member {
     private String steamNickname;
 
     @Column(nullable = false)
-    private String avartarUrl;
+    private String avatarUrl;
+
+    @Column(nullable = false)
+    private boolean isPublic;
+
+    @Column(nullable = false)
+    private Integer gameCount;
 
     @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdDate;
@@ -56,13 +62,15 @@ public class Member {
     private List<MemberPreferredCategory> memberPreferredCategories = new ArrayList<>();
 
     @Builder
-    public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avartarUrl) {
+    public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl, boolean isPublic, Integer gameCount) {
         this.memberSeq = memberSeq;
         this.ssgameId = ssgameId;
         this.password = password;
         this.email = email;
         this.steamID = steamID;
         this.steamNickname = steamNickname;
-        this.avartarUrl = avartarUrl;
+        this.avatarUrl = avatarUrl;
+        this.isPublic = isPublic;
+        this.gameCount = gameCount;
     }
 }

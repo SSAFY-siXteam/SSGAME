@@ -1,7 +1,5 @@
 package com.sixteam.ssgame.api.member.service;
 
-import com.sixteam.ssgame.api.analyze.entity.Category;
-import com.sixteam.ssgame.api.analyze.enums.CategoryType;
 import com.sixteam.ssgame.api.analyze.repository.CategoryRepository;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
@@ -53,13 +51,20 @@ public class MemberServiceImpl implements MemberService {
         String encryptedPassword = passwordEncoder.encode(requestMemberDto.getPassword());
         log.debug("패스워드 암호화 " + encryptedPassword);
 
+        String steamNickname = null;
+        String avatarUrl = null;
+        boolean isPublic = false;
+        Integer gameCount = -1;
+
         Member savedMember = memberRepository.save(Member.builder()
                 .ssgameId(requestMemberDto.getSsgameId())
                 .password(encryptedPassword)
                 .email(requestMemberDto.getEmail())
                 .steamID(requestMemberDto.getSteamID())
-                .steamNickname("steamNickname")
-                .avartarUrl("avartarUrl")
+                .steamNickname(steamNickname)
+                .avatarUrl(avatarUrl)
+                .isPublic(isPublic)
+                .gameCount(gameCount)
                 .build());
 
         List<String> preferredCategories = requestMemberDto.getPreferredCategories();
@@ -89,7 +94,9 @@ public class MemberServiceImpl implements MemberService {
                 .email(member.getEmail())
                 .steamID(member.getSteamID())
                 .steamNickname(member.getSteamNickname())
-                .avartarUrl(member.getAvartarUrl())
+                .avatarUrl(member.getAvatarUrl())
+                .isPublic(member.isPublic())
+                .gameCount(member.getGameCount())
                 .preferredCategories(preferredCategories)
                 .build();
     }

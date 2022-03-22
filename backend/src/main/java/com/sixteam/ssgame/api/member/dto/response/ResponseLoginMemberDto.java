@@ -1,13 +1,12 @@
 package com.sixteam.ssgame.api.member.dto.response;
 
-import com.sixteam.ssgame.api.analyze.enums.CategoryType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.util.List;
 
-@ToString(of = {"memberSeq", "ssgameId", "password", "email", "steamID", "steamNickname", "avartarfull"})
+@ToString(of = {"memberSeq", "ssgameId", "password", "email", "steamID", "steamNickname", "avatarUrl", "isPublic", "gameCount"})
 @Getter
 public class ResponseLoginMemberDto {
 
@@ -23,19 +22,25 @@ public class ResponseLoginMemberDto {
 
     private String steamNickname;
 
-    private String avartarUrl;
+    private String avatarUrl;
+
+    private boolean isPublic;
+
+    private Integer gameCount;
 
     private List<String> preferredCategories;
 
     @Builder
-    public ResponseLoginMemberDto(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avartarUrl, List<String> preferredCategories) {
+    public ResponseLoginMemberDto(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl,  boolean isPublic, Integer gameCount, List<String> preferredCategories) {
         this.memberSeq = memberSeq;
         this.ssgameId = ssgameId;
         this.password = password;
         this.email = email;
         this.steamID = steamID;
         this.steamNickname = steamNickname;
-        this.avartarUrl = avartarUrl;
+        this.avatarUrl = avatarUrl;
+        this.isPublic = isPublic;
+        this.gameCount = gameCount;
         this.preferredCategories = preferredCategories;
     }
 }
