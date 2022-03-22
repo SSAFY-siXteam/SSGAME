@@ -93,6 +93,11 @@ public class MemberServiceImpl implements MemberService {
     public ResponseLoginMemberDto findResponseLoginMemberDto(String ssgameId) {
 
         Member member = memberRepository.findBySsgameId(ssgameId);
+        if (member == null) {
+            System.out.println("member == null");
+//            throw new Exception();
+        }
+
         List<MemberPreferredCategory> categories = memberPreferredCategoryRepository.findMemberPreferredCategoriesByMemberMemberSeq(member.getMemberSeq());
 
         List<String> preferredCategories = new ArrayList<>();
@@ -112,5 +117,10 @@ public class MemberServiceImpl implements MemberService {
                 .gameCount(member.getGameCount())
                 .preferredCategories(preferredCategories)
                 .build();
+    }
+
+    @Override
+    public Member findMemberBySsgameId(String ssgameId) {
+        return memberRepository.findBySsgameId(ssgameId);
     }
 }
