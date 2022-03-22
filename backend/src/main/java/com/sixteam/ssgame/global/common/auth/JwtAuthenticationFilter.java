@@ -2,10 +2,12 @@ package com.sixteam.ssgame.global.common.auth;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.util.JwtTokenUtil;
 import com.sixteam.ssgame.global.common.util.ResponseBodyWriteUtil;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -63,26 +65,23 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             JWTVerifier verifier = JwtTokenUtil.getVerifier();
             JwtTokenUtil.handleError(token);
             DecodedJWT decodedJWT = verifier.verify(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
-            String email = decodedJWT.getSubject();
-/**
- * @// TODO: 2022-03-14
- */
+            String ssgameId = decodedJWT.getSubject();
+
             // Search in the DB if we find the user by token subject (username)
             // If so, then grab user details and create spring auth token using username, pass, authorities/roles
-//            if (email != null) {
-//                // jwt 토큰에 포함된 email 통해 실제 디비에 해당 정보의 계정이 있는지 조회.
-//                // 이후에 Security 관련 작업하면 Dto로 수정
-//                Member member = memberService.findMemberByEmail(email);
-//                if(member != null) {
-//                    // 식별된 정상 유저인 경우, 요청 context 내에서 참조 가능한 인증 정보(jwtAuthentication) 생성.
-//                    CustomUserDetails customUserDetails = new CustomUserDetails(member);
-//                    customUserDetails.setAuthorities(Collections.singletonList(member.getRole()));
-//                    UsernamePasswordAuthenticationToken jwtAuthentication = new UsernamePasswordAuthenticationToken(email,
-//                            null, customUserDetails.getAuthorities());
-//                    jwtAuthentication.setDetails(customUserDetails);
-//                    return jwtAuthentication;
-//                }
-//            }
+            if (ssgameId != null) {
+                // jwt 토큰에 포함된 email 통해 실제 디비에 해당 정보의 계정이 있는지 조회.
+                // 이후에 Security 관련 작업하면 Dto로 수정
+                Member member = memberService.findMemberBySsgameId(ssgameId);
+                if(member != null) {
+                    // 식별된 정상 유저인 경우, 요청 context 내에서 참조 가능한 인증 정보(jwtAuthentication) 생성.
+                    CustomUserDetails customUserDetails = new CustomUserDetails(member);
+                    UsernamePasswordAuthenticationToken jwtAuthentication = new UsernamePasswordAuthenticationToken(ssgameId,
+                            null, customUserDetails.getAuthorities());
+                    jwtAuthentication.setDetails(customUserDetails);
+                    return jwtAuthentication;
+                }
+            }
             return null;
         }
         return null;

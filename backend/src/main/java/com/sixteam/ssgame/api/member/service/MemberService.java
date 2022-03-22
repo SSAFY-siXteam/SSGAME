@@ -2,6 +2,7 @@ package com.sixteam.ssgame.api.member.service;
 
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
+import com.sixteam.ssgame.api.member.entity.Member;
 
 public interface MemberService {
 
@@ -14,4 +15,6 @@ public interface MemberService {
     void register(RequestMemberDto requestMemberDto);
 
     ResponseLoginMemberDto findResponseLoginMemberDto(String ssgameId);
+
+    Member findMemberBySsgameId(String ssgameId);
 }
