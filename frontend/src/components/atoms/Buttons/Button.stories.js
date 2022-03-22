@@ -13,3 +13,9 @@ Primary.args = {
   text: "테스트 버튼",
   img: null,
 };
+
+export const IdCheckBtn = Template.bind({});
+IdCheckBtn.args = {
+  text: "아이디 확인",
+  img: null,
+};
