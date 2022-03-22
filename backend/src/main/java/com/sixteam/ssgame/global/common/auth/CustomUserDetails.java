@@ -38,14 +38,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
-//        return this.member.getPassword();
+        return this.member.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
-//        return this.member.getEmail();
+        return this.member.getSsgameId();
     }
 
     @Override
