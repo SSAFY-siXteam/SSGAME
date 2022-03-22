@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-function Graph({ data }) {
+function RadarGraph({ data }) {
   return (
     <StyledGraph>
       <RadarChart
@@ -35,4 +35,4 @@ function Graph({ data }) {
   );
 }
 
-export default Graph;
+export default RadarGraph;
