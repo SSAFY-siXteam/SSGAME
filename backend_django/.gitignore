@@ -6,6 +6,6 @@
 *.pot
 *.pyc
 __pycache__/
-ssgame/config/settings.py
-settings.py
+ssgame/db_settings.py
+db_settings.py
 media
