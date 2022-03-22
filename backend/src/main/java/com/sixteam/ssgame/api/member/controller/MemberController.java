@@ -4,11 +4,13 @@ import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
 import com.sixteam.ssgame.api.member.service.MemberService;
+import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
 import com.sixteam.ssgame.global.common.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -153,6 +155,34 @@ public class MemberController {
                 data.put("memberInfo", responseLoginMemberDto);
                 data.put("jwtToken", jwtToken);
             }
+        }
+
+        return BaseResponseDto.builder()
+                .status(status)
+                .msg(msg)
+                .data(data)
+                .build();
+    }
+
+    @GetMapping("/me")
+    public BaseResponseDto me(Authentication authentication) {
+        log.debug("회원 정보 조회 api 호출 - MemberController.me() 호출");
+
+        Integer status = null;
+        String msg = null;
+        Map<String, Object> data = new HashMap<>();
+
+        if (authentication == null) {
+            status = HttpStatus.UNAUTHORIZED.value();
+            msg = "unauthorized access";
+        } else {
+            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+//        Long memberSeq = details.getMember().getMemberSeq();
+            String ssgameId = details.getMember().getSsgameId();
+
+            status = HttpStatus.OK.value();
+            msg = "임시 회원 정보 반환";
+            data.put("member", memberService.findResponseLoginMemberDto(ssgameId));
         }
 
         return BaseResponseDto.builder()
