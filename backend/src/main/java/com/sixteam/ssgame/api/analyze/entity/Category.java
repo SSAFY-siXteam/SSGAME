@@ -26,10 +26,15 @@ public class Category {
 //    @Column(nullable = false, unique = true)
 //    private CategoryType categoryName;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String categoryName;
 
     @OneToMany(mappedBy = "category", cascade = ALL)
     private List<MemberPreferredCategory> memberPreferredCategories = new ArrayList<>();
 
+    @Builder
+    public Category(Long categorySeq, String categoryName) {
+        this.categorySeq = categorySeq;
+        this.categoryName = categoryName;
+    }
 }

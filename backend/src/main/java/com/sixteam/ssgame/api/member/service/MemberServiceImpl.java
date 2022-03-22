@@ -64,10 +64,9 @@ public class MemberServiceImpl implements MemberService {
 
         List<String> preferredCategories = requestMemberDto.getPreferredCategories();
         for (String preferredCategory : preferredCategories) {
-            Long categorySeq = preferredCategoryToCategorySeq(preferredCategory.toUpperCase());
             memberPreferredCategoryRepository.save(MemberPreferredCategory.builder()
                     .member(savedMember)
-                    .category(categoryRepository.findByCategorySeq(categorySeq))
+                    .category(categoryRepository.findByCategoryName(preferredCategory))
                     .build());
         }
     }
@@ -93,24 +92,5 @@ public class MemberServiceImpl implements MemberService {
                 .avartarUrl(member.getAvartarUrl())
                 .preferredCategories(preferredCategories)
                 .build();
-    }
-
-    private Long preferredCategoryToCategorySeq(String preferredCategory) {
-        if (preferredCategory.equals(CategoryType.AESTHETIC.toString())) {
-            return 1L;
-        } else if (preferredCategory.equals(CategoryType.THRILLER.toString())) {
-            return 2L;
-        } else if (preferredCategory.equals(CategoryType.BRAIN.toString())) {
-            return 3L;
-        } else if (preferredCategory.equals(CategoryType.HEALING.toString())) {
-            return 4L;
-        } else if (preferredCategory.equals(CategoryType.ACTIVITY.toString())) {
-            return 5L;
-        } else if (preferredCategory.equals(CategoryType.SF.toString())) {
-            return 6L;
-        } else {
-            // preferredCategory.equals(CategoryType.ADVENTURE.toString())
-            return 7L;
-        }
     }
 }
