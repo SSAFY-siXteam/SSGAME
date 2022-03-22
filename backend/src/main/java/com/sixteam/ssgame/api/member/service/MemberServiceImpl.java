@@ -7,6 +7,7 @@ import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.entity.MemberPreferredCategory;
 import com.sixteam.ssgame.api.member.repository.MemberPreferredCategoryRepository;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
+import com.sixteam.ssgame.global.common.steamapi.SteamAPIScrap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Transactional(readOnly = true)
 @Slf4j
@@ -55,6 +57,17 @@ public class MemberServiceImpl implements MemberService {
         String avatarUrl = null;
         boolean isPublic = false;
         Integer gameCount = -1;
+
+        try {
+            Map<String, Object> steamAPIData = SteamAPIScrap.getMemberData(requestMemberDto.getSteamID());
+
+            steamNickname = (String) steamAPIData.get("steamNickname");
+            avatarUrl = (String) steamAPIData.get("avatarUrl");
+            isPublic = (Long) steamAPIData.get("communityvisibilitystate") == 3L;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Member savedMember = memberRepository.save(Member.builder()
                 .ssgameId(requestMemberDto.getSsgameId())

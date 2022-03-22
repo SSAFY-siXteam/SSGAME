@@ -46,6 +46,9 @@ dependencies {
 
 	// spring boot test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// json parser
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 }
 
 test {
