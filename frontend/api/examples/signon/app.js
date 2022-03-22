@@ -4,11 +4,41 @@ const res = require("express/lib/response");
 /**
  * Basic example demonstrating passport-steam usage within Express framework
  */
+/*
+// Example store.js usage with npm
+var store = require('store')
+store.set('user', { name:'Marcus' })
+store.get('user').name == 'Marcus'
+ 
+// Store current user
+store.set('user', { name:'Marcus' })
+ 
+// Get current user
+store.get('user')
+ 
+// Remove current user
+store.remove('user')
+ 
+// Clear all keys
+store.clearAll()
+ 
+// Loop over all stored values
+store.each(function(value, key) {
+    console.log(key, '==', value)
+})
+
+
+출처: https://oneshottenkill.tistory.com/316 [잘하고 싶은 백엔드 개발자]
+*/
 var express = require("express"),
   passport = require("passport"),
   util = require("util"),
   session = require("express-session"),
   SteamStrategy = require("../../").Strategy;
+
+var cors = require("cors");
+
+var store = require("store");
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -52,9 +82,10 @@ passport.use(
 
 var app = express();
 
+app.use(cors());
 // configure Express
-app.set("views", __dirname + "/views");
-app.set("view engine", "ejs");
+// app.set("views", __dirname + "/views");
+// app.set("view engine", "ejs");
 
 app.use(
   session({
@@ -72,13 +103,25 @@ app.use(passport.session());
 app.use(express.static(__dirname + "/../../public"));
 
 // 여기서 보내주면 되지 않을까?
-app.get("/user", function (req, res) {
-  res.send({ user: req.user });
+app.use("/user/:id", function (req, res) {
+  console.log(req.params.id, "param");
+  // console.log(req.user.id);
+  // 문제 ( javascript에서 접근하는 것과, node상에서 접근하는 것이 달라 문제가 생긴다...)
+  console.log(store.get("user").id);
+  if (req.params.id === store.get("user").id) {
+    res.json({ userLoggedIn: true });
+  } else res.json({ userLoggedIn: false });
 });
-
+// app.use("/user/:id", function (req, res) {
+//   // console.log(req.params.id);
+//   // console.log(req.user.id);
+//   // if (req.params.id === req.user.id) {
+//   //   res.send({ userLoggedIn: true });
+//   // } else res.send({ userLoggedIn: false });
+//   res.json({ userLoggedIn: true });
+// });
 app.get("/", function (req, res) {
   // res.render("index", { user: req.user });
-
   res.redirect("http://localhost:3000/register?userid=" + req.user.id);
 });
 
@@ -88,6 +131,7 @@ app.get("/account", ensureAuthenticated, function (req, res) {
 
 app.get("/logout", function (req, res) {
   req.logout();
+  res.clearCookie("userId", { path: "/user" });
   res.redirect("/");
 });
 
@@ -113,6 +157,8 @@ app.get(
   "/auth/steam/return",
   passport.authenticate("steam", { failureRedirect: "/" }),
   function (req, res) {
+    console.log(req.user.id, "userid");
+    store.set("user", { id: req.user.id });
     res.redirect("/");
   }
 );
@@ -124,6 +170,7 @@ app.listen(4000);
 //   the request is authenticated (typically via a persistent login session),
 //   the request will proceed.  Otherwise, the user will be redirected to the
 //   login page.
+
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
