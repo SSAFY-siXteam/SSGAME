@@ -19,3 +19,9 @@ Large.args = {
   text: "information",
   size: "large",
 };
+
+export const Small = Template.bind({});
+Small.args = {
+  text: "information",
+  size: "small",
+};
