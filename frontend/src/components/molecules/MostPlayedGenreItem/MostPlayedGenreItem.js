@@ -3,7 +3,7 @@ import Img from "../../atoms/Img/Img/Img.js";
 import InfoText from "../../atoms/Info/InfoText/InfoText.js";
 import { ImgGrid, InfoGrid, StyledRatio, TopGenreItemGrid } from "./style.js";
 
-const TopGenreItem = ({ info, path }) => {
+const MostPlayedGenreItem = ({ info, path }) => {
   return (
     <>
       <TopGenreItemGrid>
@@ -21,4 +21,4 @@ const TopGenreItem = ({ info, path }) => {
   );
 };
 
-export default TopGenreItem;
+export default MostPlayedGenreItem;

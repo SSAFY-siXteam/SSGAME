@@ -1,5 +1,5 @@
 import React from "react";
-import TopGenreItem from "../../molecules/TopGenreItem/TopGenreItem";
+import MostPlayedGenreItem from "../../molecules/MostPlayedGenreItem/MostPlayedGenreItem";
 import Title from "../../atoms/Title/Title";
 import gold from "../../../assets/img/medals/gold.png";
 import silver from "../../../assets/img/medals/silver.png";
@@ -7,7 +7,7 @@ import copper from "../../../assets/img/medals/copper.png";
 import normal from "../../../assets/img/medals/normal.png";
 import { GenreGrid, TopGenresWrapper } from "./style";
 
-const TopGenres = () => {
+const MostPlayedGenres = () => {
   const mostPlayedGenres = [
     {
       genre: "장르1",
@@ -36,7 +36,7 @@ const TopGenres = () => {
       <GenreGrid>
         {mostPlayedGenres.map((data, index) => (
           <div key={index}>
-            <TopGenreItem
+            <MostPlayedGenreItem
               info={data}
               path={
                 (index == 0 && gold) ||
@@ -52,4 +52,4 @@ const TopGenres = () => {
   );
 };
 
-export default TopGenres;
+export default MostPlayedGenres;
