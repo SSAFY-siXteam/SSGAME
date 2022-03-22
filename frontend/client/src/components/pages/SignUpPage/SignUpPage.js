@@ -1,37 +1,71 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import SignUp from "../../templates/SignUp/SignUp";
 import Button from "../../atoms/Buttons/Button";
 import { Input } from "../../atoms/Input/Input";
 import { InfoInput } from "../../organisms/InfoInput/InfoInput";
 import steamLogInImg from "../../../assets/img/button/steambutton/sits_small.png";
 import { CheckBoxModule } from "../../organisms/CheckBoxModule/CheckBoxModule";
-import { openIDLogIn } from "../../../apis/openID";
+import { openIDLogIn, openIDLogInCheck } from "../../../apis/openID";
+import { registerId } from "../../../apis/register";
+import { checkForm } from "../../../utils/register";
 // checkbox list 객체
 const SignUpPage = () => {
   const [steam, setSteam] = useState();
+  const [userId, setUserId] = useState("");
+  const [checkedItems, setCheckedItems] = useState(new Set());
 
   useEffect(() => {
-    console.log(steam);
-    if (steam !== undefined) {
-      steam.addEventListener("keydown", (event) => {
-        event.preventDefault();
-        console.log("닫힘");
-      });
+    const query = new URLSearchParams(window.location.search);
+    const userid = query.get("userid");
+    setUserId(userid);
+  }, []);
+  const onChangeCheckBox = (label) => {
+    if (checkedItems.has(label)) {
+      checkedItems.delete(label);
+      setCheckedItems(checkedItems);
+      console.log("제거");
+    } else {
+      checkedItems.add(label);
+      setCheckedItems(checkedItems);
+      console.log("추가");
     }
-  }, [steam]);
-
+  };
   const onSteamIDBtnClick = () => {
     setSteam(openIDLogIn());
   };
+  const onRegisterBtnClick = (info) => {
+    if (checkForm(info)) {
+      openIDLogInCheck(userId).then((res) => {
+        if (!res) {
+          alert("Steam ID Error!");
+        } else {
+          alert("성공");
+          //api 통신
 
+          registerId({
+            ssgameId: info.idInput,
+            password: info.passwordInput,
+            steamId: userId,
+            email: info.emailInput,
+            preferredCategories: Array.from(checkedItems),
+          });
+        }
+      });
+    }
+  };
   const arg = {
     checkBox: CheckBoxModule({
       list: [
-        { content: "액션", fontSize: 10, label: "action" },
-        { content: "어드벤쳐", fontSize: 10, label: "adventure" },
-        { content: "가족", fontSize: 10, label: "family" },
+        { content: "SF", fontSize: 10, label: "action" },
+        { content: "힐링", fontSize: 10, label: "healing" },
+        { content: "활동성", fontSize: 10, label: "activity" },
+        { content: "심미성", fontSize: 10, label: "beauty" },
+        { content: "탐험", fontSize: 10, label: "adventure" },
+        { content: "스릴러", fontSize: 10, label: "thriller" },
+        { content: "두뇌", fontSize: 10, label: "brain" },
       ],
+      onChangeCheckBox: onChangeCheckBox,
     }),
     steamIDInput: Input({
       id: "unmodifiable",
@@ -39,7 +73,7 @@ const SignUpPage = () => {
       minLength: 8,
       maxLength: 15,
       size: 30,
-      value: "steamID",
+      value: userId,
     }),
     steamID: Button({
       img: steamLogInImg,
@@ -49,33 +83,42 @@ const SignUpPage = () => {
       id: {
         label: "id",
         type: "text",
-        minLength: 8,
-        maxLength: 15,
+        minLength: 4,
+        maxLength: 16,
         size: 30,
         placeholder: "ID를 입력해주세요",
-        content: "ID",
+        content: "아이디",
       },
       password: {
         label: "password",
         type: "password",
         minLength: 8,
+        maxLength: 16,
+        size: 30,
+        placeholder: "Password를 입력해주세요",
+        content: "비밀번호",
+      },
+      passwordCheck: {
+        label: "passwordCheck",
+        type: "password",
+        minLength: 8,
         maxLength: 15,
         size: 30,
         placeholder: "Password를 입력해주세요",
-        content: "Password",
+        content: "비밀번호 확인",
       },
       email: {
         label: "email",
         type: "text",
-        minLength: 8,
-        maxLength: 15,
+        minLength: 5,
+        maxLength: 30,
         size: 30,
         placeholder: "이메일을 입력해주세요",
         content: "E-Mail",
       },
       idCheckBtn: { text: "아이디 확인" },
+      registerBtn: { text: "회원가입", onClick: onRegisterBtnClick },
     }),
-    registerBtn: Button({ text: "회원가입" }),
   };
   return (
     <SignUp
@@ -83,7 +126,6 @@ const SignUpPage = () => {
       steamIDInput={arg.steamIDInput}
       steamID={arg.steamID}
       infoInput={arg.infoInput}
-      registerBtn={arg.registerBtn}
     ></SignUp>
   );
 };

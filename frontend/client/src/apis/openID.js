@@ -1,4 +1,4 @@
-// import axios from "axios";
+import axios from "axios";
 // 윈도우 상태값을 보내주자
 // 보낸 이후 이 상태값에 따라 (닫혔을 경우) => 서버에 요청을 한다
 export const openIDLogIn = () => {
@@ -16,4 +16,26 @@ export const openIDLogIn = () => {
 
   // return popupWindow;
   window.location.replace("http://localhost:4000" + "/auth/steam");
+};
+export const openIDLogInCheck = async (id) => {
+  // axios.get("http://localhost:4000" + "/user" + "/" + id);
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const isChecked = await fetch(
+    "http://localhost:4000/user/" + id,
+    requestOptions
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data.userLoggedIn);
+      return data.userLoggedIn;
+    });
+
+  console.log(isChecked);
+  return isChecked;
 };

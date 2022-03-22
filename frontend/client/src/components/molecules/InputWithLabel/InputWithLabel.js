@@ -12,6 +12,7 @@ export function InputWithLabel({
   size,
   placeholder,
   content,
+  onInputChange,
 }) {
   return (
     <StyledInputWithLabel>
@@ -23,6 +24,7 @@ export function InputWithLabel({
         maxLength={maxLength}
         size={size}
         placeholder={placeholder}
+        onInputChange={onInputChange}
       />
     </StyledInputWithLabel>
   );

@@ -3,10 +3,14 @@ import PropTypes from "prop-types";
 import { CheckBox } from "../../atoms/CheckBox/CheckBox";
 import { Label } from "../../atoms/Label/Label";
 // checkbox list 객체
-export function CheckBoxItem({ list }) {
+export function CheckBoxItem({ list, id, onChangeCheckBox }) {
   return (
     <>
-      <CheckBox label={list.label} />
+      <CheckBox
+        id={id}
+        label={list.label}
+        onChangeCheckBox={onChangeCheckBox}
+      />
       <Label
         content={list.content}
         fontSize={list.fontSize}
