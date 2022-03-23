@@ -8,10 +8,12 @@ export const GraphGrid = styled.div`
 
 export const GenresGrid = styled.div`
   display: inline-block;
+  vertical-align: top;
   width: 50%;
 `;
 
 export const GamesGrid = styled.div`
   display: inline-block;
+  vertical-align: top;
   width: 50%;
 `;
