@@ -1,20 +1,41 @@
-import { UserManager } from "oidc-client";
-
+import axios from "axios";
+// 윈도우 상태값을 보내주자
+// 보낸 이후 이 상태값에 따라 (닫혔을 경우) => 서버에 요청을 한다
 export const openIDLogIn = () => {
-  const settings = {
-    authority: "http://localhost:3000/oidc",
-    client_id: "A523B13BD02DE21FB0088B9CD46DE699",
-    redirect_uri: "https://steamcommunity.com/openid/login",
-  };
+  // const popupWindow = window.open(
+  //   "http://localhost:4000" + "/auth/steam",
+  //   "_blank",
+  //   "width=800, height=600"
+  // );
+  // if (window.focus) popupWindow.focus();
 
-  const userManager = new UserManager(settings);
-  userManager
-    .signinPopup()
+  // // let userInfo;
+  // // const response = await axios("http://localhost:4000" + "/user", {
+  // //   user: userInfo,
+  // // });
+
+  // return popupWindow;
+  window.location.replace("http://localhost:4000" + "/auth/steam");
+};
+export const openIDLogInCheck = async (id) => {
+  // axios.get("http://localhost:4000" + "/user" + "/" + id);
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const isChecked = await fetch(
+    "http://localhost:4000/user/" + id,
+    requestOptions
+  )
+    .then((res) => res.json())
     .then((data) => {
-      console.log("data:", data);
-    })
-    .catch((e) => {
-      console.log("err:", e);
+      console.log(data.userLoggedIn);
+      return data.userLoggedIn;
     });
-  console.log("userManager:", userManager);
+
+  console.log(isChecked);
+  return isChecked;
 };

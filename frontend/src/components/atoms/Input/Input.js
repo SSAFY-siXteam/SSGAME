@@ -11,6 +11,7 @@ export function Input({
   size,
   placeholder,
   value,
+  onInputChange,
 }) {
   return (
     <UserInput
@@ -23,6 +24,7 @@ export function Input({
       placeholder={placeholder}
       size={size}
       value={value}
+      onChange={onInputChange}
     ></UserInput>
   );
 }
