@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import Main from "./components/pages/Main/Main";
 import SignUpPage from "./components/pages/SignUpPage/SignUpPage";
-import Analyze from "./components/pages/Analyze/Analyze";
+import AnalyzePage from "./components/pages/AnalyzePage/AnalyzePage";
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
       <Grid>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/analyze" element={<Analyze />} />
+          <Route path="/analyze" element={<AnalyzePage />} />
           <Route path="/register" element={<SignUpPage />} />
         </Routes>
       </Grid>
