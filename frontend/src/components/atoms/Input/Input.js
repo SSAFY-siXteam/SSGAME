@@ -26,13 +26,3 @@ export function Input({
     ></UserInput>
   );
 }
-Input.propTypes = {
-  id: PropTypes.string,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-};
-
-Input.defaultProps = {
-  size: 30,
-  placeholder: null,
-};

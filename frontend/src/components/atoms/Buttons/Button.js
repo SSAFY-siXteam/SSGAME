@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const Button = ({ text, onClick, img }) => {
   return (
-    <StyledButton onClick={onClick}>
+    <StyledButton onClick={onClick} img={img}>
       {img && <img src={img} />}
       {text}
     </StyledButton>

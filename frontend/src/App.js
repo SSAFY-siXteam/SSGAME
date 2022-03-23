@@ -4,7 +4,7 @@ import Header from "./components/organisms/Header/Header";
 import Main from "./components/pages/Main/Main";
 import SignUpPage from "./components/pages/SignUpPage/SignUpPage";
 import styled from "styled-components";
-
+import ModalTemplate from "./components/templates/ModalTemplate/ModalTemplate";
 function App() {
   return (
     <>
@@ -13,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/register" element={<SignUpPage />} />
+          <Route path="/modaltest" element={<ModalTemplate />} />
         </Routes>
       </Grid>
     </>
