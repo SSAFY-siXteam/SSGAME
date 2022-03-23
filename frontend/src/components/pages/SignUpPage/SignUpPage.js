@@ -11,7 +11,6 @@ import { registerId } from "../../../apis/register";
 import { checkForm } from "../../../utils/register";
 // checkbox list 객체
 const SignUpPage = () => {
-  const [steam, setSteam] = useState();
   const [userId, setUserId] = useState("");
   const [checkedItems, setCheckedItems] = useState(new Set());
 
@@ -31,9 +30,7 @@ const SignUpPage = () => {
       console.log("추가");
     }
   };
-  const onSteamIDBtnClick = () => {
-    setSteam(openIDLogIn());
-  };
+
   const onRegisterBtnClick = (info) => {
     if (checkForm(info)) {
       openIDLogInCheck(userId).then((res) => {
@@ -74,10 +71,6 @@ const SignUpPage = () => {
       maxLength: 15,
       size: 30,
       value: userId,
-    }),
-    steamID: Button({
-      img: steamLogInImg,
-      onClick: onSteamIDBtnClick,
     }),
     infoInput: InfoInput({
       id: {
@@ -124,12 +117,8 @@ const SignUpPage = () => {
     <SignUp
       checkBox={arg.checkBox}
       steamIDInput={arg.steamIDInput}
-      steamID={arg.steamID}
       infoInput={arg.infoInput}
     ></SignUp>
   );
 };
 export default SignUpPage;
-SignUpPage.propTypes = {};
-
-SignUpPage.defaultProps = {};

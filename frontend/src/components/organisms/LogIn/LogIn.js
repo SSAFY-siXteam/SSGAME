@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import Logo from "../../atoms/Img/Logo/Logo";
 import { Input } from "../../atoms/Input/Input";
 import { LogInContainer, InputDiv, ButtonDiv } from "./styled";
+import { openIDLogIn } from "../../../apis/openID";
 import Button from "../../atoms/Buttons/Button";
 import steamLogInImg from "../../../assets/img/button/steambutton/sits_small.png";
 const LogIn = () => {
   const [userId, setUserId] = useState();
   const [userPassword, setUserPassword] = useState();
-  useEffect(() => {
-    console.log(userId);
-    console.log(userPassword);
-  }, [userId, userPassword]);
+
+  // 로그인 버튼 클릭
+  const onLogIn = () => {
+    console.log(userId, userPassword, "clicked");
+  };
   return (
     <LogInContainer>
       <Logo />
@@ -20,7 +22,10 @@ const LogIn = () => {
           type="text"
           size="40"
           placeholder="Username"
-          onChange={() => console.log("dd")}
+          onInputChange={(e) => {
+            e.target.value = e.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+            setUserId(e.target.value);
+          }}
         />
       </InputDiv>
       <InputDiv>
@@ -29,16 +34,19 @@ const LogIn = () => {
           type="password"
           size="40"
           placeholder="Password"
-          onChange={(e) => setUserPassword(e.target.value)}
+          onInputChange={(e) => {
+            e.target.value = e.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+            setUserPassword(e.target.value);
+          }}
         />
       </InputDiv>
       <ButtonDiv>
-        <Button text="로그인" />
+        <Button text="로그인" width="320px" onClick={onLogIn} />
       </ButtonDiv>
 
       <ButtonDiv>
         계정이 없다면, 회원가입 해주세요!
-        <Button text={""} img={steamLogInImg} onClick="onSteamIDBtnClick" />
+        <Button text={""} img={steamLogInImg} onClick={openIDLogIn} />
       </ButtonDiv>
     </LogInContainer>
   );
