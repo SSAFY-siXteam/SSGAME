@@ -47,7 +47,7 @@ const RecGames = () => {
   ];
   return (
     <div>
-      <Title title="Try aloso..." />
+      <Title title="Try also..." />
       {data.map((game, index) => (
         <GameCard key={index} info={game} />
       ))}
