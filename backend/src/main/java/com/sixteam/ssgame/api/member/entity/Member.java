@@ -1,5 +1,6 @@
 package com.sixteam.ssgame.api.member.entity;
 
+import com.sixteam.ssgame.api.game.entity.MemberGameList;
 import lombok.*;
 
 import javax.persistence.*;
@@ -60,6 +61,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<MemberPreferredCategory> memberPreferredCategories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<MemberGameList> memberGameLists = new ArrayList<>();
 
     @Builder
     public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl, boolean isPublic, Integer gameCount) {
