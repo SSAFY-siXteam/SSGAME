@@ -28,16 +28,16 @@ public class Member {
     @Id
     private Long memberSeq;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String ssgameId;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "steam_id", nullable = false)
+    @Column(name = "steam_id", nullable = false, unique = true)
     private String steamID;
 
     @Column(nullable = false)

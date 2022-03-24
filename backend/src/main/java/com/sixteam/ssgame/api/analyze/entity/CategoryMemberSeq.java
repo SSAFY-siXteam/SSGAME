@@ -13,11 +13,11 @@ public class CategoryMemberSeq implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CategoryMemberSeq that = (CategoryMemberSeq) o;
-        return Objects.equals(member, that.member) && Objects.equals(category, that.category);
+        return Objects.equals(category, that.category) && Objects.equals(member, that.member);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(member, category);
+        return Objects.hash(category, member);
     }
 }
