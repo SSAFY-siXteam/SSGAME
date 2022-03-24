@@ -5,17 +5,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.net.URLEncoder.encode;
 import static java.nio.charset.StandardCharsets.UTF_8;
-
 
 public class SteamAPIScrap {
 
@@ -33,10 +32,9 @@ public class SteamAPIScrap {
                 .append(PLAYER_SUMMARIES_BASE_URL)
                 .append("?").append(encode("key", UTF_8)).append(EQUAL).append(KEY)
                 .append("&").append(encode("steamids", UTF_8)).append(EQUAL).append(steamID);
-//                .append("&").append(encode("format", UTF_8)).append(EQUAL).append(FORMAT);
 
         URL url = new URL(urlBuilder.toString());
-        HttpsURLConnection conn = getHttpURLConnection(url);
+        HttpURLConnection conn = getHttpURLConnection(url);
 
         int responseCode = conn.getResponseCode();
         boolean isSuccess = 200 <= responseCode && responseCode <= 300;
@@ -83,9 +81,9 @@ public class SteamAPIScrap {
         return sb.toString();
     }
 
-    private static HttpsURLConnection getHttpURLConnection(URL url) throws IOException {
+    private static HttpURLConnection getHttpURLConnection(URL url) throws IOException {
         // 커넥션 객체 생성
-        HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         // HTTP 메서드 설정
         conn.setRequestMethod("GET");
