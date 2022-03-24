@@ -3,6 +3,10 @@ package com.sixteam.ssgame.api.member.controller;
 import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
+import com.sixteam.ssgame.api.member.exception.EmailDuplicateException;
+import com.sixteam.ssgame.api.member.exception.PasswordContainedSsgameIdException;
+import com.sixteam.ssgame.api.member.exception.SsgameIdDuplicateException;
+import com.sixteam.ssgame.api.member.exception.SteamIDDuplicateException;
 import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
@@ -52,24 +56,16 @@ public class MemberController {
             }
         } else if (memberService.hasSsgameId(requestMemberDto.getSsgameId())) {
             // 아이디 중복
-            status = HttpStatus.CONFLICT.value();
-            msg = "이미 존재하는 ID입니다.";
-            data.put("field", "ssgameId");
+            throw new SsgameIdDuplicateException(requestMemberDto.getSsgameId());
         } else if (password.contains(requestMemberDto.getSsgameId())) {
             // 패스워드에 아이디가 포함된 경우
-            status = HttpStatus.BAD_REQUEST.value();
-            msg = "패스워드에 아이디가 포함될 수 없습니다.";
-            data.put("field", "ssgameId into password");
+            throw new PasswordContainedSsgameIdException(requestMemberDto.getSsgameId());
         } else if (memberService.hasSteamID(requestMemberDto.getSteamID())) {
             // 스팀 아이디 중복
-            status = HttpStatus.CONFLICT.value();
-            msg = "해당 Steam ID로 가입한 계정이 존재합니다.";
-            data.put("field", "steamID");
+            throw new SteamIDDuplicateException(requestMemberDto.getSteamID());
         } else if (memberService.hasEmail(requestMemberDto.getEmail())) {
             // 이메일 중복
-            status = HttpStatus.CONFLICT.value();
-            msg = "해당 이메일로 가입한 계정이 존재합니다.";
-            data.put("field", "email");
+            throw new EmailDuplicateException(requestMemberDto.getEmail());
         } else {
             try {
                 memberService.register(requestMemberDto);
