@@ -8,6 +8,7 @@ import {
   InputWithLabelPassword,
 } from "../../molecules/InputWithLabel/InputWithLabel.stories";
 import { IdCheckBtn } from "../../atoms/Buttons/Button.stories";
+
 export default {
   title: "Organisms/InfoInput",
   component: InfoInput,
