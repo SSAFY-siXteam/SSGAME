@@ -45,7 +45,6 @@ export function InfoInput({
     setEmailInput(event.target.value);
   };
   const idCheckBtnOnClick = (id) => {
-    console.log(id);
     // then -> if true: setIdCheck true;
     // getIdCheckAPI(id);
     alert("사용 가능한 아이디 입니다.");
