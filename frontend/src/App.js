@@ -16,6 +16,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/analyze" element={<AnalyzePage />} />
           <Route path="/register" element={<SignUpPage />} />
+          <Route path="/modaltest" element={<ModalTemplate />} />
         </Routes>
       </Grid>
     </>

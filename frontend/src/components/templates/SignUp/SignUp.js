@@ -13,7 +13,6 @@ import {
 export default function SignUp({
   checkBox,
   steamIDInput,
-  steamID,
   infoInput,
   registerBtn,
 }) {
@@ -24,10 +23,7 @@ export default function SignUp({
         <CategoryHeader>선호 게임 카테고리</CategoryHeader>
         <StyledContent>{checkBox}</StyledContent>
         <CategoryHeader>Steam ID</CategoryHeader>
-        <StyledContent>
-          {steamIDInput}
-          {steamID}
-        </StyledContent>
+        <StyledContent>{steamIDInput}</StyledContent>
         <CategoryHeader>회원 정보</CategoryHeader>
         <StyledContent>{infoInput}</StyledContent>
         <StyledRegisterBtn>{registerBtn}</StyledRegisterBtn>

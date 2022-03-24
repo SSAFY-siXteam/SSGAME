@@ -13,15 +13,9 @@ export const CategoryContent = styled.div`
 `;
 export const CategoryHeader = styled.p`
   font-size: 25px;
-  margin-top: 20px;
-  margin-bottom: 20px;
 `;
 export const StyledContent = styled.div`
   margin-left: 20px;
+  margin-bottom: 40px;
 `;
-export const StyledRegisterBtn = styled.div`
-  margin-top: 30px;
-  display: grid;
-  align-items: right;
-  justify-content: right;
-`;
+export const StyledRegisterBtn = styled.div``;

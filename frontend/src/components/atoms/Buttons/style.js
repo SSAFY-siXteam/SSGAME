@@ -7,7 +7,7 @@ export const StyledButton = styled.button`
   padding: 10px;
   padding-left: 20px;
   padding-right: 20px;
-  background: ${purple};
+  background: ${(props) => props.img || purple};
   color: black;
   border: rgba(255, 0, 0, 0.5);
   border-radius: 10px;
