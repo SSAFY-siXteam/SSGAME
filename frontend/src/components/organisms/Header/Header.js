@@ -6,7 +6,8 @@ import Button from "../../atoms/Buttons/Button";
 import { menus } from "./menus";
 import ModalTemplate from "../../templates/ModalTemplate/ModalTemplate";
 import LogIn from "../LogIn/LogIn";
-const Header = () => {
+import { removeCookie } from "../../../utils/cookie";
+const Header = ({ logged, onLogOut, onLogIn }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     console.log("open");
@@ -15,6 +16,7 @@ const Header = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
   useEffect(() => {}, [open]);
   return (
     <StyledHeader>
@@ -24,12 +26,21 @@ const Header = () => {
           {menus.map((menu, index) => (
             <Nav key={index} menu={menu} />
           ))}
-          <Button text="로그인" onClick={handleOpen} />
+          {!logged && <Button text="로그인" onClick={handleOpen} />}
+          {logged && (
+            <Button
+              text="로그아웃"
+              onClick={() => {
+                onLogOut();
+                setOpen(false);
+              }}
+            />
+          )}
         </Menus>
       </HeaderGrid>
       <ModalTemplate
-        content={<LogIn />}
-        isOpened={open}
+        content={<LogIn onLogIn={onLogIn} />}
+        isOpened={open && !logged}
         handleClose={handleClose}
       />
     </StyledHeader>

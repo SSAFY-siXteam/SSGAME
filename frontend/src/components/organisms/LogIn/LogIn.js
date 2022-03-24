@@ -3,16 +3,15 @@ import Logo from "../../atoms/Img/Logo/Logo";
 import { Input } from "../../atoms/Input/Input";
 import { LogInContainer, InputDiv, ButtonDiv } from "./styled";
 import { openIDLogIn } from "../../../apis/openID";
+import { setCookie } from "../../../utils/cookie";
 import Button from "../../atoms/Buttons/Button";
 import steamLogInImg from "../../../assets/img/button/steambutton/sits_small.png";
-const LogIn = () => {
+const LogIn = ({ onLogIn }) => {
   const [userId, setUserId] = useState();
   const [userPassword, setUserPassword] = useState();
 
   // 로그인 버튼 클릭
-  const onLogIn = () => {
-    console.log(userId, userPassword, "clicked");
-  };
+
   return (
     <LogInContainer>
       <Logo />
