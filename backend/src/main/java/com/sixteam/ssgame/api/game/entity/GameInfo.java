@@ -26,7 +26,7 @@ public class GameInfo {
     private String gameName;
 
     @Column(nullable = false, unique = true)
-    private String steamAppid;
+    private Long steamAppid;
 
     @Column(nullable = false)
     private boolean isFree;
@@ -69,7 +69,7 @@ public class GameInfo {
     private List<MemberGameList> memberGameLists = new ArrayList<>();
 
     @Builder
-    public GameInfo(Long gameSeq, String gameName, String steamAppid, boolean isFree, String shortDescription, String shortDescriptionKr, String headerImage, String website, String developers, String publisher, String platforms, Long positive, Long negative, Integer price, String releaseDate, String movies, Integer averageForever, String languages, String screenshots, Long ownersMin, Long ownersMax) {
+    public GameInfo(Long gameSeq, String gameName, Long steamAppid, boolean isFree, String shortDescription, String shortDescriptionKr, String headerImage, String website, String developers, String publisher, String platforms, Long positive, Long negative, Integer price, String releaseDate, String movies, Integer averageForever, String languages, String screenshots, Long ownersMin, Long ownersMax) {
         this.gameSeq = gameSeq;
         this.gameName = gameName;
         this.steamAppid = steamAppid;
