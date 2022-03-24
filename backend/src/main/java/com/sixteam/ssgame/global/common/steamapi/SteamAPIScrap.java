@@ -52,7 +52,7 @@ public class SteamAPIScrap {
 
             responseData.put("steamNickname", playerInfoJson.get("personaname"));
             responseData.put("avatarUrl", playerInfoJson.get("avatarfull"));
-            responseData.put("isPublic", (int) playerInfoJson.get("communityvisibilitystate") == 3);
+            responseData.put("isPublic", (Long) playerInfoJson.get("communityvisibilitystate") == 3L);
         } else {
             throw new APIConnectionException("[Error] api connection url : " + urlBuilder.toString());
         }
@@ -60,7 +60,52 @@ public class SteamAPIScrap {
         return responseData;
     }
 
-    private static String getResponse(HttpsURLConnection conn, boolean isSuccess) throws IOException {
+    public static Map<String, Object> getGameData(String steamID) throws IOException, ParseException {
+
+        Map<String, Object> responseData = new HashMap<>();
+        StringBuilder urlBuilder = new StringBuilder();
+        urlBuilder
+                .append(OWNED_GAMES_BASE_URL)
+                .append("?").append(encode("key", UTF_8)).append(EQUAL).append(KEY)
+                .append("&").append(encode("steamid", UTF_8)).append(EQUAL).append(steamID)
+                .append("&").append(encode("format", UTF_8)).append(EQUAL).append(FORMAT);
+
+        URL url = new URL(urlBuilder.toString());
+        HttpURLConnection conn = getHttpURLConnection(url);
+
+        int responseCode = conn.getResponseCode();
+        boolean isSuccess = 200 <= responseCode && responseCode <= 300;
+        String response = getResponse(conn, isSuccess);
+
+        if (isSuccess) {
+            JSONParser parser = new JSONParser();
+            JSONObject totalInfoJson = (JSONObject) ((JSONObject) parser.parse(response)).get("response");
+            JSONArray gameInfoJsons = (JSONArray) totalInfoJson.get("games");
+
+            if (gameInfoJsons.size() == 0) {
+                // 구매한 게임이 없는 사용자 존재 -> exception 말고 다른 처리 필요
+                throw new InvalidSteamIDException("invalid steam ID : " + steamID);
+            }
+
+            System.out.println("game_count = " + totalInfoJson.get("game_count"));
+            System.out.println("gameInfoJsons.size() = " + gameInfoJsons.size());
+
+            Map<Long, Long> memberGameList = new HashMap<>();
+            for (int i = 0; i < gameInfoJsons.size(); i++) {
+                JSONObject gameInfoJson = (JSONObject) gameInfoJsons.get(i);
+                memberGameList.put((Long) gameInfoJson.get("appid"), (Long) gameInfoJson.get("playtime_forever"));
+            }
+
+            responseData.put("gameCount", totalInfoJson.get("game_count"));
+            responseData.put("memberGameList", memberGameList);
+        } else {
+            throw new APIConnectionException("[Error] api connection url : " + urlBuilder);
+        }
+
+        return responseData;
+    }
+
+    private static String getResponse(HttpURLConnection conn, boolean isSuccess) throws IOException {
 
         BufferedReader br;
         if (isSuccess) {
