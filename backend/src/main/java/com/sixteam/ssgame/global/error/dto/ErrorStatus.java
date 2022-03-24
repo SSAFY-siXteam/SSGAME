@@ -25,7 +25,8 @@ public enum ErrorStatus {
     LOGIN_INPUT_INVALID(HttpStatus.BAD_REQUEST.value(), "Login input is invalid"),
 
     // API
-    API_NOT_CONNECTION(HttpStatus.BAD_GATEWAY.value(), "Fail to connect")
+    API_NOT_CONNECTION(HttpStatus.BAD_GATEWAY.value(), "Fail to connect"),
+    INVALID_STEAMID(HttpStatus.BAD_REQUEST.value(), "확인되지 않는 Steam ID입니다.")
     ;
 
     private Integer status;

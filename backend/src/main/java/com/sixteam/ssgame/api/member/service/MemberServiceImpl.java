@@ -7,14 +7,19 @@ import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.entity.MemberPreferredCategory;
 import com.sixteam.ssgame.api.member.repository.MemberPreferredCategoryRepository;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
+import com.sixteam.ssgame.global.common.steamapi.APIConnectionException;
 import com.sixteam.ssgame.global.common.steamapi.SteamAPIScrap;
+import com.sixteam.ssgame.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.parser.ParseException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,16 +63,16 @@ public class MemberServiceImpl implements MemberService {
         boolean isPublic = false;
         Integer gameCount = -1;
 
+        Map<String, Object> steamAPIData = new HashMap<>();
         try {
-            Map<String, Object> steamAPIData = SteamAPIScrap.getMemberData(requestMemberDto.getSteamID());
-
-            steamNickname = (String) steamAPIData.get("steamNickname");
-            avatarUrl = (String) steamAPIData.get("avatarUrl");
-            isPublic = (Long) steamAPIData.get("communityvisibilitystate") == 3L;
-
-        } catch (Exception e) {
+            steamAPIData = SteamAPIScrap.getMemberData(requestMemberDto.getSteamID());
+        } catch (IOException | ParseException | APIConnectionException e) {
             e.printStackTrace();
         }
+
+        steamNickname = (String) steamAPIData.get("steamNickname");
+        avatarUrl = (String) steamAPIData.get("avatarUrl");
+        isPublic = (boolean) steamAPIData.get("isPublic");
 
         Member savedMember = memberRepository.save(Member.builder()
                 .ssgameId(requestMemberDto.getSsgameId())
@@ -95,7 +100,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findBySsgameId(ssgameId);
         if (member == null) {
             System.out.println("member == null");
-//            throw new Exception();
+            throw new EntityNotFoundException("cannot find member by " + ssgameId);
         }
 
         List<MemberPreferredCategory> categories = memberPreferredCategoryRepository.findMemberPreferredCategoriesByMemberMemberSeq(member.getMemberSeq());

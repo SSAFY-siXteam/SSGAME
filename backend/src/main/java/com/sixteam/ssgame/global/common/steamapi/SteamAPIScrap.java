@@ -3,6 +3,7 @@ package com.sixteam.ssgame.global.common.steamapi;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -24,8 +25,7 @@ public class SteamAPIScrap {
     static final String EQUAL = "=";
     static final String FORMAT = "json";
 
-    // exception 구분 필요 -> service impl에서 던지고, controller에서 catch 하기
-    public static Map<String, Object> getMemberData(String steamID) throws Exception {
+    public static Map<String, Object> getMemberData(String steamID) throws IOException, ParseException {
 
         Map<String, Object> responseData = new HashMap<>();
         StringBuilder urlBuilder = new StringBuilder();
@@ -48,21 +48,15 @@ public class SteamAPIScrap {
             JSONArray playerInfoJsons = (JSONArray) totalInfoJson.get("players");
 
             if (playerInfoJsons.size() == 0) {
-                System.out.println("[error] 확인되지 않은 steam user");
-                System.out.println("url : " + urlBuilder.toString());
-                System.out.println("steamID = " + steamID);
-                throw new Exception("user 정보 없음");
+                throw new InvalidSteamIDException("invalid steam ID : " + steamID);
             }
-
             JSONObject playerInfoJson = (JSONObject) playerInfoJsons.get(0);
 
             responseData.put("steamNickname", playerInfoJson.get("personaname"));
             responseData.put("avatarUrl", playerInfoJson.get("avatarfull"));
-            responseData.put("communityvisibilitystate", playerInfoJson.get("communityvisibilitystate"));
+            responseData.put("isPublic", (int) playerInfoJson.get("communityvisibilitystate") == 3);
         } else {
-            System.out.println("[Error] api error");
-            System.out.println("url : " + urlBuilder.toString());
-            throw new Exception("에러 발생");
+            throw new APIConnectionException("[Error] api connection url : " + urlBuilder.toString());
         }
 
         return responseData;
@@ -101,5 +95,4 @@ public class SteamAPIScrap {
 
         return conn;
     }
-
 }

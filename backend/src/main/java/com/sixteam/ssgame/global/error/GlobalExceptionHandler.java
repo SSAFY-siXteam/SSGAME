@@ -74,7 +74,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponseDto> handleBusinessException(final BusinessException e) {
-        log.error("handleEntityNotFoundException", e);
+        // Invalid Value Exception - 400th error
+        log.error("handleBusinessException", e);
         final ErrorStatus errorStatus = e.getErrorStatus();
         final ErrorResponseDto response = ErrorResponseDto.of(errorStatus);
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorStatus.getStatus()));
@@ -82,7 +83,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponseDto> handleException(Exception e) {
-        log.error("handleEntityNotFoundException", e);
+        // Entity Not Found Exception - 500th error
+        log.error("handleException", e);
         final ErrorResponseDto response = ErrorResponseDto.of(ErrorStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
