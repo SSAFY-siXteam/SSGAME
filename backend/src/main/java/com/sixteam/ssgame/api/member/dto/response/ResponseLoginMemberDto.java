@@ -24,7 +24,7 @@ public class ResponseLoginMemberDto {
 
     private String avatarUrl;
 
-    private boolean isPublic;
+    private Boolean isPublic;
 
     private Long gameCount;
 

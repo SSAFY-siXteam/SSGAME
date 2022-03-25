@@ -17,6 +17,9 @@ public class MemberPreferredTag {
     @Id
     private Long memberTagSeq;
 
+    @Column(nullable = false)
+    private Double preferredTagRatio;
+
     @JoinColumn(name = "member_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
@@ -24,7 +27,5 @@ public class MemberPreferredTag {
     @JoinColumn(name = "tag_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private Tag tag;
-
-    private Long preferredTagRatio;
 
 }

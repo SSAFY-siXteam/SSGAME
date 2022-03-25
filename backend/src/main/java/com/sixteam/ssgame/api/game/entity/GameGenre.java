@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @IdClass(GameGenreSeq.class)
@@ -14,12 +16,12 @@ import javax.persistence.*;
 public class GameGenre {
 
     @JoinColumn(name = "game_seq")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @Id
     private GameInfo gameInfo;
 
     @JoinColumn(name = "genre_seq")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @Id
     private Genre genre;
 

@@ -153,7 +153,7 @@ public class MemberServiceImpl implements MemberService {
                 .steamID(member.getSteamID())
                 .steamNickname(member.getSteamNickname())
                 .avatarUrl(member.getAvatarUrl())
-                .isPublic(member.isPublic())
+                .isPublic(member.getIsPublic())
                 .gameCount(member.getGameCount())
                 .preferredCategories(preferredCategories)
                 .build();

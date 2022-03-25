@@ -1,7 +1,5 @@
 package com.sixteam.ssgame.api.member.entity;
 
-//import com.sixteam.ssgame.api.analyze.entity.MemberFrequentGenre;
-//import com.sixteam.ssgame.api.analyze.entity.RadarChartInfo;
 import com.sixteam.ssgame.api.analyze.entity.MemberFrequentGenre;
 import com.sixteam.ssgame.api.analyze.entity.RadarChartInfo;
 import com.sixteam.ssgame.api.game.entity.MemberGameList;
@@ -51,7 +49,7 @@ public class Member {
     private String avatarUrl;
 
     @Column(nullable = false)
-    private boolean isPublic;
+    private Boolean isPublic;
 
     @Column(nullable = false)
     private Long gameCount;
@@ -60,7 +58,7 @@ public class Member {
     private LocalDateTime createdDate;
 
     @Column(nullable = false)
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<MemberPreferredCategory> memberPreferredCategories = new ArrayList<>();

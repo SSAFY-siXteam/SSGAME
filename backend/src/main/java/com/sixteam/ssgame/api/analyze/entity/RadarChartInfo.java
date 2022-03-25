@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.*;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @IdClass(MemberCategorySeq.class)
@@ -16,15 +18,16 @@ import javax.persistence.*;
 public class RadarChartInfo {
 
     @JoinColumn(name = "member_seq")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @Id
     private Member member;
 
     @JoinColumn(name = "category_seq")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @Id
     private Category category;
 
-    private Long categoryRatio;
+    @Column(nullable = false)
+    private Double categoryRatio;
 
 }
