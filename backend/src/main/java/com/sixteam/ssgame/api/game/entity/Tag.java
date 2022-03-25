@@ -18,11 +18,14 @@ public class Tag {
     @Id
     private Long tagSeq;
 
+    @Column(unique = true, nullable = false)
     private String tagName;
 
+    @Column(unique = true, nullable = false)
     private String tagNameKr;
 
     @JoinColumn(name = "category_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
+
 }

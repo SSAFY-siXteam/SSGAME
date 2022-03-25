@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @IdClass(MemberGenreSeq.class)
@@ -16,15 +18,16 @@ import javax.persistence.*;
 public class MemberFrequentGenre {
 
     @JoinColumn(name = "member_seq")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @Id
     private Member member;
 
     @JoinColumn(name = "genre_seq")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @Id
     private Genre genre;
 
+    @Column(nullable = false)
     private Long genreCount;
 
 }

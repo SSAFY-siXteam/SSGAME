@@ -20,11 +20,6 @@ public class Category {
     @Id
     private Long categorySeq;
 
-    // enum type으로 category name을 지정하고 싶었으나 실패
-//    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false, unique = true)
-//    private CategoryType categoryName;
-
     @Column(unique = true, nullable = false)
     private String categoryName;
 
