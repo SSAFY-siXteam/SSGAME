@@ -73,7 +73,7 @@ public class MemberController {
                 status = HttpStatus.CREATED.value();
                 msg = "회원가입 성공";
             } catch (Exception e) {
-                log.error("회원가입 실패");
+                log.error("회원가입 실패 " + e);
 
                 status = HttpStatus.INTERNAL_SERVER_ERROR.value();
                 msg = "회원가입 실패";

@@ -51,7 +51,7 @@ public class Member {
     private boolean isPublic;
 
     @Column(nullable = false)
-    private Integer gameCount;
+    private Long gameCount;
 
     @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdDate;
@@ -66,7 +66,7 @@ public class Member {
     private List<MemberGameList> memberGameLists = new ArrayList<>();
 
     @Builder
-    public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl, boolean isPublic, Integer gameCount) {
+    public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl, boolean isPublic, Long gameCount) {
         this.memberSeq = memberSeq;
         this.ssgameId = ssgameId;
         this.password = password;

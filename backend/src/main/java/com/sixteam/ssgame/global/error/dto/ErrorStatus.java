@@ -26,7 +26,10 @@ public enum ErrorStatus {
 
     // API
     API_NOT_CONNECTION(HttpStatus.BAD_GATEWAY.value(), "Fail to connect"),
-    INVALID_STEAMID(HttpStatus.BAD_REQUEST.value(), "확인되지 않는 Steam ID입니다.")
+    INVALID_STEAMID(HttpStatus.BAD_REQUEST.value(), "확인되지 않는 Steam ID입니다."),
+
+    // Game
+    GAME_NOT_FOUND(HttpStatus.BAD_GATEWAY.value(), "존재하지 않는 게임입니다.")
     ;
 
     private Integer status;
