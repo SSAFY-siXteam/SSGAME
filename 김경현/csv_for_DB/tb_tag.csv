@@ -1,0 +1,430 @@
+﻿tag_seq,tag_name,tag_name_kr,category_seq
+1,Action,액션,5
+2,FPS,1인칭 슈팅,8
+3,Multiplayer,멀티플레이어,8
+4,Shooter,슈팅,8
+5,Classic,클래식,8
+6,Team-Based,팀 기반,8
+7,First-Person,일인칭,8
+8,Competitive,경쟁,8
+9,Tactical,전술적,3
+10,1990`s,1990년대,8
+11,e-sports,e-스포츠,8
+12,PvP,PvP,8
+13,Old School,올드 스쿨,8
+14,Military,군사적,8
+15,Strategy,전략,3
+16,Survival,서바이벌,7
+17,Score Attack,스코어 어택,8
+18,1980s,1980년대,8
+19,Assassin,암살자,8
+20,Violent,폭력적,2
+21,Hero Shooter,히어로 슈팅,8
+22,Class-Based,클래스 기반,8
+23,Co-op,협동,8
+24,Fast-Paced,빠른 진행,8
+25,Retro,복고,8
+26,Online Co-Op,온라인 협동,8
+27,Mod,모드,8
+28,Funny,유머,4
+29,Remake,리메이크,8
+30,World War II,제2차 세계 대전,8
+31,War,전쟁,8
+32,Historical,역사적,8
+33,Singleplayer,싱글 플레이어,8
+34,Difficult,고난이도,3
+35,World War I,제2차 세계 대전,8
+36,Arena Shooter,아레나 슈팅,8
+37,Sci-fi,공상과학,6
+38,Gore,고어,8
+39,Aliens,외계인,6
+40,Adventure,모험,7
+41,Atmospheric,분위기 있는,4
+42,Story Rich,풍부한 스토리,8
+43,Silent Protagonist,말을 안 하는 주인공,8
+44,Great Soundtrack,웅장한 사운드트랙,1
+45,Puzzle,퍼즐,3
+46,Moddable,모드 지원,8
+47,Space,우주,6
+48,Cyberpunk,사이버펑크,6
+49,Memes,밈,8
+50,Platformer,플랫포머,8
+51,Psychological Horror,심리적 공포,2
+52,3D,3D,8
+53,Conspiracy,음모,2
+54,Cult Classic,컬트 클래식,8
+55,Sports,스포츠,5
+56,Action-Adventure,액션 어드밴처,5
+57,Open World,오픈 월드,5
+58,Simulation,시뮬레이터,8
+59,Dark,어두운,2
+60,Zombies,좀비,2
+61,Short,짧은,8
+62,Dystopian,디스토피아,8
+63,Physics,물리,8
+64,Horror,공포,2
+65,Sandbox,샌드박스,8
+66,Realistic,현실적,1
+67,Massively Multiplayer,대규모 멀티플레이어,8
+68,Comedy,코미디,4
+69,Benchmark,벤치마크,8
+70,Futuristic,미래적,6
+71,Free to Play,무료 플레이,8
+72,Post-apocalyptic,포스트 아포칼립스,6
+73,Episodic,에피소드,8
+74,Cinematic,시네마틱,8
+75,Puzzle-Platformer,퍼즐 플랫포머,8
+76,3D Platformer,3D 플랫포머,8
+77,Female Protagonist,여자 주인공,8
+78,Science,과학,8
+79,Dark Humor,블랙 유머,8
+80,Cartoony,만화같은,8
+81,Trading,거래,8
+82,Robots,로봇,8
+83,Cartoon,만화,8
+84,Crafting,크래프팅,8
+85,Replay Value,반복 플레이,8
+86,Survival Horror,서바이벌 호러,2
+87,Local Co-Op,로컬 협동,8
+88,MOBA,MOBA,8
+89,RTS,실시간 전략 시뮬레이션,3
+90,Tower Defense,타워 디펜스,3
+91,Fantasy,판타지,8
+92,RPG,RPG,8
+93,Character Customization,캐릭터 커스터마이징,8
+94,Action RPG,액션 RPG ,7
+95,Level Editor,레벨 에디터 ,8
+96,Top-Down,톱다운  ,8
+97,Top-Down Shooter,톱다운 슈터 ,8
+98,Third Person,3인칭,8
+99,PvE,PvE  ,8
+100,Third-Person Shooter,3인칭 슈팅 ,8
+101,2D Fighter,2D 파이터 ,8
+102,Martial Arts,무술  ,8
+103,Intentionally Awkward Controls,의도적으로 불편한 조작,8
+104,Indie,인디  ,8
+105,Fighting,싸우다  ,8
+106,2D,이차원  ,8
+107,Tanks,탱크  ,8
+108,Hacking,해킹  ,8
+109,Real-Time with Pause,일시 정지 가능한 실시간,8
+110,Experimental,실험,3
+111,Addictive,중독성,8
+112,Perma Death,영구적 죽음,8
+113,Rogue-like,로그라이크,7
+114,Programming,프로그래밍,3
+115,Text-Based,텍스트 기반,8
+116,Wargame,워게임  ,8
+117,Cold War,냉전  ,8
+118,Diplomacy,외교  ,8
+119,Naval Combat,해군 전투 ,8
+120,Naval,해군  ,8
+121,Submarine,잠수함  ,8
+122,4X,4X,8
+123,Turn-Based Strategy,턴 기반 전략,3
+124,Turn-Based,턴 기반 전투,8
+125,No Tag,태그 없음 ,8
+126,Dark Fantasy,다크 판타지,8
+127,Gothic,고딕,1
+128,Isometric,등각선,8
+129,Immersive Sim,몰입형 시뮬레이션,8
+130,Underground,지하,8
+131,Exploration,탐색,7
+132,Magic,마술,8
+133,Dungeon Crawler,던전 크롤러 ,7
+134,Stealth,잠입,8
+135,Inventory Management,인벤토리 관리 ,8
+136,Base-Building,기지 건설,8
+137,Real-Time,실시간  ,8
+138,Pixel Graphics,픽셀 그래픽,1
+139,Resource Management,자원 관리 ,3
+140,Tactical RPG,전술 RPG ,3
+141,Medieval,중세  ,8
+142,Hack and Slash,핵 앤 슬래시,8
+143,Swordplay,검술  ,8
+144,Multiple Endings,다중 엔딩 ,8
+145,2.5D,2.5D  ,8
+146,Demons,악마  ,8
+147,Lovecraftian,러브크래프트  ,8
+148,Mystery,미스터리  ,8
+149,Stylized,스타일리시  ,8
+150,Blood,피  ,8
+151,Twin Stick Shooter,트윈 스틱 슈팅,8
+152,Shoot `Em Up,Shoot `Em Up,8
+153,Combat,전투  ,8
+154,Casual,캐주얼  ,4
+155,Flight,비행,8
+156,2D Platformer,2D 플랫포머,3
+157,Arcade,아케이드,8
+158,Vampire,뱀파이어,2
+159,Supernatural,초자연적,8
+160,Immersive,몰입,8
+161,Western,서부극,8
+162,Bullet Time,불릿 타임,8
+163,Controller,컨트롤러  ,8
+164,Linear,선형  ,8
+165,America,미국.  ,8
+166,Management,관리,3
+167,Building,건물,8
+168,Economy,경제,8
+169,Family Friendly,가족 친화적,4
+170,City Builder,도시 건설,3
+171,Political,정치적,8
+172,Destruction,파괴  ,8
+173,Politics,정치  ,8
+174,Space Sim,우주 시뮬레이션,6
+175,Capitalism,자본주의  ,8
+176,Underwater,수중  ,8
+177,Racing,레이싱  ,5
+178,Combat Racing,전투 레이싱 ,8
+179,Automobile Sim,자동차 시뮬레이션,8
+180,Vehicular Combat,차량 전투 ,8
+181,Music,음악,1
+182,Driving,운전,8
+183,Local Multiplayer,로컬 멀티플레이어,8
+184,Offroad,오프로드,8
+185,Hex Grid,육각형 그리드,8
+186,Turn-Based Combat,턴 기반 전투,8
+187,Point & Click,포인트 앤 클릭,8
+188,Match 3,매치 3,8
+189,Relaxing,휴식,4
+190,Cute,귀여운,8
+191,Clicker,클리커,8
+192,Colorful,다채로운,1
+193,Dinosaurs,공룡,8
+194,Bullet Hell,탄막 슈팅,8
+195,Typing,타이핑,8
+196,Education,교육,3
+197,Pinball,핀볼,8
+198,Mouse only,마우스만 사용,8
+199,Hidden Object,숨겨진 과제,7
+200,Touch-Friendly,터치 친화적,8
+201,Sniper,저격수,8
+202,Comic Book,만화책,8
+203,Villain Protagonist,악당 주인공,8
+204,Parody,패러디,8
+205,God Game,신 게임,8
+206,Mature,성인,8
+207,Psychological,심리적  ,8
+208,Surreal,초현실적인,8
+209,Collectathon,컬렉터톤,8
+210,3D Vision,3D 비전 ,8
+211,Grand Strategy,대전략,3
+212,Alternate History,대체역사,8
+213,Pirates,해적  ,8
+214,Sailing,항해  ,8
+215,Choose Your Own Adventure,자신이 선택하는 모험,7
+216,Rome,로마  ,8
+217,Animation & Modeling,애니메이션 및 모델링,8
+218,Card Game,카드 게임 ,8
+219,Gambling,도박  ,8
+220,Loot,약탈,8
+221,Based On A Novel,소설 기반,1
+222,Real Time Tactics,실시간 전술 ,3
+223,Epic,서사시  ,8
+224,Warhammer 40K,워해머 40K ,8
+225,Games Workshop,게임 워크샵,8
+226,Crime,범죄,8
+227,Detective,탐정,3
+228,Thriller,스릴러  ,2
+229,Beat `em up,Beat `em up,8
+230,Beautiful,아름다움,1
+231,Dating Sim,데이트 시뮬레이션,8
+232,Side Scroller,측면 스크롤러,8
+233,Motorbike,오토바이,6
+234,Bikes,자전거,5
+235,Nudity,누드,8
+236,Sequel,속편,8
+237,Spaceships,우주선,6
+238,Mechs,기계,8
+239,Spectacle fighter,스펙타클 파이터,8
+240,Character Action Game,캐릭터 액션게임,5
+241,Transhumanism,트랜스휴머니즘,8
+242,Illuminati,일루미나티  ,8
+243,Steampunk,스팀펑크  ,6
+244,Parkour,파쿠르  ,5
+245,Modern,현대의  ,8
+246,Party-Based RPG,파티 기반 RPG,8
+247,Romance,로맨스  ,4
+248,Choices Matter,선택의 중요성,3
+249,Mythology,신화,8
+250,CRPG,CRPG,8
+251,Time Attack,타임어택,8
+252,Anime,애니메이션,1
+253,Trains,열차,8
+254,Turn-Based Tactics,턴기반 전술,3
+255,Unforgiving,무자비,2
+256,Dark Comedy,블랙코미디,8
+257,Lemmings,레밍,8
+258,Outbreak Sim,전염병 시뮬레이션,6
+259,Heist,강도,8
+260,Split Screen,화면 분할,8
+261,Psychedelic,사이키델릭,8
+262,MMORPG,MMORPG,7
+263,Philosophical,철학적인,1
+264,Time Travel,시간 여행,8
+265,Superhero,슈퍼히어로,8
+266,Looter Shooter,약탈 슈팅,8
+267,Mars,화성,8
+268,Nostalgia,추억 소환,1
+269,Co-op Campaign,협동 켐페인,8
+270,On-Rails Shooter,레일 슈팅,8
+271,Time Manipulation,시간 조작 ,8
+272,Mini Golf,미니 골프 ,5
+273,Golf,골프  ,5
+274,Sexual Content,성적인 내용 ,8
+275,Hunting,사냥,5
+276,Investigation,수사,8
+277,4 Player Local,4 플레이어 로컬,8
+278,Colony Sim,개척 시뮬레이션,8
+279,Lore-Rich,깊은 세계관,8
+280,Gun Customization,총기 커스터마이즈 ,8
+281,Abstract,추상적,8
+282,Minimalist,미니멀리스트  ,8
+283,Logic,논리적,3
+284,Narration,내레이션  ,8
+285,Transportation,교통수단,8
+286,Medical Sim,의학 시뮬레이션,8
+287,Noir,누아르  ,8
+288,Narrative,내러티브  ,8
+289,Satire,풍자  ,8
+290,Soundtrack,사운드트랙,8
+291,Cooking,요리.  ,8
+292,Time Management,시간 관리 ,8
+293,Walking Simulator,보행 시뮬레이터,8
+294,Rhythm,리듬,1
+295,Music-Based Procedural Generation,음악 기반 절차적 생성,8
+296,Procedural Generation,절차적 생성,8
+297,Ninja,닌자,8
+298,Hentai,헨타이,8
+299,Minigames,미니게임  ,8
+300,Emotional,감정적인,1
+301,Horses,말,8
+302,TrackIR,TrackIR,8
+303,VR,가상현실  ,8
+304,Farming Sim,농사 시뮬레이션,8
+305,Agriculture,농업  ,8
+306,Farming,농사  ,8
+307,Werewolves,늑대인간  ,8
+308,Early Access,얼리 액세스 ,8
+309,Dragons,용,8
+310,FMV,FMV,1
+311,Vikings,바이킹  ,8
+312,Bowling,볼링  ,5
+313,Well-Written,훌륭한 각본,1
+314,LEGO,레고  ,8
+315,Reboot,리부트,8
+316,Quick-Time Events,퀵타임 이벤트,8
+317,Voice Control,음성 제어 ,8
+318,Card Battler,카드 배틀,3
+319,Board Game,보드게임,8
+320,Tabletop,테이블게임,8
+321,Deckbuilding,덱 구축,8
+322,Party,파티,8
+323,Political Sim,정치 시뮬레이션,8
+324,Metroidvania,메트로이드바니아  ,8
+325,3D Fighter,3D 파이터 ,8
+326,6DOF,6DOF  ,8
+327,Strategy RPG,전략 RPG,3
+328,Hand-drawn,손그림,1
+329,Experience,경험,8
+330,Interactive Fiction,양방향 소설,8
+331,Ambient,분위기,4
+332,Visual Novel,비쥬얼 노벨,8
+333,Drama,드라마,8
+334,Life Sim,생활 시뮬레이션,8
+335,Rogue-lite,로그 라이트 ,7
+336,Word Game,워드 게임 ,3
+337,Mining,채굴  ,7
+338,Artificial Intelligence,인공지능  ,8
+339,Dog,개  ,8
+340,Masterpiece,걸작  ,1
+341,Solitaire,솔리테어  ,8
+342,JRPG,JRPG  ,8
+343,Precision Platformer,Precision 플랫폼 ,8
+344,Football,풋볼  ,5
+345,Soccer,축구.  ,5
+346,Auto Battler,오토 배틀러 ,8
+347,LGBTQ+,LGBTQ+  ,8
+348,Action Roguelike,액션 Roguelike ,7
+349,Nonlinear,비선형적구조,8
+350,Basketball,농구.  ,5
+351,Idler,아이들러  ,8
+352,Motocross,모토크로스  ,5
+353,ATV,ATV  ,5
+354,Sokoban,소코반  ,3
+355,Nature,자연.  ,1
+356,Runner,러너  ,8
+357,Chess,체스  ,3
+358,Grid-Based Movement,그리드 기반 이동,8
+359,Fishing,낚시  ,4
+360,Tennis,테니스  ,5
+361,Party Game,파티 게임 ,5
+362,Automation,자동화  ,8
+363,Conversation,대화  ,8
+364,GameMaker,게임 메이커 ,8
+365,Cats,고양이  ,8
+366,Asynchronous Multiplayer,비동기 멀티플레이어 ,8
+367,Traditional Roguelike,전통적인 Roguelike ,7
+368,Dungeons & Dragons,던전&드래곤스  ,7
+369,Documentary,다큐멘터리  ,1
+370,Movie,영화.  ,1
+371,Game Development,게임 개발 ,8
+372,Feature Film,장편 영화 ,8
+373,Open World Survival Craft,오픈월드 서바이벌 크래프트,7
+374,Dynamic Narration,다이내믹 내레이션 ,8
+375,Kickstarter,킥스타터  ,8
+376,Creature Collector,크리처 컬렉터 ,8
+377,Trading Card Game,트레이딩 카드 게임,3
+378,NSFW,후방주의,8
+379,Skating,스케이트  ,5
+380,RPGMaker,RPGMaker  ,8
+381,Roguevania,로그바니아  ,7
+382,Electronic Music,일렉트로닉 뮤직 ,8
+383,Otome,오토메  ,8
+384,Souls-like,영혼 같은 ,8
+385,Crowdfunded,크라우드 펀딩 ,8
+386,Voxel,복셀  ,8
+387,Mystery Dungeon,미스터리 던전 ,7
+388,Snow,눈  ,8
+389,Skiing,스키  ,5
+390,Snowboarding,스노보드  ,5
+391,Trivia,트리비아  ,8
+392,Software,소프트웨어  ,8
+393,Archery,양궁  ,8
+394,Utilities,유틸리티  ,8
+395,Tutorial,튜토리얼  ,8
+396,Pool,수영장  ,5
+397,Cycling,사이클링  ,5
+398,Gaming,게임  ,8
+399,Escape Room,방탈출  ,3
+400,Spelling,철자  ,8
+401,Roguelike Deckbuilder,Roguelike 덱빌더 ,3
+402,Action RTS,액션 RTS ,3
+403,VR Only,VR만  ,8
+404,Skateboarding,스케이트보드  ,5
+405,Battle Royale,배틀로얄  ,7
+406,Wrestling,레슬링  ,5
+407,Steam Machine,증기 기계 ,8
+408,Boxing,복싱  ,5
+409,Boss Rush,보스 러시 ,8
+410,Hockey,하키  ,5
+411,Design & Illustration,설계 및 일러스트,8
+412,Social Deduction,사회공제  ,5
+413,Baseball,야구  ,5
+414,Jet,제트  ,8
+415,Asymmetric VR,비대칭 VR ,8
+416,Faith,믿음.  ,8
+417,BMX,BMX  ,5
+418,Audio Production,오디오 제작 ,8
+419,Web Publishing,웹 퍼블리싱 ,8
+420,Video Production,비디오 제작 ,8
+421,Foreign,외국의  ,8
+422,Photo Editing,사진 편집 ,8
+423,Software Training,소프트웨어 트레이닝 ,8
+424,Electronic,전자의  ,8
+425,Hardware,하드웨어  ,8
+426,8-bit Music,8비트 음악 ,8
+427,360 Video,360 비디오 ,8
+428,Rock Music,록 뮤직 ,8
+429,Instrumental Music,인스트루멘탈 뮤직 ,8
