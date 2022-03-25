@@ -3,21 +3,21 @@ package com.sixteam.ssgame.api.analyze.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class CategoryMemberSeq implements Serializable {
+public class MemberGenreSeq implements Serializable {
 
-    private Long category;
     private Long member;
+    private Long genre;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CategoryMemberSeq that = (CategoryMemberSeq) o;
-        return Objects.equals(category, that.category) && Objects.equals(member, that.member);
+        MemberGenreSeq that = (MemberGenreSeq) o;
+        return Objects.equals(member, that.member) && Objects.equals(genre, that.genre);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(category, member);
+        return Objects.hash(member, genre);
     }
 }
