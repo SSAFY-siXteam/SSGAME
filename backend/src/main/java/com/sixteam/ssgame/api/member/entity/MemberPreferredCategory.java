@@ -1,7 +1,6 @@
 package com.sixteam.ssgame.api.member.entity;
 
 import com.sixteam.ssgame.api.analyze.entity.Category;
-import com.sixteam.ssgame.api.analyze.entity.CategoryMemberSeq;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@IdClass(CategoryMemberSeq.class)
+@IdClass(MemberCategorySeq.class)
 @Table(name = "tb_member_preferred_category")
 @Entity
 public class MemberPreferredCategory {
