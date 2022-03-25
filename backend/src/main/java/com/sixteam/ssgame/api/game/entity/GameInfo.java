@@ -28,10 +28,12 @@ public class GameInfo {
     private Long steamAppid;
 
     @Column(nullable = false)
-    private boolean isFree;
+    private Boolean isFree;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String shortDescription;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String shortDescriptionKr;
 
     private String headerImage;
@@ -50,14 +52,18 @@ public class GameInfo {
 
     private Integer price;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String releaseDate;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String movies;
 
     private Integer averageForever;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String languages;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String screenshots;
 
     private Long ownersMin;

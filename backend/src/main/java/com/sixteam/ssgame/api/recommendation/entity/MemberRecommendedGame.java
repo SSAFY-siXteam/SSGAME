@@ -20,6 +20,9 @@ public class MemberRecommendedGame {
     @Id
     private Long recommendedGameSeq;
 
+    @Column(nullable = false)
+    private Double recommendedRatio;
+
     @JoinColumn(name = "member_seq")
     @ManyToOne(fetch = LAZY)
     private Member member;
@@ -28,5 +31,4 @@ public class MemberRecommendedGame {
     @ManyToOne(fetch = LAZY)
     private GameInfo gameInfo;
 
-    private Long recommendedRatio;
 }
