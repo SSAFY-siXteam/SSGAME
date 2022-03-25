@@ -16,6 +16,9 @@ public class Genre {
     @Id
     private Long genreSeq;
 
+    @Column(unique = true, nullable = false)
     private String genreName;
 
+    @Column(unique = true, nullable = false)
+    private String genreNameKr;
 }
