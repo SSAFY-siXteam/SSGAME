@@ -16,7 +16,6 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 public class Category {
 
-    @Column(columnDefinition = "BIGINT UNSIGNED")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long categorySeq;
