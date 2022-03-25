@@ -74,7 +74,7 @@ public class Member {
 
 
     @Builder
-    public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl, boolean isPublic, Long gameCount) {
+    public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl, boolean isPublic, Long gameCount, boolean isDeleted) {
         this.memberSeq = memberSeq;
         this.ssgameId = ssgameId;
         this.password = password;
@@ -84,5 +84,6 @@ public class Member {
         this.avatarUrl = avatarUrl;
         this.isPublic = isPublic;
         this.gameCount = gameCount;
+        this.isDeleted = isDeleted;
     }
 }
