@@ -26,12 +26,12 @@ public class ResponseLoginMemberDto {
 
     private boolean isPublic;
 
-    private Integer gameCount;
+    private Long gameCount;
 
     private List<String> preferredCategories;
 
     @Builder
-    public ResponseLoginMemberDto(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl,  boolean isPublic, Integer gameCount, List<String> preferredCategories) {
+    public ResponseLoginMemberDto(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl,  boolean isPublic, Long gameCount, List<String> preferredCategories) {
         this.memberSeq = memberSeq;
         this.ssgameId = ssgameId;
         this.password = password;
