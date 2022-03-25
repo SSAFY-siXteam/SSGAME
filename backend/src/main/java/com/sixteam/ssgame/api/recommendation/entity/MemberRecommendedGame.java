@@ -12,7 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tb_member_preferred_category")
+@Table(name = "tb_member_recommended_game")
 @Entity
 public class MemberRecommendedGame {
 

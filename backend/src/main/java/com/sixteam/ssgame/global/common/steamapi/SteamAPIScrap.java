@@ -80,15 +80,12 @@ public class SteamAPIScrap {
         if (isSuccess) {
             JSONParser parser = new JSONParser();
             JSONObject totalInfoJson = (JSONObject) ((JSONObject) parser.parse(response)).get("response");
-            JSONArray gameInfoJsons = (JSONArray) totalInfoJson.get("games");
-
-            if (gameInfoJsons.size() == 0) {
+            if (totalInfoJson.size() == 0) {
                 // 구매한 게임이 없는 사용자 존재 -> exception 말고 다른 처리 필요
                 throw new InvalidSteamIDException("invalid steam ID : " + steamID);
             }
 
-            System.out.println("game_count = " + totalInfoJson.get("game_count"));
-            System.out.println("gameInfoJsons.size() = " + gameInfoJsons.size());
+            JSONArray gameInfoJsons = (JSONArray) totalInfoJson.get("games");
 
             Map<Long, Long> memberGameList = new HashMap<>();
             for (int i = 0; i < gameInfoJsons.size(); i++) {
