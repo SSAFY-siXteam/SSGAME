@@ -32,10 +32,7 @@ export const openIDLogInCheck = async (id) => {
   )
     .then((res) => res.json())
     .then((data) => {
-      console.log(data.userLoggedIn);
       return data.userLoggedIn;
     });
-
-  console.log(isChecked);
   return isChecked;
 };
