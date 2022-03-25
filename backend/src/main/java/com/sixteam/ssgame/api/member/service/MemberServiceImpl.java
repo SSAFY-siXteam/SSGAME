@@ -100,17 +100,17 @@ public class MemberServiceImpl implements MemberService {
 
         Map<Long, Long> memberGameList = (Map<Long, Long>) steamAPIGameData.get("memberGameList");
         for (Long steamAppid: memberGameList.keySet()) {
-            // 게임 정보를 db에 저장한 이후에 사용
-//            GameInfo gameInfo = gameInfoRepository.findBySteamAppid(steamAppid);
-//            if (gameInfo == null) {
-//                throw new GameNotFoundException(steamAppid);
-//            }
+            GameInfo gameInfo = gameInfoRepository.findBySteamAppid(steamAppid);
             // steam app id에 해당하는 게임 저장
-            GameInfo gameInfo = gameInfoRepository.save(GameInfo.builder()
-                    .gameName("beta test")
-                    .steamAppid(steamAppid)
-                    .isFree(true)
-                    .build());
+            if (gameInfo == null) {
+                // 게임 정보를 db에 저장한 이후에 사용
+//                throw new GameNotFoundException(steamAppid);
+                gameInfo = gameInfoRepository.save(GameInfo.builder()
+                        .gameName("beta test")
+                        .steamAppid(steamAppid)
+                        .isFree(true)
+                        .build());
+            }
             // 회원가입 하고 나서 수정할 때는... 또 다른 로직이 필요함...
             // 새로 추가한 게임이나 기존 게임에서 플레이 시간만 업데이트 하는 로직
             memberGameListRepository.save(MemberGameList.builder()
