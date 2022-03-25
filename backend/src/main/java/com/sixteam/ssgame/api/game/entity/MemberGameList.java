@@ -28,12 +28,12 @@ public class MemberGameList {
     private GameInfo gameInfo;
 
     @Column(nullable = false)
-    private Integer memberPlayTime;
+    private Long memberPlayTime;
 
     private Integer memberGameRating;
 
     @Builder
-    public MemberGameList(Member member, GameInfo gameInfo, Integer memberPlayTime, Integer memberGameRating) {
+    public MemberGameList(Member member, GameInfo gameInfo, Long memberPlayTime, Integer memberGameRating) {
         this.member = member;
         this.gameInfo = gameInfo;
         this.memberPlayTime = memberPlayTime;
