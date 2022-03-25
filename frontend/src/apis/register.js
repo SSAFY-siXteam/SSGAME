@@ -9,6 +9,5 @@ export function getIdCheckAPI(id) {
 }
 // Spring 서버 회원가입
 export function registerId(userInfo) {
-  console.log(userInfo);
   return axios.post(URL + "/members", userInfo).then((res) => console.log(res));
 }
