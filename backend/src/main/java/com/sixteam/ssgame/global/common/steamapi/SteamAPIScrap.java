@@ -87,8 +87,6 @@ public class SteamAPIScrap {
                 throw new InvalidSteamIDException("invalid steam ID : " + steamID);
             }
 
-            System.out.println("game_count = " + totalInfoJson.get("game_count"));
-            System.out.println("gameInfoJsons.size() = " + gameInfoJsons.size());
 
             Map<Long, Long> memberGameList = new HashMap<>();
             for (int i = 0; i < gameInfoJsons.size(); i++) {

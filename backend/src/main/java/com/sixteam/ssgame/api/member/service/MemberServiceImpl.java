@@ -70,19 +70,13 @@ public class MemberServiceImpl implements MemberService {
         Map<String, Object> steamAPIMemberData = new HashMap<>();
         Map<String, Object> steamAPIGameData = new HashMap<>();
 
-        System.out.println("-1");
-
         String steamID = requestMemberDto.getSteamID();
-        System.out.println("steamID = " + steamID);
         try {
             steamAPIMemberData = SteamAPIScrap.getMemberData(steamID);
-            System.out.println("[ member load ]");
             steamAPIGameData = SteamAPIScrap.getGameData(steamID);
         } catch (IOException | ParseException | APIConnectionException e) {
             e.printStackTrace();
         }
-
-        System.out.println("0");
 
         Member savedMember = memberRepository.save(Member.builder()
                 .ssgameId(requestMemberDto.getSsgameId())
@@ -95,7 +89,6 @@ public class MemberServiceImpl implements MemberService {
                 .gameCount((Long) steamAPIGameData.get("gameCount"))
                 .isDeleted(false)
                 .build());
-        System.out.println("1");
 
         List<String> preferredCategories = requestMemberDto.getPreferredCategories();
         for (String preferredCategory : preferredCategories) {
@@ -106,7 +99,6 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Map<Long, Long> memberGameList = (Map<Long, Long>) steamAPIGameData.get("memberGameList");
-        System.out.println("2");
         for (Long steamAppid: memberGameList.keySet()) {
             // 게임 정보를 db에 저장한 이후에 사용
 //            GameInfo gameInfo = gameInfoRepository.findBySteamAppid(steamAppid);
@@ -127,7 +119,6 @@ public class MemberServiceImpl implements MemberService {
                     .memberPlayTime(memberGameList.get(steamAppid))
                     .build());
         }
-        System.out.println("3");
     }
 
     @Override
