@@ -17,7 +17,6 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 public class GameInfo {
 
-    @Column(columnDefinition = "BIGINT UNSIGNED")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long gameSeq;

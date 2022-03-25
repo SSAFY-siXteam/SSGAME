@@ -17,12 +17,12 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 public class MemberGameList {
 
-    @JoinColumn(name = "member_seq", columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(name = "member_seq")
     @ManyToOne(fetch = LAZY)
     @Id
     private Member member;
 
-    @JoinColumn(name = "game_seq", columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(name = "game_seq")
     @ManyToOne(fetch = LAZY)
     @Id
     private GameInfo gameInfo;
