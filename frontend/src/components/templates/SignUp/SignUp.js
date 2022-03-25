@@ -14,7 +14,7 @@ export default function SignUp({
   checkBox,
   steamIDInput,
   infoInput,
-  registerBtn,
+  // registerBtn,
 }) {
   return (
     <StyledHeader>
@@ -26,7 +26,7 @@ export default function SignUp({
         <StyledContent>{steamIDInput}</StyledContent>
         <CategoryHeader>회원 정보</CategoryHeader>
         <StyledContent>{infoInput}</StyledContent>
-        <StyledRegisterBtn>{registerBtn}</StyledRegisterBtn>
+        {/* <StyledRegisterBtn>{registerBtn}</StyledRegisterBtn> */}
       </CategoryContent>
     </StyledHeader>
   );
