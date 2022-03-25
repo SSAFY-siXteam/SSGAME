@@ -93,6 +93,7 @@ public class MemberServiceImpl implements MemberService {
                 .avatarUrl((String) steamAPIMemberData.get("avatarUrl"))
                 .isPublic((boolean) steamAPIMemberData.get("isPublic"))
                 .gameCount((Long) steamAPIGameData.get("gameCount"))
+                .isDeleted(false)
                 .build());
         System.out.println("1");
 
