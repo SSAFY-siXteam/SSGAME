@@ -15,6 +15,8 @@ public enum ErrorStatus {
     HANDLE_ACCESS_DENIED(HttpStatus.FORBIDDEN.value(), "Access is Denied"),
 //    GLOBAL_ERROR(HttpStatus.BAD_REQUEST.value(), "Global Error in Post Mapping"),
 //    FIELD_ERROR(HttpStatus.BAD_REQUEST.value(), "Field Error in Post Mapping"),
+    UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED.value(), "인증 오류"),
+
 
     // Member
     SSGAMEID_DUPLICATION(HttpStatus.CONFLICT.value(), "이미 존재하는 ID입니다."),

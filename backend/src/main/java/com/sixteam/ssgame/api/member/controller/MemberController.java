@@ -11,6 +11,7 @@ import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
 import com.sixteam.ssgame.global.common.util.JwtTokenUtil;
+import com.sixteam.ssgame.global.error.exception.UnauthorizedAccessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -169,8 +170,9 @@ public class MemberController {
         Map<String, Object> data = new HashMap<>();
 
         if (authentication == null) {
-            status = HttpStatus.UNAUTHORIZED.value();
-            msg = "unauthorized access";
+            throw new UnauthorizedAccessException("authentication is null");
+//            status = HttpStatus.UNAUTHORIZED.value();
+//            msg = "unauthorized access";
         } else {
             CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
 //        Long memberSeq = details.getMember().getMemberSeq();
