@@ -1,24 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import GameTemplate from "../../templates/GameTemplate/GameTemplate";
 import Img from "../../atoms/Img/Img/Img";
 import GameInfo from "../../organisms/GameInfo/GameInfo";
 import Video from "../../atoms/Video/Video";
+import { getGame } from "../../../apis/game";
+import { useParams } from "react-router-dom";
 
 const GamePage = () => {
-  const gameInfo = {
-    gameSeq: "1",
-    gameName: "게임1",
-    headerImage:
-      "https://cdn.akamai.steamstatic.com/steam/apps/10/header.jpg?t=1602535893",
-    genres: ["action", "장르1", "장르2"], //최대 3개,
-    movies:
-      "http://cdn.akamai.steamstatic.com/steam/apps/912/movie480.mp4?t=1512411140",
-    shortDescriptionKr: "이 게임은 정말 재밌습니다...",
-    averageRating: 4.3,
-    isPlayed: false,
-    isRated: false,
-    memberGameRating: 0,
-  };
+  const [gameInfo, setGameInfo] = useState({});
+  const param = useParams();
+
+  useEffect(() => {
+    getGame(
+      {
+        headers: {
+          // Authorization: `Bearer ` + jwtToken,
+        },
+      },
+      param,
+      (response) => {
+        if (response.status == 200) {
+          setGameInfo(response.data.data.gameInfo);
+        }
+      },
+      (e) => {
+        alert("정보를 불러오는 데에 문제가 발생했습니다.");
+      }
+    );
+  }, []);
 
   const args = {
     img: Img({ path: gameInfo.headerImage }),
@@ -28,7 +37,9 @@ const GamePage = () => {
 
   return (
     <div>
-      <GameTemplate img={args.img} video={args.video} info={args.info} />
+      {gameInfo.movies != undefined && (
+        <GameTemplate img={args.img} video={args.video} info={args.info} />
+      )}
     </div>
   );
 };
