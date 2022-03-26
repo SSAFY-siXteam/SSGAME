@@ -175,12 +175,11 @@ public class MemberController {
 //            msg = "unauthorized access";
         } else {
             CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-//        Long memberSeq = details.getMember().getMemberSeq();
-            String ssgameId = details.getMember().getSsgameId();
+            Long memberSeq = details.getMember().getMemberSeq();
 
             status = HttpStatus.OK.value();
             msg = "임시 회원 정보 반환";
-            data.put("member", memberService.findResponseLoginMemberDto(ssgameId));
+            data.put("member", memberService.findResponseLoginMemberDtoByMemberSeq(memberSeq));
         }
 
         return BaseResponseDto.builder()

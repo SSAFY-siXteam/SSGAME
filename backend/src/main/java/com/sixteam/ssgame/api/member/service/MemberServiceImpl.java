@@ -122,15 +122,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ResponseLoginMemberDto findResponseLoginMemberDto(String ssgameId) {
+    public ResponseLoginMemberDto findResponseLoginMemberDtoByMemberSeq(Long memberSeq) {
 
-        Member member = memberRepository.findBySsgameId(ssgameId);
+        Member member = memberRepository.findByMemberSeq(memberSeq);
         if (member == null) {
-            System.out.println("member == null");
-            throw new EntityNotFoundException("cannot find member by " + ssgameId);
+            throw new EntityNotFoundException("cannot find member by " + memberSeq);
         }
 
-        List<MemberPreferredCategory> categories = memberPreferredCategoryRepository.findMemberPreferredCategoriesByMemberMemberSeq(member.getMemberSeq());
+        List<MemberPreferredCategory> categories = memberPreferredCategoryRepository.findMemberPreferredCategoriesByMemberMemberSeq(memberSeq);
 
         List<String> preferredCategories = new ArrayList<>();
         for (MemberPreferredCategory category : categories) {
@@ -155,4 +154,5 @@ public class MemberServiceImpl implements MemberService {
     public Member findMemberBySsgameId(String ssgameId) {
         return memberRepository.findBySsgameId(ssgameId);
     }
+
 }
