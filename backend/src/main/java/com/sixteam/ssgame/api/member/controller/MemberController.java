@@ -11,6 +11,7 @@ import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
 import com.sixteam.ssgame.global.common.util.JwtTokenUtil;
+import com.sixteam.ssgame.global.common.util.LogUtil;
 import com.sixteam.ssgame.global.error.exception.UnauthorizedAccessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class MemberController {
 
     @PostMapping
     public BaseResponseDto register(@Valid @RequestBody RequestMemberDto requestMemberDto, Errors errors) {
-        log.debug("회원 가입 api 호출 - MemberController.register()");
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
         String msg = null;
@@ -90,7 +91,7 @@ public class MemberController {
 
     @GetMapping("/ssgameId/{ssgameId}/exist")
     public BaseResponseDto isExistSsgameId(@PathVariable String ssgameId) {
-        log.debug("아이디 중복 검사 api 호출 - MemberController.isExistSsgameId()");
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
         String msg = null;
@@ -117,7 +118,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public BaseResponseDto login(@Valid @RequestBody RequestLoginMemberDto requestLoginMemberDto, Errors errors) {
-        log.debug("로그인 api 호출 - MemberController.login()");
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
         String msg = null;
@@ -163,7 +164,7 @@ public class MemberController {
 
     @GetMapping("/me/{ssgameId}")
     public BaseResponseDto me(Authentication authentication) {
-        log.debug("회원 정보 조회 api 호출 - MemberController.me() 호출");
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
         String msg = null;
