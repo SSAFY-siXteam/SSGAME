@@ -40,7 +40,11 @@ const LogIn = ({ onLogIn }) => {
         />
       </InputDiv>
       <ButtonDiv>
-        <Button text="로그인" width="320px" onClick={onLogIn} />
+        <Button
+          text="로그인"
+          width="320px"
+          onClick={() => onLogIn(userId, userPassword)}
+        />
       </ButtonDiv>
 
       <ButtonDiv>

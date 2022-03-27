@@ -9,10 +9,12 @@ import { CheckBoxModule } from "../../organisms/CheckBoxModule/CheckBoxModule";
 import { openIDLogIn, openIDLogInCheck } from "../../../apis/openID";
 import { registerId } from "../../../apis/register";
 import { checkForm } from "../../../utils/register";
+import { useNavigate } from "react-router";
 // checkbox list 객체
 const SignUpPage = () => {
   const [userId, setUserId] = useState("");
   const [checkedItems, setCheckedItems] = useState(new Set());
+  const navigate = useNavigate();
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -36,16 +38,31 @@ const SignUpPage = () => {
       openIDLogInCheck(userId).then((res) => {
         if (!res) {
           alert("Steam ID Error!");
+        } else if (info.passwordInput !== info.passwordCheckInput) {
+          alert("비밀번호가 일치하지 않습니다.");
+        } else if (
+          !info.emailInput.match(
+            /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+          )
+        ) {
+          alert("이메일을 다시 확인해주세요");
         } else {
-          alert("성공");
           //api 통신
 
           registerId({
             ssgameId: info.idInput,
             password: info.passwordInput,
-            steamId: userId,
+            steamID: userId,
             email: info.emailInput,
             preferredCategories: Array.from(checkedItems),
+          }).then((res) => {
+            if (res.data.status === 201) {
+              alert("회원가입 성공");
+              navigate("/");
+            } else {
+              alert("회원가입 실패");
+              console.log(res);
+            }
           });
         }
       });
@@ -54,13 +71,13 @@ const SignUpPage = () => {
   const arg = {
     checkBox: CheckBoxModule({
       list: [
-        { content: "SF", fontSize: 10, label: "action" },
-        { content: "힐링", fontSize: 10, label: "healing" },
-        { content: "활동성", fontSize: 10, label: "activity" },
-        { content: "심미성", fontSize: 10, label: "beauty" },
-        { content: "탐험", fontSize: 10, label: "adventure" },
-        { content: "스릴러", fontSize: 10, label: "thriller" },
-        { content: "두뇌", fontSize: 10, label: "brain" },
+        { content: "SF", fontSize: 10, label: "SF" },
+        { content: "힐링", fontSize: 10, label: "HEALING" },
+        { content: "활동성", fontSize: 10, label: "ACTIVITY" },
+        { content: "심미성", fontSize: 10, label: "AESTHETIC" },
+        { content: "탐험", fontSize: 10, label: "ADVENTURE" },
+        { content: "스릴러", fontSize: 10, label: "THRILLER" },
+        { content: "두뇌", fontSize: 10, label: "BRAIN" },
       ],
       onChangeCheckBox: onChangeCheckBox,
     }),
