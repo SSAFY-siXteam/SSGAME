@@ -161,7 +161,7 @@ public class MemberController {
                 .build();
     }
 
-    @GetMapping("/me")
+    @GetMapping("/me/{ssgameId}")
     public BaseResponseDto me(Authentication authentication) {
         log.debug("회원 정보 조회 api 호출 - MemberController.me() 호출");
 

@@ -14,6 +14,8 @@ public interface MemberService {
 
     void register(RequestMemberDto requestMemberDto);
 
+    ResponseLoginMemberDto findResponseLoginMemberDtoBySsgameId(String ssgameId);
+
     ResponseLoginMemberDto findResponseLoginMemberDtoByMemberSeq(Long memberSeq);
 
     Member findMemberBySsgameId(String ssgameId);

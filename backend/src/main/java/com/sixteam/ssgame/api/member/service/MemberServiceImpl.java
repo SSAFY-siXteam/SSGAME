@@ -154,4 +154,33 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findBySsgameId(ssgameId);
     }
 
+    @Override
+    public ResponseLoginMemberDto findResponseLoginMemberDtoBySsgameId(String ssgameId) {
+
+        Member member = memberRepository.findBySsgameId(ssgameId);
+        if (member == null) {
+            throw new EntityNotFoundException("cannot find member by " + ssgameId);
+        }
+
+        List<MemberPreferredCategory> categories = memberPreferredCategoryRepository.findAllByMember(member);
+
+        List<String> preferredCategories = new ArrayList<>();
+        for (MemberPreferredCategory category : categories) {
+            preferredCategories.add(category.getCategory().getCategoryName());
+        }
+
+        return ResponseLoginMemberDto.builder()
+                .memberSeq(member.getMemberSeq())
+                .ssgameId(member.getSsgameId())
+                .password(member.getPassword())
+                .email(member.getEmail())
+                .steamID(member.getSteamID())
+                .steamNickname(member.getSteamNickname())
+                .avatarUrl(member.getAvatarUrl())
+                .isPublic(member.getIsPublic())
+                .gameCount(member.getGameCount())
+                .preferredCategories(preferredCategories)
+                .build();
+    }
+
 }
