@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class GameMemberSeq implements Serializable {
 
-    private Long gameInfo;
+    private Long game;
     private Long member;
 
     @Override
@@ -13,11 +13,11 @@ public class GameMemberSeq implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameMemberSeq that = (GameMemberSeq) o;
-        return Objects.equals(gameInfo, that.gameInfo) && Objects.equals(member, that.member);
+        return Objects.equals(game, that.game) && Objects.equals(member, that.member);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gameInfo, member);
+        return Objects.hash(game, member);
     }
 }

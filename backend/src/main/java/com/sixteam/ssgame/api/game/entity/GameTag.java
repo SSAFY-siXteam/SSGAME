@@ -26,7 +26,7 @@ public class GameTag {
 
     @JoinColumn(name = "game_seq")
     @ManyToOne(fetch = LAZY)
-    private GameInfo gameInfo;
+    private Game game;
 
     @JoinColumn(name = "tag_seq")
     @ManyToOne(fetch = LAZY)

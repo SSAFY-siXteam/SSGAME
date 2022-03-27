@@ -18,7 +18,7 @@ public class GameGenre {
     @JoinColumn(name = "game_seq")
     @ManyToOne(fetch = LAZY)
     @Id
-    private GameInfo gameInfo;
+    private Game game;
 
     @JoinColumn(name = "genre_seq")
     @ManyToOne(fetch = LAZY)

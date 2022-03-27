@@ -25,7 +25,7 @@ public class MemberGameList {
     @JoinColumn(name = "game_seq")
     @ManyToOne(fetch = LAZY)
     @Id
-    private GameInfo gameInfo;
+    private Game game;
 
     @Column(nullable = false)
     private Long memberPlayTime;
@@ -33,9 +33,9 @@ public class MemberGameList {
     private Integer memberGameRating;
 
     @Builder
-    public MemberGameList(Member member, GameInfo gameInfo, Long memberPlayTime, Integer memberGameRating) {
+    public MemberGameList(Member member, Game game, Long memberPlayTime, Integer memberGameRating) {
         this.member = member;
-        this.gameInfo = gameInfo;
+        this.game = game;
         this.memberPlayTime = memberPlayTime;
         this.memberGameRating = memberGameRating;
     }
