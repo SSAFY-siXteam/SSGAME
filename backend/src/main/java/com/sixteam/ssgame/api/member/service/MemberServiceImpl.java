@@ -129,7 +129,7 @@ public class MemberServiceImpl implements MemberService {
             throw new EntityNotFoundException("cannot find member by " + memberSeq);
         }
 
-        List<MemberPreferredCategory> categories = memberPreferredCategoryRepository.findMemberPreferredCategoriesByMemberMemberSeq(memberSeq);
+        List<MemberPreferredCategory> categories = memberPreferredCategoryRepository.findAllByMember(member);
 
         List<String> preferredCategories = new ArrayList<>();
         for (MemberPreferredCategory category : categories) {

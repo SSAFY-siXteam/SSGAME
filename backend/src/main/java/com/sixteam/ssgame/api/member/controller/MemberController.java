@@ -135,7 +135,7 @@ public class MemberController {
             }
         } else {
             // 입력한 아이디가 db에 있는지 확인
-            ResponseLoginMemberDto responseLoginMemberDto = memberService.findResponseLoginMemberDto(requestLoginMemberDto.getSsgameId());
+            ResponseLoginMemberDto responseLoginMemberDto = memberService.findResponseLoginMemberDtoBySsgameId(requestLoginMemberDto.getSsgameId());
             if (responseLoginMemberDto == null) {
                 // 해당 아이디로 검색된 회원이 없는 경우
                 status = HttpStatus.NO_CONTENT.value();
