@@ -56,11 +56,12 @@ const SignUpPage = () => {
             email: info.emailInput,
             preferredCategories: Array.from(checkedItems),
           }).then((res) => {
-            if (res.data.status === 200) {
+            if (res.data.status === 201) {
               alert("회원가입 성공");
               navigate("/");
             } else {
               alert("회원가입 실패");
+              console.log(res);
             }
           });
         }
