@@ -46,10 +46,23 @@ export function InfoInput({
   };
   const idCheckBtnOnClick = (id) => {
     console.log(id);
+    if (!id.match(/^[a-z]+[0-9a-z]{3,15}$/)) {
+      alert("아이디는 4자리부터 16자리까지 영어와 숫자만 가능합니다.");
+    }
     // then -> if true: setIdCheck true;
     // getIdCheckAPI(id);
-    alert("사용 가능한 아이디 입니다.");
-    setIdCheck(true);
+    else {
+      getIdCheckAPI(id).then((res) => {
+        if (res.data.status === 204) {
+          alert("사용 가능한 아이디 입니다.");
+          setIdCheck(true);
+        } else if (res.data.status === 400) {
+          alert("아이디 형식을 다시 확인해주세요.");
+        } else if (res.data.status === 200) {
+          alert("이미 존재하는 아이디 입니다.");
+        }
+      });
+    }
   };
 
   return (
