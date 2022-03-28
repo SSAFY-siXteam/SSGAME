@@ -16,5 +16,12 @@ Primary.args = {
 
 export const Large = Template.bind({});
 Large.args = {
+  size: "large",
+  title: "information",
+};
+
+export const Small = Template.bind({});
+Small.args = {
+  size: "small",
   title: "information",
 };
