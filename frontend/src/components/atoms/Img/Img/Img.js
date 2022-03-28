@@ -1,10 +1,10 @@
 import React from "react";
 import { StyledImg } from "./style";
 
-const Img = ({ path }) => {
+const Img = ({ path, color }) => {
   return (
-    <div>
-      <StyledImg src={path} />
+    <div style={{ background: color }}>
+      <StyledImg src={path} color={color} />
     </div>
   );
 };
