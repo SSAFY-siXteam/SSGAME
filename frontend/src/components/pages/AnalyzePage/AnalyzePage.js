@@ -66,7 +66,7 @@ const AnalyzePage = () => {
 
   const args = {
     graph: AnalyzeGraph({ data: graphData }),
-    games: MostPlayedGames({
+    games: LongGameCardList({
       data: gamesData,
       title: "가장 많이 플레이 한 게임 top5",
     }),

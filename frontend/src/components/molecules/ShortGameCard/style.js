@@ -4,6 +4,7 @@ export const CardWapper = styled.div`
   /* width: 200px; */
   margin: 30px;
   display: inline-block;
+  cursor: pointer;
 `;
 
 export const CardImg = styled.div`

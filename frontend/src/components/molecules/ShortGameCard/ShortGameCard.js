@@ -3,9 +3,9 @@ import Img from "../../atoms/Img/Img/Img";
 import InfoText from "../../atoms/Info/InfoText/InfoText";
 import { CardImg, GenreInfo, Genre, CardWapper, PriceInfo } from "./style";
 
-const GameCard = ({ info }) => {
+const ShortGameCard = ({ info, onClick }) => {
   return (
-    <CardWapper>
+    <CardWapper onClick={onClick}>
       <CardImg>
         <Img path={info.headerImage} />
       </CardImg>
@@ -25,4 +25,4 @@ const GameCard = ({ info }) => {
   );
 };
 
-export default GameCard;
+export default ShortGameCard;

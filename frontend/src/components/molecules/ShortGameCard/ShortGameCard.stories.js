@@ -1,12 +1,12 @@
 import React from "react";
-import GameCard from "./GameCard.js";
+import ShortGameCard from "./ShortGameCard.js";
 
 export default {
-  title: "molecules/GameCard",
-  component: GameCard,
+  title: "molecules/ShortGameCard",
+  component: ShortGameCard,
 };
 
-const Template = (args) => <GameCard {...args} />;
+const Template = (args) => <ShortGameCard {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
