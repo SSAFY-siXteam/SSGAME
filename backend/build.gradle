@@ -1,6 +1,17 @@
+// querydsl 추가 1
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+// querydsl 종료 1
+
 plugins {
 	id 'org.springframework.boot' version '2.5.10'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	// querydsl 추가 2
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	// querydsl 종료 2
 	id 'java'
 }
 
@@ -49,8 +60,38 @@ dependencies {
 
 	// json parser
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+	// querydsl 추가 3
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-core:${queryDslVersion}"
+	// querydsl 종료 3
 }
 
 test {
 	useJUnitPlatform()
 }
+
+// querydsl 추가 4
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+// querydsl 종료 4

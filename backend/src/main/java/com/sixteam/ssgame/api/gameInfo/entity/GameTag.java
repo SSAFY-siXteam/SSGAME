@@ -1,7 +1,5 @@
-package com.sixteam.ssgame.api.recommendation.entity;
+package com.sixteam.ssgame.api.gameInfo.entity;
 
-import com.sixteam.ssgame.api.gameInfo.entity.GameInfo;
-import com.sixteam.ssgame.api.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,23 +10,26 @@ import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tb_member_recommended_game")
+@Table(name = "tb_game_tag")
 @Entity
-public class MemberRecommendedGame {
+public class GameTag {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long recommendedGameSeq;
+    private Long gameTagSeq;
 
     @Column(nullable = false)
-    private Double recommendedRatio;
+    private Long tagCount;
 
-    @JoinColumn(name = "member_seq")
-    @ManyToOne(fetch = LAZY)
-    private Member member;
+    @Column(nullable = false)
+    private Double tagRatio;
 
     @JoinColumn(name = "game_seq")
     @ManyToOne(fetch = LAZY)
     private GameInfo gameInfo;
+
+    @JoinColumn(name = "tag_seq")
+    @ManyToOne(fetch = LAZY)
+    private Tag tag;
 
 }
