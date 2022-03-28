@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const ItemGrid = styled.div`
   width: 500px;
   margin: 0 auto;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   margin-top: 0;
   cursor: pointer;
 `;

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const ShortGameCardList = ({ data }) => {
   const navigate = useNavigate();
-  console.log(data);
   return (
     <div>
       <Title title="Try also..." />
@@ -15,7 +14,6 @@ const ShortGameCardList = ({ data }) => {
             key={index}
             info={game}
             onClick={() => {
-              console.log(game);
               navigate(`/game/${game.gameSeq}`);
             }}
           />

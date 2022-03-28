@@ -4,7 +4,7 @@ import MostPlayedGameItem from "../../molecules/LongGameCard/LongGameCard";
 import { StyledTitle, GameItems } from "./style.js";
 import { useNavigate } from "react-router-dom";
 
-const LongGameCardList = ({ data, title }) => {
+const LongGameCardList = ({ data, title, changeVideo }) => {
   const navigate = useNavigate();
 
   return (
@@ -16,7 +16,8 @@ const LongGameCardList = ({ data, title }) => {
             {data.map((info, index) => (
               <MostPlayedGameItem
                 onClick={() => {
-                  navigate(`/game/${info.gameSeq}`);
+                  changeVideo(info.movies);
+                  // navigate(`/game/${info.gameSeq}`);
                 }}
                 key={index}
                 info={info}

@@ -37,24 +37,24 @@ const RecommendPage = () => {
     );
   }, []);
 
-  const changeVideo = (e) => {
-    console.log(e.target.value);
-    setSelectVideo(e.target.value.movies);
+  const changeVideo = (movies) => {
+    // console.log(movies);
+    setSelectVideo(movies);
   };
 
-  const args = {
-    video: Video({ path: selectVideo }),
-    topRec: LongGameCardList({ data: topRec }),
-    otherRec: ShortGameCardList({ data: otherRec }),
-  };
+  // const args = {
+  //   video: Video({ path: selectVideo }),
+  //   topRec: LongGameCardList({ data: topRec, changeVideo: changeVideo }),
+  //   otherRec: ShortGameCardList({ data: otherRec }),
+  // };
 
   return (
     <div>
       <Title title="맞춤 게임 추천" />
       <RecommendTemplate
-        video={args.video}
-        topRec={args.topRec}
-        otherRec={args.otherRec}
+        video={<Video path={selectVideo} />}
+        topRec={<LongGameCardList data={topRec} changeVideo={changeVideo} />}
+        otherRec={<ShortGameCardList data={otherRec} />}
       />
     </div>
   );
