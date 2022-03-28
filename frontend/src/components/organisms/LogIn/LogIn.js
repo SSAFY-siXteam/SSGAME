@@ -22,7 +22,11 @@ const LogIn = ({ onLogIn }) => {
           size="40"
           placeholder="Username"
           onInputChange={(e) => {
+<<<<<<< HEAD
             e.target.value = e.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+=======
+            // e.target.value = e.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+>>>>>>> frontend
             setUserId(e.target.value);
           }}
         />
@@ -34,7 +38,11 @@ const LogIn = ({ onLogIn }) => {
           size="40"
           placeholder="Password"
           onInputChange={(e) => {
+<<<<<<< HEAD
             e.target.value = e.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+=======
+            // e.target.value = e.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+>>>>>>> frontend
             setUserPassword(e.target.value);
           }}
         />
