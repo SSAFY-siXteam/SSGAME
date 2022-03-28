@@ -6,15 +6,11 @@ import lombok.ToString;
 
 import java.util.List;
 
-@ToString(of = {"memberSeq", "ssgameId", "password", "email", "steamID", "steamNickname", "avatarUrl", "isPublic", "gameCount"})
+@ToString(of = {"ssgameId", "email", "steamID", "steamNickname", "avatarUrl", "gameCount"})
 @Getter
-public class ResponseLoginMemberDto {
-
-    private Long memberSeq;
+public class ResponseMemberDto {
 
     private String ssgameId;
-
-    private String password;
 
     private String email;
 
@@ -24,22 +20,17 @@ public class ResponseLoginMemberDto {
 
     private String avatarUrl;
 
-    private Boolean isPublic;
-
     private Long gameCount;
 
     private List<String> preferredCategories;
 
     @Builder
-    public ResponseLoginMemberDto(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl,  boolean isPublic, Long gameCount, List<String> preferredCategories) {
-        this.memberSeq = memberSeq;
+    public ResponseMemberDto(String ssgameId, String email, String steamID, String steamNickname, String avatarUrl, Long gameCount, List<String> preferredCategories) {
         this.ssgameId = ssgameId;
-        this.password = password;
         this.email = email;
         this.steamID = steamID;
         this.steamNickname = steamNickname;
         this.avatarUrl = avatarUrl;
-        this.isPublic = isPublic;
         this.gameCount = gameCount;
         this.preferredCategories = preferredCategories;
     }

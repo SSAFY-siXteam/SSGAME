@@ -1,8 +1,8 @@
 package com.sixteam.ssgame.api.member.controller;
 
+import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
-import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
 import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
@@ -129,21 +129,17 @@ public class MemberController {
             }
         } else {
             // 입력한 아이디가 db에 있는지 확인
-            ResponseLoginMemberDto responseLoginMemberDto = memberService.findResponseLoginMemberDtoBySsgameId(requestLoginMemberDto.getSsgameId());
-            if (responseLoginMemberDto == null) {
-                // 해당 아이디로 검색된 회원이 없는 경우
-                status = HttpStatus.NO_CONTENT.value();
-                msg = "아이디를 다시 확인해주세요.";
-            } else if (!passwordEncoder.matches(requestLoginMemberDto.getPassword(), responseLoginMemberDto.getPassword())) {
-                // db에 있는 비밀번호와 입력한 비밀번호가 일치하지 않는 경우
-                status = HttpStatus.UNAUTHORIZED.value();
-                msg = "비밀번호를 다시 확인해주세요.";
+            MemberDto memberDto = memberService.findMemberDtoBySsggameId(requestLoginMemberDto.getSsgameId());
+            if (memberDto == null) {
+                throw new CustomException("member not found", SSGAMEID_NOT_FOUND);
+            } else if (!passwordEncoder.matches(requestLoginMemberDto.getPassword(), memberDto.getPassword())) {
+                throw new InvalidValueException("wrong password", PASSWORD_NOT_MATCH);
             } else {
-                String jwtToken = JwtTokenUtil.getToken(responseLoginMemberDto.getSsgameId());
+                String jwtToken = JwtTokenUtil.getToken(memberDto.getSsgameId());
 
                 status = HttpStatus.OK.value();
                 msg = "로그인에 성공했습니다.";
-                data.put("memberInfo", responseLoginMemberDto);
+                data.put("steamID", memberDto.getSteamID());
                 data.put("jwtToken", jwtToken);
             }
         }

@@ -5,8 +5,9 @@ import com.sixteam.ssgame.api.gameInfo.entity.GameInfo;
 import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
 import com.sixteam.ssgame.api.gameInfo.repository.GameInfoRepository;
 import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
+import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
-import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
+import com.sixteam.ssgame.api.member.dto.response.ResponseMemberDto;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.entity.MemberPreferredCategory;
 import com.sixteam.ssgame.api.member.repository.MemberPreferredCategoryRepository;
@@ -120,9 +121,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ResponseLoginMemberDto findResponseLoginMemberDtoByMemberSeq(Long memberSeq) {
+    public MemberDto findMemberDtoBySsggameId(String ssgameId) {
 
-        Member member = memberRepository.findByMemberSeq(memberSeq);
+        Member member = memberRepository.findBySsgameId(ssgameId);
         if (member == null) {
             throw new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND);
         }
@@ -134,7 +135,7 @@ public class MemberServiceImpl implements MemberService {
             preferredCategories.add(category.getCategory().getCategoryName());
         }
 
-        return ResponseLoginMemberDto.builder()
+        return MemberDto.builder()
                 .memberSeq(member.getMemberSeq())
                 .ssgameId(member.getSsgameId())
                 .password(member.getPassword())

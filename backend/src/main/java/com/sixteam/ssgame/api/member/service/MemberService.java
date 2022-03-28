@@ -1,8 +1,12 @@
 package com.sixteam.ssgame.api.member.service;
 
+import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
-import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
+import com.sixteam.ssgame.api.member.dto.response.ResponseMemberDto;
 import com.sixteam.ssgame.api.member.entity.Member;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 
 public interface MemberService {
 
@@ -12,9 +16,9 @@ public interface MemberService {
 
     boolean hasSteamID(String steamID);
 
-    void register(RequestMemberDto requestMemberDto);
+    void register(RequestMemberDto requestMemberDto) throws IOException, ParseException;
 
-    ResponseLoginMemberDto findResponseLoginMemberDtoBySsgameId(String ssgameId);
+    MemberDto findMemberDtoBySsggameId(String ssgameId);
 
     ResponseLoginMemberDto findResponseLoginMemberDtoByMemberSeq(Long memberSeq);
 
