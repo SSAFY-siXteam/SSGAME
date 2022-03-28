@@ -5,8 +5,8 @@ import {
   getAnalyzeGraph,
 } from "../../../apis/analyze";
 import AnalyzeGraph from "../../organisms/AnalyzeGraph/AnalyzeGraph";
-import MostPlayedGames from "../../organisms/MostPlayedGames/MostPlayedGames";
-import MostPlayedGenres from "../../organisms/MostPlayedGenres/MostPlayedGenres";
+import LongGameCardList from "../../organisms/LongGameCardList/LongGameCardList";
+import GenreCardList from "../../organisms/GenreCardList/GenreCardList";
 import AnalyzeTemplate from "../../templates/AnalyzeTemplate/AnalyzeTemplate";
 import { getCookie } from "../../../utils/cookie";
 
@@ -40,7 +40,7 @@ const AnalyzePage = () => {
       },
       (response) => {
         if (response.status === 200) {
-          setGenresData(response.data.data.mostPlayedGenres);
+          setGenresData(response.data.data.GenreCardList);
         }
       },
       (e) => {
@@ -70,7 +70,7 @@ const AnalyzePage = () => {
       data: gamesData,
       title: "가장 많이 플레이 한 게임 top5",
     }),
-    genres: MostPlayedGenres({ data: genresData }),
+    genres: GenreCardList({ data: genresData }),
   };
 
   return (

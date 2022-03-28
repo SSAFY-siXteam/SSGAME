@@ -3,13 +3,14 @@ import Title from "../../atoms/Title/Title";
 import Video from "../../atoms/Video/Video";
 import RecGames from "../../organisms/RecGames/RecGames";
 import RecommendTemplate from "../../templates/RecommendTemplate/RecommendTemplate";
-import MostPlayedGames from "../../organisms/MostPlayedGames/MostPlayedGames";
+import LongGameCardList from "../../organisms/LongGameCardList/LongGameCardList";
 import { getRecommendGames } from "../../../apis/recommend";
 
 const RecommendPage = () => {
   const [recommendedGameList, setRecommendedGameList] = useState([]);
   const [topRec, setTopRec] = useState([]);
   const [otherRec, setOtherRec] = useState([]);
+  const [selectVideo, setSelectVideo] = useState("");
 
   useEffect(() => {
     getRecommendGames(
@@ -19,7 +20,7 @@ const RecommendPage = () => {
         },
       },
       (response) => {
-        console.log(response);
+        // console.log(response);
         setRecommendedGameList(response.data.data.recommendedGameList);
         response.data.data.recommendedGameList.map((data, index) => {
           if (index < 3) {
@@ -28,14 +29,22 @@ const RecommendPage = () => {
             setOtherRec((prev) => [...prev, data]);
           }
         });
+        setSelectVideo(response.data.data.recommendedGameList[0].movies);
       },
-      (e) => {}
+      (e) => {
+        alert("문제가 발생했습니다.");
+      }
     );
   }, []);
 
+  const changeVideo = (e) => {
+    console.log(e.target.value);
+    setSelectVideo(e.target.value.movies);
+  };
+
   const args = {
-    video: Video({ path: "" }),
-    topRec: MostPlayedGames({ data: topRec }),
+    video: Video({ path: selectVideo }),
+    topRec: LongGameCardList({ data: topRec }),
     otherRec: RecGames({ data: otherRec }),
   };
 

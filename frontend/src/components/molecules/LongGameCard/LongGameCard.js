@@ -3,7 +3,7 @@ import Img from "../../atoms/Img/Img/Img";
 import InfoText from "../../atoms/Info/InfoText/InfoText";
 import { ItemGrid, ItemImg, NameText, TagText, InfoGrid } from "./style";
 
-const MostPlayedGameItem = ({ info, onClick }) => {
+const LongGameCard = ({ info, onClick }) => {
   return (
     <ItemGrid onClick={onClick}>
       <ItemImg>
@@ -25,4 +25,4 @@ const MostPlayedGameItem = ({ info, onClick }) => {
   );
 };
 
-export default MostPlayedGameItem;
+export default LongGameCard;

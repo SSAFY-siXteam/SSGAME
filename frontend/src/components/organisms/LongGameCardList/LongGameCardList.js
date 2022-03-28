@@ -1,10 +1,10 @@
 import React from "react";
 import Title from "../../atoms/Title/Title";
-import MostPlayedGameItem from "../../molecules/MostPlayedGameItem/MostPlayedGameItem";
+import MostPlayedGameItem from "../../molecules/LongGameCard/LongGameCard";
 import { StyledTitle, GameItems } from "./style.js";
 import { useNavigate } from "react-router-dom";
 
-const MostPlayedGames = ({ data, title }) => {
+const LongGameCardList = ({ data, title }) => {
   const navigate = useNavigate();
 
   return (
@@ -29,4 +29,4 @@ const MostPlayedGames = ({ data, title }) => {
   );
 };
 
-export default MostPlayedGames;
+export default LongGameCardList;
