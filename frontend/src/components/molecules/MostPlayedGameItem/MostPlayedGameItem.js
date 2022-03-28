@@ -9,9 +9,10 @@ const MostPlayedGameItem = ({ info, onClick }) => {
       <ItemImg>
         <Img path={info.headerImage} />
       </ItemImg>
-      <InfoGrid>
+      <InfoGrid price={info.price}>
         <NameText>
-          <InfoText text={info.gameName} />
+          <InfoText text={info.gameName} size="large" />
+          {info.price && <InfoText text={info.price + "$"} />}
         </NameText>
         {info.genres.map((genre, index) => (
           //   <InfoText key={index} text={genre} size="small" />

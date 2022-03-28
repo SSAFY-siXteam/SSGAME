@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const CardWapper = styled.div`
-  width: 200px;
+  /* width: 200px; */
   margin: 30px;
   display: inline-block;
 `;

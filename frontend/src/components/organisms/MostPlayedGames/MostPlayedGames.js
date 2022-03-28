@@ -4,16 +4,14 @@ import MostPlayedGameItem from "../../molecules/MostPlayedGameItem/MostPlayedGam
 import { StyledTitle, GameItems } from "./style.js";
 import { useNavigate } from "react-router-dom";
 
-const MostPlayedGames = ({ data }) => {
+const MostPlayedGames = ({ data, title }) => {
   const navigate = useNavigate();
 
   return (
     <>
       {data && (
         <div>
-          <StyledTitle>
-            <Title title="가장 많이 플레이 한 게임 top5" />
-          </StyledTitle>
+          <StyledTitle>{title && <Title title={title} />}</StyledTitle>
           <GameItems>
             {data.map((info, index) => (
               <MostPlayedGameItem
