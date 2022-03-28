@@ -57,6 +57,7 @@ public class GameInfoServiceImpl implements GameInfoService {
         }
 
         // average rating 구하는 query....dsl....?
+        Double averageRating = memberGameListRepository.getAverageRatingByGameSeq(gameSeq).getAverageRating();
 
         // 회원 관련 속성 - isPlayed, isRated, memberGameRating
         MemberGameList memberGameList = memberGameListRepository.findByMemberAndGameInfo(memberRepository.findByMemberSeq(memberSeq), gameInfo);

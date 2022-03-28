@@ -5,7 +5,7 @@ import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
 import com.sixteam.ssgame.api.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MemberGameListRepository extends JpaRepository<MemberGameList, Long> {
+public interface MemberGameListRepository extends JpaRepository<MemberGameList, Long>, MemberGameListRepositoryCustom {
 
     MemberGameList findByMemberAndGameInfo(Member member, GameInfo gameInfo);
 
