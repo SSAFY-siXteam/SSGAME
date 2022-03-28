@@ -3,9 +3,9 @@ import Img from "../../atoms/Img/Img/Img";
 import InfoText from "../../atoms/Info/InfoText/InfoText";
 import { ItemGrid, ItemImg, NameText, TagText, InfoGrid } from "./style";
 
-const MostPlayedGameItem = ({ info }) => {
+const MostPlayedGameItem = ({ info, onClick }) => {
   return (
-    <ItemGrid>
+    <ItemGrid onClick={onClick}>
       <ItemImg>
         <Img path={info.headerImage} />
       </ItemImg>

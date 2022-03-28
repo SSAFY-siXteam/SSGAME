@@ -4,6 +4,7 @@ export const ItemGrid = styled.div`
   width: 500px;
   margin: 0 auto;
   margin-top: 40px;
+  cursor: pointer;
 `;
 
 export const ItemImg = styled.div`
