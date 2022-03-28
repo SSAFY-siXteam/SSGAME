@@ -40,7 +40,8 @@ const AnalyzePage = () => {
       },
       (response) => {
         if (response.status === 200) {
-          setGenresData(response.data.data.GenreCardList);
+          setGenresData(response.data.data.mostPlayedGenres);
+          console.log(response);
         }
       },
       (e) => {

@@ -8,38 +8,17 @@ import normal from "../../../assets/img/medals/normal.png";
 import { GenreGrid, TopGenresWrapper } from "./style";
 
 const GenreCardList = ({ data }) => {
-  // const mostPlayedGenres = [
-  //   {
-  //     genre: "장르1",
-  //     ratio: 55,
-  //   },
-  //   {
-  //     genre: "장르2",
-  //     ratio: 40,
-  //   },
-  //   {
-  //     genre: "장르3",
-  //     ratio: 20,
-  //   },
-  //   {
-  //     genre: "장르4",
-  //     ratio: 10,
-  //   },
-  //   {
-  //     genre: "장르5",
-  //     ratio: 3,
-  //   },
-  // ];
+  console.log(data);
   return (
     <>
-      {data && (
-        <TopGenresWrapper>
-          <Title title="가장 많이 플레이 한 장르 top5" />
+      <TopGenresWrapper>
+        <Title title="가장 많이 플레이 한 장르 top5" />
+        {data && (
           <GenreGrid>
-            {data.map((data, index) => (
+            {data.map((d, index) => (
               <div key={index}>
                 <GenreCard
-                  info={data}
+                  info={d}
                   path={
                     (index == 0 && gold) ||
                     (index == 1 && silver) ||
@@ -50,8 +29,8 @@ const GenreCardList = ({ data }) => {
               </div>
             ))}
           </GenreGrid>
-        </TopGenresWrapper>
-      )}
+        )}
+      </TopGenresWrapper>
     </>
   );
 };

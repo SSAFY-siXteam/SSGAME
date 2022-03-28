@@ -1,6 +1,6 @@
 import React from "react";
 import Img from "../../atoms/Img/Img/Img";
-import InfoText from "../../atoms/Info/InfoText/InfoText";
+import InfoText from "../../atoms/Text/InfoText/InfoText";
 import { ItemGrid, ItemImg, NameText, TagText, InfoGrid } from "./style";
 
 const LongGameCard = ({ info, onClick }) => {
