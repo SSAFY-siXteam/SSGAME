@@ -1,4 +1,4 @@
-package com.sixteam.ssgame.api.game.entity;
+package com.sixteam.ssgame.api.gameInfo.entity;
 
 import com.sixteam.ssgame.api.member.entity.Member;
 import lombok.AccessLevel;
@@ -25,7 +25,7 @@ public class MemberGameList {
     @JoinColumn(name = "game_seq")
     @ManyToOne(fetch = LAZY)
     @Id
-    private Game game;
+    private GameInfo gameInfo;
 
     @Column(nullable = false)
     private Long memberPlayTime;
@@ -33,9 +33,9 @@ public class MemberGameList {
     private Integer memberGameRating;
 
     @Builder
-    public MemberGameList(Member member, Game game, Long memberPlayTime, Integer memberGameRating) {
+    public MemberGameList(Member member, GameInfo gameInfo, Long memberPlayTime, Integer memberGameRating) {
         this.member = member;
-        this.game = game;
+        this.gameInfo = gameInfo;
         this.memberPlayTime = memberPlayTime;
         this.memberGameRating = memberGameRating;
     }

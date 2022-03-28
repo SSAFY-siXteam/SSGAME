@@ -1,4 +1,4 @@
-package com.sixteam.ssgame.api.game.exception;
+package com.sixteam.ssgame.api.gameInfo.exception;
 
 import com.sixteam.ssgame.global.error.dto.ErrorStatus;
 import com.sixteam.ssgame.global.error.exception.InvalidValueException;

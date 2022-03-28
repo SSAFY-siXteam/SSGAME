@@ -1,4 +1,4 @@
-package com.sixteam.ssgame.api.game.entity;
+package com.sixteam.ssgame.api.gameInfo.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;

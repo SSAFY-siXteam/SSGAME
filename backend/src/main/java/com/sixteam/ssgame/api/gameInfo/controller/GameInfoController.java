@@ -1,7 +1,6 @@
-package com.sixteam.ssgame.api.game.controller;
+package com.sixteam.ssgame.api.gameInfo.controller;
 
-import com.sixteam.ssgame.api.game.dto.response.ResponseGameDto;
-import com.sixteam.ssgame.api.game.service.GameService;
+import com.sixteam.ssgame.api.gameInfo.service.GameInfoService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
 import com.sixteam.ssgame.global.common.util.LogUtil;
@@ -23,9 +22,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/games")
 @RestController
-public class GameController {
+public class GameInfoController {
 
-    private final GameService gameService;
+    private final GameInfoService gameInfoService;
 
     @GetMapping("/{gameSeq}")
     public BaseResponseDto get(@PathVariable Long gameSeq, Authentication authentication) {
@@ -42,7 +41,7 @@ public class GameController {
             Long memberSeq = details.getMember().getMemberSeq();
 
             try {
-                data.put("gameInfo", gameService.findResponseGameDto(gameSeq, memberSeq));
+                data.put("gameInfo", gameInfoService.findResponseGameInfoDto(gameSeq, memberSeq));
                 status = HttpStatus.OK.value();
                 msg = "게임 정보 조회 성공";
             } catch (ParseException e) {

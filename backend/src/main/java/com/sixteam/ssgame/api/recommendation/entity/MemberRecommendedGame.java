@@ -1,6 +1,6 @@
 package com.sixteam.ssgame.api.recommendation.entity;
 
-import com.sixteam.ssgame.api.game.entity.Game;
+import com.sixteam.ssgame.api.gameInfo.entity.GameInfo;
 import com.sixteam.ssgame.api.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,6 +29,6 @@ public class MemberRecommendedGame {
 
     @JoinColumn(name = "game_seq")
     @ManyToOne(fetch = LAZY)
-    private Game game;
+    private GameInfo gameInfo;
 
 }

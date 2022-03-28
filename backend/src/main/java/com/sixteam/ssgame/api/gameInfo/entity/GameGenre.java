@@ -1,4 +1,4 @@
-package com.sixteam.ssgame.api.game.entity;
+package com.sixteam.ssgame.api.gameInfo.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class GameGenre {
     @JoinColumn(name = "game_seq")
     @ManyToOne(fetch = LAZY)
     @Id
-    private Game game;
+    private GameInfo gameInfo;
 
     @JoinColumn(name = "genre_seq")
     @ManyToOne(fetch = LAZY)

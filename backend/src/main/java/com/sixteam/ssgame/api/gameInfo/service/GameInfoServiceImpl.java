@@ -1,13 +1,13 @@
-package com.sixteam.ssgame.api.game.service;
+package com.sixteam.ssgame.api.gameInfo.service;
 
-import com.sixteam.ssgame.api.game.dto.response.ResponseGameDto;
-import com.sixteam.ssgame.api.game.entity.GameGenre;
-import com.sixteam.ssgame.api.game.entity.Game;
-import com.sixteam.ssgame.api.game.entity.MemberGameList;
-import com.sixteam.ssgame.api.game.exception.GameNotFoundException;
-import com.sixteam.ssgame.api.game.repository.GameGenreRepository;
-import com.sixteam.ssgame.api.game.repository.GameRepository;
-import com.sixteam.ssgame.api.game.repository.MemberGameListRepository;
+import com.sixteam.ssgame.api.gameInfo.dto.response.ResponseGameInfoDto;
+import com.sixteam.ssgame.api.gameInfo.entity.GameGenre;
+import com.sixteam.ssgame.api.gameInfo.entity.GameInfo;
+import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
+import com.sixteam.ssgame.api.gameInfo.exception.GameNotFoundException;
+import com.sixteam.ssgame.api.gameInfo.repository.GameGenreRepository;
+import com.sixteam.ssgame.api.gameInfo.repository.GameInfoRepository;
+import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +25,9 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class GameServiceImpl implements GameService {
+public class GameInfoServiceImpl implements GameInfoService {
 
-    private final GameRepository gameRepository;
+    private final GameInfoRepository gameInfoRepository;
 
     private final MemberGameListRepository memberGameListRepository;
 
@@ -36,16 +36,16 @@ public class GameServiceImpl implements GameService {
     private final MemberRepository memberRepository;
 
     @Override
-    public ResponseGameDto findResponseGameDto(Long gameSeq, Long memberSeq) throws ParseException {
+    public ResponseGameInfoDto findResponseGameInfoDto(Long gameSeq, Long memberSeq) throws ParseException {
 
-        Game game = gameRepository.findByGameSeq(gameSeq);
-        if (game == null) {
+        GameInfo gameInfo = gameInfoRepository.findByGameSeq(gameSeq);
+        if (gameInfo == null) {
             throw new GameNotFoundException(gameSeq);
         }
 
         // movie json parsing -> mp4 480
         String movieUrl = "no content";
-        String movieString = game.getMovies();
+        String movieString = gameInfo.getMovies();
         if (movieString != null) {
             movieString = movieString.replaceAll("'", "\"").replaceAll("True", "true").replaceAll("False", "false");
             // JSONParser로 JSONObject로 변환
@@ -59,12 +59,12 @@ public class GameServiceImpl implements GameService {
         // average rating 구하는 query....dsl....?
 
         // 회원 관련 속성 - isPlayed, isRated, memberGameRating
-        MemberGameList memberGameList = memberGameListRepository.findByMemberAndGame(memberRepository.findByMemberSeq(memberSeq), game);
+        MemberGameList memberGameList = memberGameListRepository.findByMemberAndGameInfo(memberRepository.findByMemberSeq(memberSeq), gameInfo);
         boolean isMemberPlayedGame = (memberGameList != null);
         boolean isMemberRated = (memberGameList.getMemberGameRating() != null);
 
         // genre
-        List<GameGenre> gameGenres = gameGenreRepository.findAllByGame(game);
+        List<GameGenre> gameGenres = gameGenreRepository.findAllByGameInfo(gameInfo);
         List<String> genreNames = new ArrayList<>();
         if (gameGenres != null) {
             for (GameGenre gameGenre : gameGenres) {
@@ -73,11 +73,11 @@ public class GameServiceImpl implements GameService {
             }
         }
 
-        return ResponseGameDto.builder()
-                .gameSeq(game.getGameSeq())
-                .gameName(game.getGameName())
-                .shortDescriptionKr(game.getShortDescriptionKr())
-                .headerImage(game.getHeaderImage())
+        return ResponseGameInfoDto.builder()
+                .gameSeq(gameInfo.getGameSeq())
+                .gameName(gameInfo.getGameName())
+                .shortDescriptionKr(gameInfo.getShortDescriptionKr())
+                .headerImage(gameInfo.getHeaderImage())
                 .movies(movieUrl)
                 .averageRating(0D)
                 .isPlayed(isMemberPlayedGame)

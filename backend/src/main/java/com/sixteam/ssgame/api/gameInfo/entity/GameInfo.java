@@ -1,4 +1,4 @@
-package com.sixteam.ssgame.api.game.entity;
+package com.sixteam.ssgame.api.gameInfo.entity;
 
 import lombok.*;
 
@@ -13,9 +13,9 @@ import static javax.persistence.CascadeType.ALL;
         "headerImage", "website", "developers", "publisher", "platforms", "positive", "negative",
         "price", "releaseDate", "movies", "averageForever", "languages", "screenshots", "ownersMin", "ownersMax"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tb_game")
+@Table(name = "tb_game_info")
 @Entity
-public class Game {
+public class GameInfo {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -70,11 +70,11 @@ public class Game {
 
     private Long ownersMax;
 
-    @OneToMany(mappedBy = "game", cascade = ALL)
+    @OneToMany(mappedBy = "gameInfo", cascade = ALL)
     private List<MemberGameList> memberGameLists = new ArrayList<>();
 
     @Builder
-    public Game(Long gameSeq, String gameName, Long steamAppid, boolean isFree, String shortDescription, String shortDescriptionKr, String headerImage, String website, String developers, String publisher, String platforms, Long positive, Long negative, Integer price, String releaseDate, String movies, Integer averageForever, String languages, String screenshots, Long ownersMin, Long ownersMax) {
+    public GameInfo(Long gameSeq, String gameName, Long steamAppid, boolean isFree, String shortDescription, String shortDescriptionKr, String headerImage, String website, String developers, String publisher, String platforms, Long positive, Long negative, Integer price, String releaseDate, String movies, Integer averageForever, String languages, String screenshots, Long ownersMin, Long ownersMax) {
         this.gameSeq = gameSeq;
         this.gameName = gameName;
         this.steamAppid = steamAppid;

@@ -1,4 +1,4 @@
-package com.sixteam.ssgame.api.game.dto.response;
+package com.sixteam.ssgame.api.gameInfo.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @ToString(of = {})
 @Getter
-public class ResponseGameDto {
+public class ResponseGameInfoDto {
 
     private Long gameSeq;
 
@@ -33,7 +33,7 @@ public class ResponseGameDto {
     private final String defaultValue = "none";
 
     @Builder
-    public ResponseGameDto(Long gameSeq, String gameName, String shortDescriptionKr, String headerImage, String movies, Double averageRating, Boolean isPlayed, Boolean isRated, Integer memberGameRating, List<String> genres) {
+    public ResponseGameInfoDto(Long gameSeq, String gameName, String shortDescriptionKr, String headerImage, String movies, Double averageRating, Boolean isPlayed, Boolean isRated, Integer memberGameRating, List<String> genres) {
         this.gameSeq = gameSeq;
         this.gameName = gameName;
         this.shortDescriptionKr = (shortDescriptionKr != null) ? shortDescriptionKr : defaultValue;

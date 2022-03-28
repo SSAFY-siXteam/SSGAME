@@ -1,4 +1,4 @@
-package com.sixteam.ssgame.api.game.service;
+package com.sixteam.ssgame.api.gameInfo.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

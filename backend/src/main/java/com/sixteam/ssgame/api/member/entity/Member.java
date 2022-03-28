@@ -1,8 +1,8 @@
 package com.sixteam.ssgame.api.member.entity;
 
-import com.sixteam.ssgame.api.game.entity.MemberGameList;
 import com.sixteam.ssgame.api.analysis.entity.MemberFrequentGenre;
 import com.sixteam.ssgame.api.analysis.entity.RadarChartInfo;
+import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
 import lombok.*;
 
 import javax.persistence.*;

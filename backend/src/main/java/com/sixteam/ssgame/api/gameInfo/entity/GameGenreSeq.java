@@ -1,11 +1,11 @@
-package com.sixteam.ssgame.api.game.entity;
+package com.sixteam.ssgame.api.gameInfo.entity;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 public class GameGenreSeq implements Serializable {
 
-    private Long game;
+    private Long gameInfo;
     private Long genre;
 
     @Override
@@ -13,11 +13,11 @@ public class GameGenreSeq implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameGenreSeq that = (GameGenreSeq) o;
-        return Objects.equals(game, that.game) && Objects.equals(genre, that.genre);
+        return Objects.equals(gameInfo, that.gameInfo) && Objects.equals(genre, that.genre);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(game, genre);
+        return Objects.hash(gameInfo, genre);
     }
 }

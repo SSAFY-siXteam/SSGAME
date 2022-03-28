@@ -1,10 +1,10 @@
 package com.sixteam.ssgame.api.member.service;
 
-import com.sixteam.ssgame.api.game.entity.Game;
-import com.sixteam.ssgame.api.game.entity.MemberGameList;
-import com.sixteam.ssgame.api.game.repository.GameRepository;
-import com.sixteam.ssgame.api.game.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.analysis.repository.CategoryRepository;
+import com.sixteam.ssgame.api.gameInfo.entity.GameInfo;
+import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
+import com.sixteam.ssgame.api.gameInfo.repository.GameInfoRepository;
+import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
 import com.sixteam.ssgame.api.member.entity.Member;
@@ -41,7 +41,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberGameListRepository memberGameListRepository;
 
-    private final GameRepository gameRepository;
+    private final GameInfoRepository gameInfoRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -99,12 +99,12 @@ public class MemberServiceImpl implements MemberService {
 
         Map<Long, Long> memberGameList = (Map<Long, Long>) steamAPIGameData.get("memberGameList");
         for (Long steamAppid: memberGameList.keySet()) {
-            Game game = gameRepository.findBySteamAppid(steamAppid);
+            GameInfo gameInfo = gameInfoRepository.findBySteamAppid(steamAppid);
             // steam app id에 해당하는 게임 저장
-            if (game == null) {
+            if (gameInfo == null) {
                 // 게임 정보를 db에 저장한 이후에 사용
 //                throw new GameNotFoundException(steamAppid);
-                game = gameRepository.save(Game.builder()
+                gameInfo = gameInfoRepository.save(GameInfo.builder()
                         .gameName("beta test")
                         .steamAppid(steamAppid)
                         .isFree(true)
@@ -114,7 +114,7 @@ public class MemberServiceImpl implements MemberService {
             // 새로 추가한 게임이나 기존 게임에서 플레이 시간만 업데이트 하는 로직
             memberGameListRepository.save(MemberGameList.builder()
                     .member(savedMember)
-                    .game(game)
+                    .gameInfo(gameInfo)
                     .memberPlayTime(memberGameList.get(steamAppid))
                     .build());
         }
