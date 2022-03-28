@@ -1,21 +1,21 @@
-package com.sixteam.ssgame.api.member.entity;
+package com.sixteam.ssgame.api.analysis.entity;
 
-import com.sixteam.ssgame.api.analysis.entity.Category;
+import com.sixteam.ssgame.api.member.entity.Member;
+import com.sixteam.ssgame.api.member.entity.MemberCategorySeq;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.FetchType.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @IdClass(MemberCategorySeq.class)
-@Table(name = "tb_member_preferred_category")
+@Table(name = "tb_redar_chart_info")
 @Entity
-public class MemberPreferredCategory {
+public class RadarChartInfo {
 
     @JoinColumn(name = "member_seq")
     @ManyToOne(fetch = LAZY)
@@ -27,9 +27,7 @@ public class MemberPreferredCategory {
     @Id
     private Category category;
 
-    @Builder
-    public MemberPreferredCategory(Member member, Category category) {
-        this.member = member;
-        this.category = category;
-    }
+    @Column(nullable = false)
+    private Double categoryRatio;
+
 }

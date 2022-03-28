@@ -11,6 +11,8 @@ import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
 import com.sixteam.ssgame.global.common.util.JwtTokenUtil;
+import com.sixteam.ssgame.global.common.util.LogUtil;
+import com.sixteam.ssgame.global.error.exception.UnauthorizedAccessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -36,7 +38,7 @@ public class MemberController {
 
     @PostMapping
     public BaseResponseDto register(@Valid @RequestBody RequestMemberDto requestMemberDto, Errors errors) {
-        log.debug("회원 가입 api 호출 - MemberController.register()");
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
         String msg = null;
@@ -89,7 +91,7 @@ public class MemberController {
 
     @GetMapping("/ssgameId/{ssgameId}/exist")
     public BaseResponseDto isExistSsgameId(@PathVariable String ssgameId) {
-        log.debug("아이디 중복 검사 api 호출 - MemberController.isExistSsgameId()");
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
         String msg = null;
@@ -116,7 +118,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public BaseResponseDto login(@Valid @RequestBody RequestLoginMemberDto requestLoginMemberDto, Errors errors) {
-        log.debug("로그인 api 호출 - MemberController.login()");
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
         String msg = null;
@@ -134,7 +136,7 @@ public class MemberController {
             }
         } else {
             // 입력한 아이디가 db에 있는지 확인
-            ResponseLoginMemberDto responseLoginMemberDto = memberService.findResponseLoginMemberDto(requestLoginMemberDto.getSsgameId());
+            ResponseLoginMemberDto responseLoginMemberDto = memberService.findResponseLoginMemberDtoBySsgameId(requestLoginMemberDto.getSsgameId());
             if (responseLoginMemberDto == null) {
                 // 해당 아이디로 검색된 회원이 없는 경우
                 status = HttpStatus.NO_CONTENT.value();
@@ -160,25 +162,25 @@ public class MemberController {
                 .build();
     }
 
-    @GetMapping("/me")
+    @GetMapping("/me/{ssgameId}")
     public BaseResponseDto me(Authentication authentication) {
-        log.debug("회원 정보 조회 api 호출 - MemberController.me() 호출");
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
         String msg = null;
         Map<String, Object> data = new HashMap<>();
 
         if (authentication == null) {
-            status = HttpStatus.UNAUTHORIZED.value();
-            msg = "unauthorized access";
+            throw new UnauthorizedAccessException("authentication is null");
+//            status = HttpStatus.UNAUTHORIZED.value();
+//            msg = "unauthorized access";
         } else {
             CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-//        Long memberSeq = details.getMember().getMemberSeq();
-            String ssgameId = details.getMember().getSsgameId();
+            Long memberSeq = details.getMember().getMemberSeq();
 
             status = HttpStatus.OK.value();
             msg = "임시 회원 정보 반환";
-            data.put("member", memberService.findResponseLoginMemberDto(ssgameId));
+            data.put("member", memberService.findResponseLoginMemberDtoByMemberSeq(memberSeq));
         }
 
         return BaseResponseDto.builder()
