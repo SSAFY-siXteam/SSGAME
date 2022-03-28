@@ -56,7 +56,7 @@ public class SteamAPIScrap {
             responseData.put("avatarUrl", playerInfoJson.get("avatarfull"));
             responseData.put("isPublic", (Long) playerInfoJson.get("communityvisibilitystate") == 3L);
         } else {
-            throw new APIConnectionException("[Error] api connection url : " + urlBuilder.toString());
+            throw new CustomException("[Error] api connection url : " + urlBuilder.toString(), ErrorStatus.API_NOT_CONNECTION);
         }
 
         return responseData;
@@ -84,7 +84,7 @@ public class SteamAPIScrap {
             JSONObject totalInfoJson = (JSONObject) ((JSONObject) parser.parse(response)).get("response");
             if (totalInfoJson.size() == 0) {
                 // 구매한 게임이 없는 사용자 존재 -> exception 말고 다른 처리 필요
-                throw new InvalidSteamIDException("invalid steam ID : " + steamID);
+                throw new CustomException("[Error] invalid steam ID : " + steamID, ErrorStatus.INVALID_STEAMID);
             }
 
             JSONArray gameInfoJsons = (JSONArray) totalInfoJson.get("games");
@@ -98,7 +98,7 @@ public class SteamAPIScrap {
             responseData.put("gameCount", totalInfoJson.get("game_count"));
             responseData.put("memberGameList", memberGameList);
         } else {
-            throw new APIConnectionException("[Error] api connection url : " + urlBuilder);
+            throw new CustomException("[Error] api connection url : " + urlBuilder, ErrorStatus.API_NOT_CONNECTION);
         }
 
         return responseData;
