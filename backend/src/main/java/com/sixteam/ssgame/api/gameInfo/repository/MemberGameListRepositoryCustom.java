@@ -1,6 +1,6 @@
 package com.sixteam.ssgame.api.gameInfo.repository;
 
-import com.sixteam.ssgame.api.gameInfo.dto.response.AverageRatingDto;
+import com.sixteam.ssgame.api.gameInfo.dto.AverageRatingDto;
 
 public interface MemberGameListRepositoryCustom {
 

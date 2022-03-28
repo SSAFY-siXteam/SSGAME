@@ -1,20 +1,19 @@
 package com.sixteam.ssgame.api.member.controller;
 
+import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
-import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
-import com.sixteam.ssgame.api.member.exception.EmailDuplicateException;
-import com.sixteam.ssgame.api.member.exception.PasswordContainedSsgameIdException;
-import com.sixteam.ssgame.api.member.exception.SsgameIdDuplicateException;
-import com.sixteam.ssgame.api.member.exception.SteamIDDuplicateException;
 import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
 import com.sixteam.ssgame.global.common.util.JwtTokenUtil;
 import com.sixteam.ssgame.global.common.util.LogUtil;
-import com.sixteam.ssgame.global.error.exception.UnauthorizedAccessException;
+import com.sixteam.ssgame.global.error.dto.ErrorStatus;
+import com.sixteam.ssgame.global.error.exception.CustomException;
+import com.sixteam.ssgame.global.error.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +24,8 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -47,38 +48,32 @@ public class MemberController {
         String password = requestMemberDto.getPassword();
 
         if (errors.hasErrors()) {
-            status = HttpStatus.BAD_REQUEST.value();
             if (errors.hasFieldErrors()) {
                 // field error
+                status = HttpStatus.BAD_REQUEST.value();
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
-                // global error
-                msg = "global error";
+                throw new CustomException("global error", GLOBAL_ERROR);
             }
         } else if (memberService.hasSsgameId(requestMemberDto.getSsgameId())) {
-            // 아이디 중복
-            throw new SsgameIdDuplicateException(requestMemberDto.getSsgameId());
+            throw new InvalidValueException(requestMemberDto.getSsgameId(), SSGAMEID_DUPLICATION);
         } else if (password.contains(requestMemberDto.getSsgameId())) {
-            // 패스워드에 아이디가 포함된 경우
-            throw new PasswordContainedSsgameIdException(requestMemberDto.getSsgameId());
+            throw new InvalidValueException(requestMemberDto.getSsgameId(), PASSWORD_CONTAINED_SSGAMEID);
         } else if (memberService.hasSteamID(requestMemberDto.getSteamID())) {
-            // 스팀 아이디 중복
-            throw new SteamIDDuplicateException(requestMemberDto.getSteamID());
+            throw new InvalidValueException(requestMemberDto.getSteamID(), STEAMID_DUPLICATION);
         } else if (memberService.hasEmail(requestMemberDto.getEmail())) {
-            // 이메일 중복
-            throw new EmailDuplicateException(requestMemberDto.getEmail());
+            throw new InvalidValueException(requestMemberDto.getEmail(), EMAIL_DUPLICATION);
         } else {
             try {
                 memberService.register(requestMemberDto);
-
                 status = HttpStatus.CREATED.value();
                 msg = "회원가입 성공";
+            } catch (ParseException e) {
+                throw new CustomException("json parse error", JSON_PARSE_ERROR);
             } catch (Exception e) {
                 log.error("회원가입 실패 " + e);
-
-                status = HttpStatus.INTERNAL_SERVER_ERROR.value();
-                msg = "회원가입 실패";
+                throw new CustomException("회원가입 실패", FAIL_TO_REGISTER);
             }
         }
 
@@ -100,8 +95,7 @@ public class MemberController {
         Pattern pattern = Pattern.compile(regx);
 
         if (!pattern.matcher(ssgameId).matches()) {
-            status = HttpStatus.BAD_REQUEST.value();
-            msg = "ID가 형식에 맞지 않습니다.";
+            throw new InvalidValueException(ssgameId, INVALID_ID_FORMAT);
         } else if (memberService.hasSsgameId(ssgameId)) {
             status = HttpStatus.OK.value();
             msg = "이미 존재하는 ID입니다.";
@@ -125,32 +119,27 @@ public class MemberController {
         Map<String, Object> data = new HashMap<>();
 
         if (errors.hasErrors()) {
-            status = HttpStatus.BAD_REQUEST.value();
             if (errors.hasFieldErrors()) {
                 // field error
+                status = HttpStatus.BAD_REQUEST.value();
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
-                // global error
-                msg = "global error";
+                throw new CustomException("global error", GLOBAL_ERROR);
             }
         } else {
             // 입력한 아이디가 db에 있는지 확인
-            ResponseLoginMemberDto responseLoginMemberDto = memberService.findResponseLoginMemberDtoBySsgameId(requestLoginMemberDto.getSsgameId());
-            if (responseLoginMemberDto == null) {
-                // 해당 아이디로 검색된 회원이 없는 경우
-                status = HttpStatus.NO_CONTENT.value();
-                msg = "아이디를 다시 확인해주세요.";
-            } else if (!passwordEncoder.matches(requestLoginMemberDto.getPassword(), responseLoginMemberDto.getPassword())) {
-                // db에 있는 비밀번호와 입력한 비밀번호가 일치하지 않는 경우
-                status = HttpStatus.UNAUTHORIZED.value();
-                msg = "비밀번호를 다시 확인해주세요.";
+            MemberDto memberDto = memberService.findMemberDtoBySsggameId(requestLoginMemberDto.getSsgameId());
+            if (memberDto == null) {
+                throw new CustomException("member not found", SSGAMEID_NOT_FOUND);
+            } else if (!passwordEncoder.matches(requestLoginMemberDto.getPassword(), memberDto.getPassword())) {
+                throw new InvalidValueException("wrong password", PASSWORD_NOT_MATCH);
             } else {
-                String jwtToken = JwtTokenUtil.getToken(responseLoginMemberDto.getSsgameId());
+                String jwtToken = JwtTokenUtil.getToken(memberDto.getSsgameId());
 
                 status = HttpStatus.OK.value();
                 msg = "로그인에 성공했습니다.";
-                data.put("memberInfo", responseLoginMemberDto);
+                data.put("steamID", memberDto.getSteamID());
                 data.put("jwtToken", jwtToken);
             }
         }
@@ -162,7 +151,7 @@ public class MemberController {
                 .build();
     }
 
-    @GetMapping("/me/{ssgameId}")
+    @GetMapping("/me")
     public BaseResponseDto me(Authentication authentication) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
@@ -171,16 +160,14 @@ public class MemberController {
         Map<String, Object> data = new HashMap<>();
 
         if (authentication == null) {
-            throw new UnauthorizedAccessException("authentication is null");
-//            status = HttpStatus.UNAUTHORIZED.value();
-//            msg = "unauthorized access";
+            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
         } else {
             CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-            Long memberSeq = details.getMember().getMemberSeq();
+            String ssgameId = details.getUsername();
 
+            data.put("memberInfo", memberService.findResponseMemberDtoBySsgameId(ssgameId));
             status = HttpStatus.OK.value();
-            msg = "임시 회원 정보 반환";
-            data.put("member", memberService.findResponseLoginMemberDtoByMemberSeq(memberSeq));
+            msg = "회원 정보 조회에 성공했습니다.";
         }
 
         return BaseResponseDto.builder()
