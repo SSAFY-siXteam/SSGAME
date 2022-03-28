@@ -20,7 +20,7 @@ public interface MemberService {
 
     MemberDto findMemberDtoBySsggameId(String ssgameId);
 
-    ResponseLoginMemberDto findResponseLoginMemberDtoByMemberSeq(Long memberSeq);
+    ResponseMemberDto findResponseMemberDtoBySsgameId(String ssgameId);
 
     Member findMemberBySsgameId(String ssgameId);
 

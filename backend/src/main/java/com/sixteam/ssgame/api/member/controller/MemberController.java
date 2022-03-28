@@ -151,7 +151,7 @@ public class MemberController {
                 .build();
     }
 
-    @GetMapping("/me/{ssgameId}")
+    @GetMapping("/me")
     public BaseResponseDto me(Authentication authentication) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
@@ -163,11 +163,11 @@ public class MemberController {
             throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
         } else {
             CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-            Long memberSeq = details.getMember().getMemberSeq();
+            String ssgameId = details.getUsername();
 
+            data.put("memberInfo", memberService.findResponseMemberDtoBySsgameId(ssgameId));
             status = HttpStatus.OK.value();
-            msg = "임시 회원 정보 반환";
-            data.put("member", memberService.findResponseLoginMemberDtoByMemberSeq(memberSeq));
+            msg = "회원 정보 조회에 성공했습니다.";
         }
 
         return BaseResponseDto.builder()

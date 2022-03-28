@@ -150,37 +150,24 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findMemberBySsgameId(String ssgameId) {
-        return memberRepository.findBySsgameId(ssgameId);
-    }
+    public ResponseMemberDto findResponseMemberDtoBySsgameId(String ssgameId) {
 
-    @Override
-    public ResponseLoginMemberDto findResponseLoginMemberDtoBySsgameId(String ssgameId) {
+        MemberDto member = findMemberDtoBySsggameId(ssgameId);
 
-        Member member = memberRepository.findBySsgameId(ssgameId);
-        if (member == null) {
-            throw new EntityNotFoundException("cannot find member by " + ssgameId);
-        }
-
-        List<MemberPreferredCategory> categories = memberPreferredCategoryRepository.findAllByMember(member);
-
-        List<String> preferredCategories = new ArrayList<>();
-        for (MemberPreferredCategory category : categories) {
-            preferredCategories.add(category.getCategory().getCategoryName());
-        }
-
-        return ResponseLoginMemberDto.builder()
-                .memberSeq(member.getMemberSeq())
+        return ResponseMemberDto.builder()
                 .ssgameId(member.getSsgameId())
-                .password(member.getPassword())
                 .email(member.getEmail())
                 .steamID(member.getSteamID())
                 .steamNickname(member.getSteamNickname())
                 .avatarUrl(member.getAvatarUrl())
-                .isPublic(member.getIsPublic())
                 .gameCount(member.getGameCount())
-                .preferredCategories(preferredCategories)
+                .preferredCategories(member.getPreferredCategories())
                 .build();
+    }
+
+    @Override
+    public Member findMemberBySsgameId(String ssgameId) {
+        return memberRepository.findBySsgameId(ssgameId);
     }
 
 }
