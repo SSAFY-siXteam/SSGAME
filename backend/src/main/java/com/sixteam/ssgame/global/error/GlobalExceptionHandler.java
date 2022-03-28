@@ -75,7 +75,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponseDto> handleBusinessException(final BusinessException e) {
         // Invalid Value Exception - 400th error
-        log.error("handleBusinessException", e);
+        // 기존 에러 메세지 전체를 볼 수 있는 구문
+//        log.error("handleBusinessException", e);
+        // 에러 메세지를 간략화해서 발생 에러와 발생 위치만 볼 수 있는 구문
+        log.error("[ " + e.getErrorStatus() + " ] " + e.getErrorStatus().getMsg());
         final ErrorStatus errorStatus = e.getErrorStatus();
         final ErrorResponseDto response = ErrorResponseDto.of(errorStatus);
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorStatus.getStatus()));
