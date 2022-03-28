@@ -1,0 +1,5 @@
+.DS_Store
+.sftp
+
+# dependencies
+/node_modules
