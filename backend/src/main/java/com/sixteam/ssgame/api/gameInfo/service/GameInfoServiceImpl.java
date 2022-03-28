@@ -35,6 +35,8 @@ public class GameInfoServiceImpl implements GameInfoService {
 
     private final MemberRepository memberRepository;
 
+    private final String NONE = "none";
+
     @Override
     public ResponseGameInfoDto findResponseGameInfoDto(Long gameSeq, Long memberSeq) throws ParseException {
 
@@ -44,7 +46,7 @@ public class GameInfoServiceImpl implements GameInfoService {
         }
 
         // movie json parsing -> mp4 480
-        String movieUrl = "no content";
+        String movieUrl = NONE;
         String movieString = gameInfo.getMovies();
         if (movieString != null) {
             movieString = movieString.replaceAll("'", "\"").replaceAll("True", "true").replaceAll("False", "false");
@@ -65,6 +67,7 @@ public class GameInfoServiceImpl implements GameInfoService {
         boolean isMemberRated = (memberGameList.getMemberGameRating() != null);
 
         // genre
+        // 얘도 query로 짜는게 더 빠르긴 하겠다
         List<GameGenre> gameGenres = gameGenreRepository.findAllByGameInfo(gameInfo);
         List<String> genreNames = new ArrayList<>();
         if (gameGenres != null) {
@@ -77,10 +80,10 @@ public class GameInfoServiceImpl implements GameInfoService {
         return ResponseGameInfoDto.builder()
                 .gameSeq(gameInfo.getGameSeq())
                 .gameName(gameInfo.getGameName())
-                .shortDescriptionKr(gameInfo.getShortDescriptionKr())
-                .headerImage(gameInfo.getHeaderImage())
+                .shortDescriptionKr((gameInfo.getShortDescriptionKr() != null) ? gameInfo.getShortDescriptionKr() : NONE)
+                .headerImage((gameInfo.getHeaderImage() != null) ? gameInfo.getHeaderImage() : NONE)
                 .movies(movieUrl)
-                .averageRating(0D)
+                .averageRating(averageRating)
                 .isPlayed(isMemberPlayedGame)
                 .isRated(isMemberPlayedGame && isMemberRated)
                 .memberGameRating((isMemberPlayedGame && isMemberRated) ? memberGameList.getMemberGameRating() : -1)

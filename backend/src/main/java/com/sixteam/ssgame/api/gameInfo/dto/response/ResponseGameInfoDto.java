@@ -30,15 +30,13 @@ public class ResponseGameInfoDto {
 
     private List<String> genres;
 
-    private final String defaultValue = "none";
-
     @Builder
     public ResponseGameInfoDto(Long gameSeq, String gameName, String shortDescriptionKr, String headerImage, String movies, Double averageRating, Boolean isPlayed, Boolean isRated, Integer memberGameRating, List<String> genres) {
         this.gameSeq = gameSeq;
         this.gameName = gameName;
-        this.shortDescriptionKr = (shortDescriptionKr != null) ? shortDescriptionKr : defaultValue;
-        this.headerImage = (headerImage != null) ? headerImage : defaultValue;
-        this.movies = (movies != null) ? movies : defaultValue;
+        this.shortDescriptionKr = shortDescriptionKr;
+        this.headerImage = headerImage;
+        this.movies = movies;
         this.averageRating = averageRating;
         this.isPlayed = isPlayed;
         this.isRated = isRated;
