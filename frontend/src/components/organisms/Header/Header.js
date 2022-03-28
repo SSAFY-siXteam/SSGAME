@@ -50,7 +50,9 @@ const Header = ({ logged, onLogOut, onLogIn }) => {
               <StyledMenu>
                 <Link to="/mypage">회원정보 수정</Link>
               </StyledMenu>
-              <StyledMenu>내 게임 목록</StyledMenu>
+              <StyledMenu>
+                <Link to="/mygame">내 게임 목록</Link>
+              </StyledMenu>
               <StyledMenu
                 onClick={() => {
                   onLogOut();

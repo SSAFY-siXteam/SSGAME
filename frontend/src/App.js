@@ -9,6 +9,7 @@ import MyPage from "./components/pages/MyPage/MyPage";
 import { setCookie, getCookie, removeCookie } from "./utils/cookie";
 import GamePage from "./components/pages/GamePage/GamePage";
 import { signIn } from "./apis/user";
+import MyGamePage from "./components/pages/MyGamePage/MyGamePage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -66,6 +67,7 @@ function App() {
           <Route path="/register" element={<SignUpPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/game/:gameSeq" element={<GamePage />} />
+          <Route path="/mygame" element={<MyGamePage />} />
         </Routes>
       </Grid>
     </>
