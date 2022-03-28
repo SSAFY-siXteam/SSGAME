@@ -48,7 +48,7 @@ public class SteamAPIScrap {
             JSONArray playerInfoJsons = (JSONArray) totalInfoJson.get("players");
 
             if (playerInfoJsons.size() == 0) {
-                throw new InvalidSteamIDException("invalid steam ID : " + steamID);
+                throw new CustomException("[Error] invalid steam ID : " + steamID, ErrorStatus.INVALID_STEAMID);
             }
             JSONObject playerInfoJson = (JSONObject) playerInfoJsons.get(0);
 
