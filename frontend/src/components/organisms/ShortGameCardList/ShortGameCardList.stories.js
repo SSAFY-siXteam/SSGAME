@@ -1,12 +1,12 @@
 import React from "react";
-import RecGames from "./RecGames.js";
+import ShortGameCardList from "./ShortGameCardList.js";
 
 export default {
-  title: "organisms/RecGames",
-  component: RecGames,
+  title: "organisms/ShortGameCardList",
+  component: ShortGameCardList,
 };
 
-const Template = (args) => <RecGames {...args} />;
+const Template = (args) => <ShortGameCardList {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {

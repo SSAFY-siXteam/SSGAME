@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Title from "../../atoms/Title/Title";
 import Video from "../../atoms/Video/Video";
-import RecGames from "../../organisms/RecGames/RecGames";
+import ShortGameCardList from "../../organisms/ShortGameCardList/ShortGameCardList";
 import RecommendTemplate from "../../templates/RecommendTemplate/RecommendTemplate";
 import LongGameCardList from "../../organisms/LongGameCardList/LongGameCardList";
 import { getRecommendGames } from "../../../apis/recommend";
@@ -45,7 +45,7 @@ const RecommendPage = () => {
   const args = {
     video: Video({ path: selectVideo }),
     topRec: LongGameCardList({ data: topRec }),
-    otherRec: RecGames({ data: otherRec }),
+    otherRec: ShortGameCardList({ data: otherRec }),
   };
 
   return (

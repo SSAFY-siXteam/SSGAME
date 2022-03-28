@@ -2,7 +2,7 @@ import React from "react";
 import GameCard from "../../molecules/GameCard/GameCard";
 import Title from "../../atoms/Title/Title";
 
-const RecGames = ({ data }) => {
+const ShortGameCardList = ({ data }) => {
   return (
     <div>
       <Title title="Try also..." />
@@ -11,4 +11,4 @@ const RecGames = ({ data }) => {
   );
 };
 
-export default RecGames;
+export default ShortGameCardList;
