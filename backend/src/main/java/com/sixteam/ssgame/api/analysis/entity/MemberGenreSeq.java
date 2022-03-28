@@ -1,4 +1,4 @@
-package com.sixteam.ssgame.api.analyze.entity;
+package com.sixteam.ssgame.api.analysis.entity;
 
 import java.io.Serializable;
 import java.util.Objects;

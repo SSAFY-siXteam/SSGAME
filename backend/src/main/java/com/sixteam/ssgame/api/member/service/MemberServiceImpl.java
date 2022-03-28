@@ -1,10 +1,10 @@
 package com.sixteam.ssgame.api.member.service;
 
-import com.sixteam.ssgame.api.analyze.repository.CategoryRepository;
 import com.sixteam.ssgame.api.game.entity.Game;
 import com.sixteam.ssgame.api.game.entity.MemberGameList;
 import com.sixteam.ssgame.api.game.repository.GameRepository;
 import com.sixteam.ssgame.api.game.repository.MemberGameListRepository;
+import com.sixteam.ssgame.api.analysis.repository.CategoryRepository;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
 import com.sixteam.ssgame.api.member.entity.Member;

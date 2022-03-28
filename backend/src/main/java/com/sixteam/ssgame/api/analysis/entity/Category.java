@@ -1,4 +1,4 @@
-package com.sixteam.ssgame.api.analyze.entity;
+package com.sixteam.ssgame.api.analysis.entity;
 
 import com.sixteam.ssgame.api.member.entity.MemberPreferredCategory;
 import lombok.*;

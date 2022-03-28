@@ -1,6 +1,6 @@
 package com.sixteam.ssgame.api.member.dto.request;
 
-import com.sixteam.ssgame.api.analyze.enums.CategoryType;
+import com.sixteam.ssgame.api.analysis.enums.CategoryType;
 import com.sixteam.ssgame.global.common.validator.EnumListValidator;
 import lombok.Builder;
 import lombok.Getter;

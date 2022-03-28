@@ -1,6 +1,6 @@
-package com.sixteam.ssgame.api.analyze.entity;
+package com.sixteam.ssgame.api.analysis.entity;
 
-import com.sixteam.ssgame.api.game.entity.Genre;
+import com.sixteam.ssgame.api.gameInfo.entity.Genre;
 import com.sixteam.ssgame.api.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
