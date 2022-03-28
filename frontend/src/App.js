@@ -65,7 +65,7 @@ function App() {
           <Route path="/analyze" element={<AnalyzePage />} />
           <Route path="/register" element={<SignUpPage />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/game/:gameseq" element={<GamePage />} />
+          <Route path="/game/:gameSeq" element={<GamePage />} />
         </Routes>
       </Grid>
     </>
