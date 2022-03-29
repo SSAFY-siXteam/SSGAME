@@ -4,10 +4,11 @@ import com.sixteam.ssgame.api.gameInfo.service.GameInfoService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
 import com.sixteam.ssgame.global.common.util.LogUtil;
-import com.sixteam.ssgame.global.error.exception.UnauthorizedAccessException;
+import com.sixteam.ssgame.global.error.dto.ErrorStatus;
+import com.sixteam.ssgame.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.parser.ParseException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,20 +36,15 @@ public class GameInfoController {
         Map<String, Object> data = new HashMap<>();
 
         if (authentication == null) {
-            throw new UnauthorizedAccessException("authentication is null");
+            throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
         } else {
             CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
             Long memberSeq = details.getMember().getMemberSeq();
 
-            try {
-                data.put("gameInfo", gameInfoService.findResponseGameInfoDto(gameSeq, memberSeq));
-                status = HttpStatus.OK.value();
-                msg = "게임 정보 조회 성공";
-            } catch (ParseException e) {
-                status = HttpStatus.BAD_REQUEST.value();
-                msg = "게임 정보 조회 실패 - 처리 해야한다";
-                e.printStackTrace();
-            }
+            data.put("gameInfo", gameInfoService.findResponseGameInfoDto(gameSeq, memberSeq));
+
+            status = HttpStatus.OK.value();
+            msg = "게임 정보 조회 성공";
         }
 
         return BaseResponseDto.builder()

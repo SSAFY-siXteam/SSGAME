@@ -3,35 +3,48 @@ package com.sixteam.ssgame.global.error.dto;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import static org.springframework.http.HttpStatus.*;
+
+/**
+ * HttpStatus.NO_CONTENT 사용 자제
+ * 프론트까지 결과가 송출되지 않음
+ */
 @Getter
 public enum ErrorStatus {
 
     // Common
-    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST.value(), " Invalid Input Value"),
+    INVALID_INPUT_VALUE(BAD_REQUEST.value(), " Invalid Input Value"),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED.value(), " Invalid Input Value"),
-    ENTITY_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), " Entity Not Found"),
+    ENTITY_NOT_FOUND(BAD_REQUEST.value(), " Entity Not Found"),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Server Error"),
-    INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST.value(), " Invalid Type Value"),
-    HANDLE_ACCESS_DENIED(HttpStatus.FORBIDDEN.value(), "Access is Denied"),
-//    GLOBAL_ERROR(HttpStatus.BAD_REQUEST.value(), "Global Error in Post Mapping"),
+    INVALID_TYPE_VALUE(BAD_REQUEST.value(), " Invalid Type Value"),
+    HANDLE_ACCESS_DENIED(FORBIDDEN.value(), "Access is Denied"),
+    GLOBAL_ERROR(BAD_REQUEST.value(), "Global Error"),
 //    FIELD_ERROR(HttpStatus.BAD_REQUEST.value(), "Field Error in Post Mapping"),
-    UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED.value(), "인증 오류"),
+    UNAUTHORIZED_ACCESS(UNAUTHORIZED.value(), "인증 오류"),
+    JSON_PARSE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "내부 데이터 오류"),
 
 
     // Member
-    SSGAMEID_DUPLICATION(HttpStatus.CONFLICT.value(), "이미 존재하는 ID입니다."),
-    EMAIL_DUPLICATION(HttpStatus.CONFLICT.value(), "해당 이메일로 가입한 계정이 존재합니다."),         // 409, "Email is Duplication"
-    STEAMID_DUPLICATION(HttpStatus.CONFLICT.value(), "해당 Steam ID로 가입한 계정이 존재합니다."),    // 409, "Steam ID is Duplication"
-    PASSWORD_CONTAINED_SSGAMEID(HttpStatus.BAD_REQUEST.value(), "패스워드에 아이디가 포함될 수 없습니다."),          // "ssgameId into password"
-
-    LOGIN_INPUT_INVALID(HttpStatus.BAD_REQUEST.value(), "Login input is invalid"),
+    // register
+    SSGAMEID_DUPLICATION(CONFLICT.value(), "이미 존재하는 ID입니다."),
+    EMAIL_DUPLICATION(CONFLICT.value(), "해당 이메일로 가입한 계정이 존재합니다."),         // 409, "Email is Duplication"
+    STEAMID_DUPLICATION(CONFLICT.value(), "해당 Steam ID로 가입한 계정이 존재합니다."),    // 409, "Steam ID is Duplication"
+    PASSWORD_CONTAINED_SSGAMEID(BAD_REQUEST.value(), "패스워드에 ID가 포함될 수 없습니다."),          // "ssgameId into password"
+    FAIL_TO_REGISTER(HttpStatus.INTERNAL_SERVER_ERROR.value(), "회원가입 실패"),
+    // id check
+    INVALID_ID_FORMAT(BAD_REQUEST.value(), "ID 형식에 맞지 않습니다."),
+    // login
+    LOGIN_INPUT_INVALID(BAD_REQUEST.value(), "Login input is invalid"),
+    SSGAMEID_NOT_FOUND(BAD_REQUEST.value(), "ID를 다시 확인해주세요."),
+    PASSWORD_NOT_MATCH(UNAUTHORIZED.value(), "비밀번호를 다시 확인해주세요."),
 
     // API
-    API_NOT_CONNECTION(HttpStatus.BAD_GATEWAY.value(), "Fail to connect"),
-    INVALID_STEAMID(HttpStatus.BAD_REQUEST.value(), "확인되지 않는 Steam ID입니다."),
+    API_NOT_CONNECTION(BAD_GATEWAY.value(), "Fail to connect"),
+    INVALID_STEAMID(BAD_REQUEST.value(), "확인되지 않는 Steam ID입니다."),
 
-    // Game
-    GAME_NOT_FOUND(HttpStatus.BAD_GATEWAY.value(), "존재하지 않는 게임입니다.")
+    // Game Info
+    GAME_NOT_FOUND(BAD_GATEWAY.value(), "존재하지 않는 게임입니다.")
     ;
 
     private Integer status;
