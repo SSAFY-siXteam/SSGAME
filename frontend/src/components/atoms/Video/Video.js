@@ -2,9 +2,13 @@ import React from "react";
 
 const Video = ({ path }) => {
   return (
-    <video controls width="100%">
-      <source src={path} type="video/mp4" />
-    </video>
+    <>
+      {path && (
+        <video src={path} controls width="100%">
+          <source src={path} type="video/mp4" />
+        </video>
+      )}
+    </>
   );
 };
 
