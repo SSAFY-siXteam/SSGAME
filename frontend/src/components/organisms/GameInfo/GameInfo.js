@@ -1,5 +1,5 @@
 import React from "react";
-import InfoText from "../../atoms/Info/InfoText/InfoText";
+import InfoText from "../../atoms/Text/InfoText/InfoText";
 import Title from "../../atoms/Title/Title";
 import GameInfoItem from "../../molecules/GameInfoItem/GameInfoItem";
 
