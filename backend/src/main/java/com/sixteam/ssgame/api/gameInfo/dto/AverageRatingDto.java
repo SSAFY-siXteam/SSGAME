@@ -1,4 +1,4 @@
-package com.sixteam.ssgame.api.gameInfo.dto.response;
+package com.sixteam.ssgame.api.gameInfo.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;

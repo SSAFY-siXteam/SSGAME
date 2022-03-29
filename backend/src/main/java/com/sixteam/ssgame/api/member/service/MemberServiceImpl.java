@@ -5,15 +5,17 @@ import com.sixteam.ssgame.api.gameInfo.entity.GameInfo;
 import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
 import com.sixteam.ssgame.api.gameInfo.repository.GameInfoRepository;
 import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
+import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
-import com.sixteam.ssgame.api.member.dto.response.ResponseLoginMemberDto;
+import com.sixteam.ssgame.api.member.dto.response.ResponseMemberDto;
+
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.entity.MemberPreferredCategory;
 import com.sixteam.ssgame.api.member.repository.MemberPreferredCategoryRepository;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
-import com.sixteam.ssgame.global.common.steamapi.APIConnectionException;
 import com.sixteam.ssgame.global.common.steamapi.SteamAPIScrap;
-import com.sixteam.ssgame.global.error.exception.EntityNotFoundException;
+import com.sixteam.ssgame.global.error.exception.CustomException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -26,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 
 @Transactional(readOnly = true)
 @Slf4j
@@ -62,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void register(RequestMemberDto requestMemberDto) {
+    public void register(RequestMemberDto requestMemberDto) throws IOException, ParseException {
         String encryptedPassword = passwordEncoder.encode(requestMemberDto.getPassword());
         log.debug("패스워드 암호화 " + encryptedPassword);
 
@@ -70,12 +74,9 @@ public class MemberServiceImpl implements MemberService {
         Map<String, Object> steamAPIGameData = new HashMap<>();
 
         String steamID = requestMemberDto.getSteamID();
-        try {
-            steamAPIMemberData = SteamAPIScrap.getMemberData(steamID);
-            steamAPIGameData = SteamAPIScrap.getGameData(steamID);
-        } catch (IOException | ParseException | APIConnectionException e) {
-            e.printStackTrace();
-        }
+
+        steamAPIMemberData = SteamAPIScrap.getMemberData(steamID);
+        steamAPIGameData = SteamAPIScrap.getGameData(steamID);
 
         Member savedMember = memberRepository.save(Member.builder()
                 .ssgameId(requestMemberDto.getSsgameId())
@@ -103,7 +104,7 @@ public class MemberServiceImpl implements MemberService {
             // steam app id에 해당하는 게임 저장
             if (gameInfo == null) {
                 // 게임 정보를 db에 저장한 이후에 사용
-//                throw new GameNotFoundException(steamAppid);
+//                throw new CustomException(steamAppid, GAME_NOT_FOUND);
                 gameInfo = gameInfoRepository.save(GameInfo.builder()
                         .gameName("beta test")
                         .steamAppid(steamAppid)
@@ -121,11 +122,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ResponseLoginMemberDto findResponseLoginMemberDtoByMemberSeq(Long memberSeq) {
+    public MemberDto findMemberDtoBySsggameId(String ssgameId) {
 
-        Member member = memberRepository.findByMemberSeq(memberSeq);
+        Member member = memberRepository.findBySsgameId(ssgameId);
         if (member == null) {
-            throw new EntityNotFoundException("cannot find member by " + memberSeq);
+            throw new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND);
         }
 
         List<MemberPreferredCategory> categories = memberPreferredCategoryRepository.findAllByMember(member);
@@ -135,7 +136,7 @@ public class MemberServiceImpl implements MemberService {
             preferredCategories.add(category.getCategory().getCategoryName());
         }
 
-        return ResponseLoginMemberDto.builder()
+        return MemberDto.builder()
                 .memberSeq(member.getMemberSeq())
                 .ssgameId(member.getSsgameId())
                 .password(member.getPassword())
@@ -146,6 +147,22 @@ public class MemberServiceImpl implements MemberService {
                 .isPublic(member.getIsPublic())
                 .gameCount(member.getGameCount())
                 .preferredCategories(preferredCategories)
+                .build();
+    }
+
+    @Override
+    public ResponseMemberDto findResponseMemberDtoBySsgameId(String ssgameId) {
+
+        MemberDto member = findMemberDtoBySsggameId(ssgameId);
+
+        return ResponseMemberDto.builder()
+                .ssgameId(member.getSsgameId())
+                .email(member.getEmail())
+                .steamID(member.getSteamID())
+                .steamNickname(member.getSteamNickname())
+                .avatarUrl(member.getAvatarUrl())
+                .gameCount(member.getGameCount())
+                .preferredCategories(member.getPreferredCategories())
                 .build();
     }
 
@@ -153,34 +170,4 @@ public class MemberServiceImpl implements MemberService {
     public Member findMemberBySsgameId(String ssgameId) {
         return memberRepository.findBySsgameId(ssgameId);
     }
-
-    @Override
-    public ResponseLoginMemberDto findResponseLoginMemberDtoBySsgameId(String ssgameId) {
-
-        Member member = memberRepository.findBySsgameId(ssgameId);
-        if (member == null) {
-            throw new EntityNotFoundException("cannot find member by " + ssgameId);
-        }
-
-        List<MemberPreferredCategory> categories = memberPreferredCategoryRepository.findAllByMember(member);
-
-        List<String> preferredCategories = new ArrayList<>();
-        for (MemberPreferredCategory category : categories) {
-            preferredCategories.add(category.getCategory().getCategoryName());
-        }
-
-        return ResponseLoginMemberDto.builder()
-                .memberSeq(member.getMemberSeq())
-                .ssgameId(member.getSsgameId())
-                .password(member.getPassword())
-                .email(member.getEmail())
-                .steamID(member.getSteamID())
-                .steamNickname(member.getSteamNickname())
-                .avatarUrl(member.getAvatarUrl())
-                .isPublic(member.getIsPublic())
-                .gameCount(member.getGameCount())
-                .preferredCategories(preferredCategories)
-                .build();
-    }
-
 }
