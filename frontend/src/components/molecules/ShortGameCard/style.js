@@ -22,3 +22,7 @@ export const Genre = styled.div`
 export const PriceInfo = styled.div`
   float: right;
 `;
+
+export const InlineImg = styled.img`
+  display: inline-block;
+`;

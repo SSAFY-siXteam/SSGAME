@@ -30,3 +30,7 @@ export const NameText = styled.div`
 export const TagText = styled.span`
   margin-right: 10px;
 `;
+
+export const InlineBlock = styled.div`
+  display: inline-block;
+`;
