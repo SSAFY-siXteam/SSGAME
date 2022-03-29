@@ -9,6 +9,7 @@ import {
   StyledImg,
   StyledProfileInfo,
   StyledProfileInfoContent,
+  StyledButtons,
 } from "./styles";
 const MyPageTemplate = ({ checkBox, profileImg, updateBtn, withdrawalBtn }) => {
   return (
@@ -24,8 +25,10 @@ const MyPageTemplate = ({ checkBox, profileImg, updateBtn, withdrawalBtn }) => {
 
       <CategoryHeader>선호 게임 카테고리</CategoryHeader>
       <div>{checkBox}</div>
-      <StyledUpdateBtn>{updateBtn}</StyledUpdateBtn>
-      <StyledWithdrawalBtn>{withdrawalBtn}</StyledWithdrawalBtn>
+      <StyledButtons>
+        <StyledUpdateBtn>{updateBtn}</StyledUpdateBtn>
+        <StyledWithdrawalBtn>{withdrawalBtn}</StyledWithdrawalBtn>
+      </StyledButtons>
     </StyledMyPage>
   );
 };
