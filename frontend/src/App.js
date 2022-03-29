@@ -22,10 +22,16 @@ function App() {
       alert("비밀번호를 입력해주세요");
     } else {
       signIn({ ssgameId: userId, password: userPassword }).then((res) => {
-        // console.log(res);
+        console.log(res.data.data);
         if (res.data.status === 200) {
           console.log("성공");
-          setCookie("userToken", "testtestttttest", {
+          setCookie("SSGAME_USER_TOKEN", res.data.data.jwtToken, {
+            path: "/",
+          });
+          setCookie("SSGAME_USER_ID", res.data.data.memberInfo.ssgameId, {
+            path: "/",
+          });
+          setCookie("SSGAME_USER_NO", res.data.data.memberInfo.steamID, {
             path: "/",
           });
           setIsLoggedIn(true);
@@ -47,13 +53,15 @@ function App() {
     // 성공시
   };
   const onLogOut = () => {
-    removeCookie("userToken");
+    removeCookie("SSGAME_USER_TOKEN");
+    removeCookie("SSGAME_USER_ID");
+    removeCookie("SSGAME_USER_NO");
     setIsLoggedIn(false);
   };
 
   useEffect(() => {
     //cookie가 있을 때
-    if (getCookie("userToken")) {
+    if (getCookie("SSGAME_USER_TOKEN")) {
       setIsLoggedIn(true);
     }
   }, []);
