@@ -27,10 +27,10 @@ function App() {
           setCookie("SSGAME_USER_TOKEN", res.data.data.jwtToken, {
             path: "/",
           });
-          setCookie("SSGAME_USER_ID", res.data.data.memberInfo.ssgameId, {
+          setCookie("SSGAME_USER_ID", res.data.data.ssgameId, {
             path: "/",
           });
-          setCookie("SSGAME_USER_NO", res.data.data.memberInfo.steamID, {
+          setCookie("SSGAME_USER_NO", res.data.data.steamID, {
             path: "/",
           });
           setIsLoggedIn(true);
