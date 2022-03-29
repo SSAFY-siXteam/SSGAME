@@ -1,30 +1,49 @@
 import React from "react";
 import Title from "../../atoms/Title/Title";
 import MostPlayedGameItem from "../../molecules/LongGameCard/LongGameCard";
-import { StyledTitle, GameItems } from "./style.js";
+import { StyledTitle, GameItems, MovieBtn } from "./style.js";
 import { useNavigate } from "react-router-dom";
 
-const LongGameCardList = ({ data, title, changeVideo }) => {
+const LongGameCardList = ({ data, title, itemBtn, itemBtnOnClick }) => {
   const navigate = useNavigate();
 
   return (
     <>
-      {data && (
+      {data ? (
         <div>
           <StyledTitle>{title && <Title title={title} />}</StyledTitle>
           <GameItems>
             {data.map((info, index) => (
-              <MostPlayedGameItem
-                onClick={() => {
-                  changeVideo(info.movies);
-                  // navigate(`/game/${info.gameSeq}`);
-                }}
-                key={index}
-                info={info}
-              />
+              <div key={index}>
+                {/* <img
+                  src="https://svgsilh.com/svg/303309-ff5722.svg"
+                  width="10"
+                /> */}
+                <MostPlayedGameItem
+                  onClick={() => {
+                    // changeVideo(info.movies);
+                    navigate(`/game/${info.gameSeq}`);
+                  }}
+                  info={info}
+                />
+                {itemBtn && (
+                  <>
+                    <MovieBtn
+                      onClick={() => {
+                        itemBtnOnClick(info.movies);
+                      }}
+                    >
+                      👉{itemBtn}👈
+                    </MovieBtn>
+                    <hr />
+                  </>
+                )}
+              </div>
             ))}
           </GameItems>
         </div>
+      ) : (
+        <div>Loading...</div>
       )}
     </>
   );

@@ -53,7 +53,13 @@ const RecommendPage = () => {
       <Title title="맞춤 게임 추천" />
       <RecommendTemplate
         video={<Video path={selectVideo} />}
-        topRec={<LongGameCardList data={topRec} changeVideo={changeVideo} />}
+        topRec={
+          <LongGameCardList
+            data={topRec}
+            itemBtn="트레일러 확인하기"
+            itemBtnOnClick={changeVideo}
+          />
+        }
         otherRec={<ShortGameCardList data={otherRec} />}
       />
     </div>
