@@ -138,6 +138,7 @@ public class MemberController {
 
                 status = HttpStatus.OK.value();
                 msg = "로그인에 성공했습니다.";
+                data.put("ssgameId", memberDto.getSsgameId());
                 data.put("steamID", memberDto.getSteamID());
                 data.put("jwtToken", jwtToken);
             }
