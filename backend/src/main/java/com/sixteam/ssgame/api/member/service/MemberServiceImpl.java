@@ -8,6 +8,7 @@ import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberDto;
+
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.entity.MemberPreferredCategory;
 import com.sixteam.ssgame.api.member.repository.MemberPreferredCategoryRepository;
@@ -169,5 +170,4 @@ public class MemberServiceImpl implements MemberService {
     public Member findMemberBySsgameId(String ssgameId) {
         return memberRepository.findBySsgameId(ssgameId);
     }
-
 }

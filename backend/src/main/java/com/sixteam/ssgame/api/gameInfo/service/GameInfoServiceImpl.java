@@ -11,6 +11,7 @@ import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import com.sixteam.ssgame.global.common.util.LogUtil;
 import com.sixteam.ssgame.global.error.dto.ErrorStatus;
 import com.sixteam.ssgame.global.error.exception.CustomException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -36,8 +37,6 @@ public class GameInfoServiceImpl implements GameInfoService {
     private final GameGenreRepository gameGenreRepository;
 
     private final MemberRepository memberRepository;
-
-    private final String NONE = "none";
 
     @Override
     public ResponseGameInfoDto findResponseGameInfoDto(Long gameSeq, Long memberSeq) {
