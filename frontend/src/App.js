@@ -9,11 +9,8 @@ import MyPage from "./components/pages/MyPage/MyPage";
 import { setCookie, getCookie, removeCookie } from "./utils/cookie";
 import GamePage from "./components/pages/GamePage/GamePage";
 import { signIn } from "./apis/user";
-<<<<<<< HEAD
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
-=======
 import MyGamePage from "./components/pages/MyGamePage/MyGamePage";
->>>>>>> 4ba39918c961549f8803ce56b11dcaac79eec29d
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
