@@ -70,7 +70,7 @@ public class GameInfoServiceImpl implements GameInfoService {
         // 회원 관련 속성 - isPlayed, isRated, memberGameRating
         MemberGameList memberGameList = memberGameListRepository.findByMemberAndGameInfo(memberRepository.findByMemberSeq(memberSeq), gameInfo);
         boolean isMemberPlayedGame = (memberGameList != null);
-        boolean isMemberRated = (memberGameList.getMemberGameRating() != null);
+        boolean isMemberRated = isMemberPlayedGame && (memberGameList.getMemberGameRating() != null);
 
         // genre
         List<GameGenre> gameGenres = gameGenreRepository.findAllByGameInfo(gameInfo);
@@ -90,8 +90,8 @@ public class GameInfoServiceImpl implements GameInfoService {
                 .movies(movieUrl)
                 .averageRating(averageRating)
                 .isPlayed(isMemberPlayedGame)
-                .isRated(isMemberPlayedGame && isMemberRated)
-                .memberGameRating((isMemberPlayedGame && isMemberRated) ? memberGameList.getMemberGameRating() : -1)
+                .isRated(isMemberRated)
+                .memberGameRating(isMemberRated ? memberGameList.getMemberGameRating() : -1)
                 .genres(genreNames)
                 .build();
     }
