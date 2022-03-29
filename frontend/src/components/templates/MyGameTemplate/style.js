@@ -12,7 +12,7 @@ export const StyledBar = styled.div`
   margin-top: 30px;
 `;
 export const StyledBarLeft = styled.div`
-  float: left;
+  margin-right: auto;
 `;
 export const StyledBarRight = styled.div`
   margin-left: auto;
