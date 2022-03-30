@@ -2,6 +2,7 @@ package com.sixteam.ssgame.api.recommendation.service;
 
 import com.sixteam.ssgame.api.gameInfo.entity.GameInfo;
 import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
+import com.sixteam.ssgame.api.gameInfo.service.GameInfoService;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import com.sixteam.ssgame.api.recommendation.dto.ResponseRecommendGameListDto;
@@ -32,6 +33,9 @@ public class RecommendedGameServiceImpl implements RecommendedGameService {
     @Autowired
     private MemberGameListRepository memberGameListRepository;
 
+    @Autowired
+    private GameInfoService gameInfoService;
+
     @Override
     public ResponseRecommendGameListDto getRecommendedGameList(Long memberSeq) {
         Member member = memberRepository.findByMemberSeq(memberSeq);
@@ -43,6 +47,7 @@ public class RecommendedGameServiceImpl implements RecommendedGameService {
         for (MemberRecommendedGame memberRecommendedGame : member.getMemberRecommendedGames()) {
             // 게임 조회
             GameInfo gameInfo = memberRecommendedGame.getGameInfo();
+            // Todo : gameInfo exception
 
             // 각 게임 별점 평균 연산
             Double averageRating = memberGameListRepository.getAverageRatingByGameSeq(gameInfo.getGameSeq()).getAverageRating();
@@ -59,7 +64,7 @@ public class RecommendedGameServiceImpl implements RecommendedGameService {
                             .collect(Collectors.toList()))
                     .averageRating(averageRating)
                     .price(gameInfo.getPrice())
-                    .movies(gameInfo.getMovies())
+                    .movies(gameInfoService.jsonParsingMovies(gameInfo))
                     .recommendRanking(rank++)
                     .build());
         }
