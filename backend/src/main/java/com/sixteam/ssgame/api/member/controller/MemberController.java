@@ -70,7 +70,7 @@ public class MemberController {
             throw new InvalidValueException(requestMemberDto.getEmail(), EMAIL_DUPLICATION);
         } else {
             try {
-                memberService.register(requestMemberDto);
+                data.put("isPublic", memberService.register(requestMemberDto));
                 status = CREATED.value();
                 msg = "회원가입 성공";
             } catch (ParseException e) {
