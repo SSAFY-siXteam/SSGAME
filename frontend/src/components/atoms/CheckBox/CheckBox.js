@@ -1,14 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export function CheckBox({ label, id, onChangeCheckBox }) {
+export function CheckBox({ label, id, onChangeCheckBox, checked }) {
   return (
     <input
       key={id}
       type="checkbox"
       name={label}
       value={label}
-      onChange={() => onChangeCheckBox(label)}
+      checked={checked}
+      onChange={() => {
+        onChangeCheckBox(label, id);
+      }}
     />
   );
 }

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { CheckBoxItem } from "../../molecules/CheckBoxItem/CheckBoxItem";
 import { CheckBoxModules } from "./styles";
 // checkbox list 객체
-export function CheckBoxModule({ list, onChangeCheckBox }) {
+export function CheckBoxModule({ list, onChangeCheckBox, checked }) {
   return (
     <CheckBoxModules>
       {list &&
@@ -13,6 +13,7 @@ export function CheckBoxModule({ list, onChangeCheckBox }) {
               id={index}
               list={lists}
               onChangeCheckBox={onChangeCheckBox}
+              checked={checked[index]}
             />
           </div>
         ))}
