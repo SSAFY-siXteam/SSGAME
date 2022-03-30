@@ -39,16 +39,23 @@
     "store": "^2.0.12"
   },
   "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.8",
     "ava": "^0.10.0",
     "ejs": "^2.4.2",
     "express": "^4.14.0",
     "express-session": "^1.13.0",
-    "passport": "^0.3.2"
+    "passport": "^0.3.2",
+    "pkg": "^5.5.2"
   },
   "scripts": {
     "test": "ava test/*.test.js",
     "example": "node examples/signon/app.js",
-    "example-router": "node examples/signon/app-router.js"
+    "example-router": "node examples/signon/app-router.js",
+    "build": "pkg ."
+  },
+  "bin": {
+    "app": "./examples/signon/app.js"
   },
   "engines": {
     "node": ">= 0.4.0"
