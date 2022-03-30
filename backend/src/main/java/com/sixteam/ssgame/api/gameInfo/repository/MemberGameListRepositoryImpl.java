@@ -15,8 +15,8 @@ import java.util.List;
 
 import static com.querydsl.core.types.dsl.MathExpressions.round;
 import static com.sixteam.ssgame.api.gameInfo.entity.QGameInfo.gameInfo;
+import static com.sixteam.ssgame.api.gameInfo.entity.QMemberGameList.memberGameList;
 import static com.sixteam.ssgame.api.member.entity.QMember.member;
-import static com.sixteam.ssgame.api.member.entity.QMemberGameList.memberGameList;
 
 public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCustom {
 
