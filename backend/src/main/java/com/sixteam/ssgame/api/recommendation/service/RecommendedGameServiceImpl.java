@@ -8,6 +8,7 @@ import com.sixteam.ssgame.api.recommendation.dto.ResponseRecommendGameListDto;
 import com.sixteam.ssgame.api.recommendation.dto.ResponseRecommendedGameInfoDto;
 import com.sixteam.ssgame.api.recommendation.entity.MemberRecommendedGame;
 import com.sixteam.ssgame.api.recommendation.repository.RecommendedGameRepository;
+import com.sixteam.ssgame.global.error.exception.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.sixteam.ssgame.global.error.dto.ErrorStatus.LACK_OF_RECOMMENDED_GAME;
 
 @Service
 @Transactional(readOnly = true)
@@ -59,6 +62,11 @@ public class RecommendedGameServiceImpl implements RecommendedGameService {
                     .movies(gameInfo.getMovies())
                     .recommendRanking(rank++)
                     .build());
+        }
+
+        // 추천 게임 개수 체크
+        if(responseRecommendedGameInfoDtos.size() != 11) {
+            throw new CustomException("lack of recommended game", LACK_OF_RECOMMENDED_GAME);
         }
 
         return ResponseRecommendGameListDto.builder()
