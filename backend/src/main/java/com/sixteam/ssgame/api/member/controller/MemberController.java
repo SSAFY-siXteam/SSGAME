@@ -1,8 +1,10 @@
 package com.sixteam.ssgame.api.member.controller;
 
+import com.sixteam.ssgame.api.gameInfo.service.MemberGameListService;
 import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
+import com.sixteam.ssgame.api.member.dto.response.ResponseMemberGamePageDto;
 import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
@@ -14,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
@@ -33,6 +36,8 @@ import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final MemberGameListService memberGameListService;
 
     private final PasswordEncoder passwordEncoder;
 
