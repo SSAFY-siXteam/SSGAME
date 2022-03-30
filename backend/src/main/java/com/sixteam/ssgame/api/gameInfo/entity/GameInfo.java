@@ -73,6 +73,9 @@ public class GameInfo {
     @OneToMany(mappedBy = "gameInfo", cascade = ALL)
     private List<MemberGameList> memberGameLists = new ArrayList<>();
 
+    @OneToMany(mappedBy = "gameInfo", cascade = ALL)
+    private List<GameGenre> gameGenres = new ArrayList<>();
+
     @Builder
     public GameInfo(Long gameSeq, String gameName, Long steamAppid, boolean isFree, String shortDescription, String shortDescriptionKr, String headerImage, String website, String developers, String publisher, String platforms, Long positive, Long negative, Integer price, String releaseDate, String movies, Integer averageForever, String languages, String screenshots, Long ownersMin, Long ownersMax) {
         this.gameSeq = gameSeq;
