@@ -29,10 +29,9 @@ public class RecommendedGameController {
         return BaseResponseDto.builder()
                 .status(HttpStatus.OK.value())
                 .data(new HashMap<>() {{
-                    put("recommendedGameList", recommendedGameService.getRecommendedGameList(1L));
+                    put("recommendedGameList", recommendedGameService.getRecommendedGameList(details.getMember().getMemberSeq()));
                 }})
                 .msg("추천 게임 리스트 조회 성공")
                 .build();
     }
 }
-//details.getMember().getMemberSeq())
