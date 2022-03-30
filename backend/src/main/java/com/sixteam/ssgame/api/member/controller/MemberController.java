@@ -176,4 +176,40 @@ public class MemberController {
                 .data(data)
                 .build();
     }
+
+    // page={page}&size={size}&sort={sort}&filter={filter}&search={search}
+    @GetMapping("/games")
+    public BaseResponseDto games(Authentication authentication,
+                                 Pageable pageable,
+                                 @RequestParam String sort,
+                                 @RequestParam boolean filter,
+                                 @RequestParam(required = false) String search) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        Integer status = null;
+        String msg = null;
+        Map<String, Object> data = new HashMap<>();
+
+        if (authentication == null) {
+            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+        } else {
+            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+            Long memberSeq = details.getMember().getMemberSeq();
+
+            ResponseMemberGamePageDto responseMemberGamePageDto = memberGameListService.getResponseMemberGamePageDto(memberSeq, pageable, filter, search);
+
+            status = OK.value();
+            msg = "내 게임 목록을 조회했습니다.";
+            data.put("totalCnt", responseMemberGamePageDto.getTotalCnt());
+            data.put("totalPage", responseMemberGamePageDto.getTotalPage());
+            data.put("currentPage", responseMemberGamePageDto.getCurrentPage());
+            data.put("myGameInfos", responseMemberGamePageDto.getMemberGameDtos());
+        }
+
+        return BaseResponseDto.builder()
+                .status(status)
+                .msg(msg)
+                .data(data)
+                .build();
+    }
 }
