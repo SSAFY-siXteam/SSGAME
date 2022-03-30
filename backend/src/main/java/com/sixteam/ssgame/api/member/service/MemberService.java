@@ -16,7 +16,7 @@ public interface MemberService {
 
     boolean hasSteamID(String steamID);
 
-    void register(RequestMemberDto requestMemberDto) throws IOException, ParseException;
+    boolean register(RequestMemberDto requestMemberDto) throws IOException, ParseException;
 
     MemberDto findMemberDtoBySsggameId(String ssgameId);
 

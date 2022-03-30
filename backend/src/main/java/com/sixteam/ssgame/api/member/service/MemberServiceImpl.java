@@ -66,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void register(RequestMemberDto requestMemberDto) throws IOException, ParseException {
+    public boolean register(RequestMemberDto requestMemberDto) throws IOException, ParseException {
         String encryptedPassword = passwordEncoder.encode(requestMemberDto.getPassword());
         log.debug("패스워드 암호화 " + encryptedPassword);
 
@@ -85,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
                 .steamID(steamID)
                 .steamNickname((String) steamAPIMemberData.get("steamNickname"))
                 .avatarUrl((String) steamAPIMemberData.get("avatarUrl"))
-                .isPublic((boolean) steamAPIMemberData.get("isPublic"))
+                .isPublic((boolean) steamAPIGameData.get("isPublic"))
                 .gameCount((Long) steamAPIGameData.get("gameCount"))
                 .isDeleted(false)
                 .build());
@@ -99,27 +99,24 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Map<Long, Long> memberGameList = (Map<Long, Long>) steamAPIGameData.get("memberGameList");
-        for (Long steamAppid: memberGameList.keySet()) {
-            GameInfo gameInfo = gameInfoRepository.findBySteamAppid(steamAppid);
-            // steam app id에 해당하는 게임 저장
-            if (gameInfo == null) {
-                continue;
-                // 게임 정보를 db에 저장한 이후에 사용
-//                throw new CustomException(steamAppid, GAME_NOT_FOUND);
-//                gameInfo = gameInfoRepository.save(GameInfo.builder()
-//                        .gameName("beta test")
-//                        .steamAppid(steamAppid)
-//                        .isFree(true)
-//                        .build());
+
+        if (memberGameList.size() != 0) {
+            for (Long steamAppid: memberGameList.keySet()) {
+                GameInfo gameInfo = gameInfoRepository.findBySteamAppid(steamAppid);
+                // steam app id에 해당하는 게임 저장
+                if (gameInfo == null) {
+                   continue;
+                }
+                // 회원가입 하고 나서 수정할 때는... 또 다른 로직이 필요함...
+                // 새로 추가한 게임이나 기존 게임에서 플레이 시간만 업데이트 하는 로직
+                memberGameListRepository.save(MemberGameList.builder()
+                        .member(savedMember)
+                        .gameInfo(gameInfo)
+                        .memberPlayTime(memberGameList.get(steamAppid))
+                        .build());
             }
-            // 회원가입 하고 나서 수정할 때는... 또 다른 로직이 필요함...
-            // 새로 추가한 게임이나 기존 게임에서 플레이 시간만 업데이트 하는 로직
-            memberGameListRepository.save(MemberGameList.builder()
-                    .member(savedMember)
-                    .gameInfo(gameInfo)
-                    .memberPlayTime(memberGameList.get(steamAppid))
-                    .build());
         }
+        return savedMember.getIsPublic();
     }
 
     @Override
