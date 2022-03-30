@@ -15,6 +15,7 @@ import java.util.List;
 
 import static com.querydsl.core.types.dsl.MathExpressions.round;
 import static com.sixteam.ssgame.api.gameInfo.entity.QGameInfo.gameInfo;
+import static com.sixteam.ssgame.api.member.entity.QMember.member;
 import static com.sixteam.ssgame.api.member.entity.QMemberGameList.memberGameList;
 
 public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCustom {
@@ -69,7 +70,9 @@ public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCus
                         memberGameList.memberGameRating,
                         memberGameList.memberPlayTime))
                 .from(memberGameList)
-                .join(memberGameList.gameInfo, gameInfo);
+                .join(memberGameList.member, member)
+                .join(memberGameList.gameInfo, gameInfo)
+                .where(memberGameList.member.memberSeq.eq(memberSeq));
 
         // filter == true : 미평가 게임만 필터링
         if (filter) {
