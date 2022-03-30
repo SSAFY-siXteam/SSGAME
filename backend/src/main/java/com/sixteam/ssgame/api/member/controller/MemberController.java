@@ -4,6 +4,7 @@ import com.sixteam.ssgame.api.gameInfo.service.MemberGameListService;
 import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
+import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberGamePageDto;
 import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
@@ -209,6 +210,42 @@ public class MemberController {
             data.put("totalPage", responseMemberGamePageDto.getTotalPage());
             data.put("currentPage", responseMemberGamePageDto.getCurrentPage());
             data.put("myGameInfos", responseMemberGamePageDto.getMemberGameDtos());
+        }
+
+        return BaseResponseDto.builder()
+                .status(status)
+                .msg(msg)
+                .data(data)
+                .build();
+    }
+    @PutMapping
+    public BaseResponseDto update(Authentication authentication, @Valid @RequestBody RequestUpdateMemberDto requestUpdateMemberDto, Errors errors) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        Integer status = null;
+        String msg = null;
+        Map<String, Object> data = new HashMap<>();
+
+        if (authentication == null) {
+            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+        }
+
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        String ssgameId = details.getUsername();
+
+        if (errors.hasErrors()) {
+            if (errors.hasFieldErrors()) {
+                // field error
+                status = BAD_REQUEST.value();
+                data.put("field", errors.getFieldError().getField());
+                msg = errors.getFieldError().getDefaultMessage();
+            } else {
+                throw new CustomException("global error", GLOBAL_ERROR);
+            }
+        } else {
+            memberService.updateMember(ssgameId, requestUpdateMemberDto);
+            status = OK.value();
+            msg = "회원 정보를 수정했습니다.";
         }
 
         return BaseResponseDto.builder()

@@ -90,4 +90,9 @@ public class Member {
         this.isDeleted = isDeleted;
         this.createdDate = LocalDateTime.now();
     }
+
+    public void changeMember(String password, String email) {
+        this.password = password;
+        this.email = email;
+    }
 }
