@@ -86,7 +86,7 @@ public class GameInfoServiceImpl implements GameInfoService {
         String movieUrl = null;
         String movieString = gameInfo.getMovies();
 
-        if (movieString != null) {
+        if (movieString != null && movieString.length() > 1) {
             movieString = movieString.replaceAll("'", "\"").replaceAll("True", "true").replaceAll("False", "false");
 
             // JSONParser로 JSONObject로 변환
