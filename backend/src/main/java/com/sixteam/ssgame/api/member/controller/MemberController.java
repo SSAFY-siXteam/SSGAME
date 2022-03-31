@@ -1,8 +1,11 @@
 package com.sixteam.ssgame.api.member.controller;
 
+import com.sixteam.ssgame.api.gameInfo.service.MemberGameListService;
 import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
+import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
+import com.sixteam.ssgame.api.member.dto.response.ResponseMemberGamePageDto;
 import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
@@ -13,7 +16,7 @@ import com.sixteam.ssgame.global.error.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
@@ -25,6 +28,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,6 +37,8 @@ import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final MemberGameListService memberGameListService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -49,7 +55,7 @@ public class MemberController {
         if (errors.hasErrors()) {
             if (errors.hasFieldErrors()) {
                 // field error
-                status = HttpStatus.BAD_REQUEST.value();
+                status = BAD_REQUEST.value();
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
@@ -65,8 +71,8 @@ public class MemberController {
             throw new InvalidValueException(requestMemberDto.getEmail(), EMAIL_DUPLICATION);
         } else {
             try {
-                memberService.register(requestMemberDto);
-                status = HttpStatus.CREATED.value();
+                data.put("isPublic", memberService.register(requestMemberDto));
+                status = CREATED.value();
                 msg = "회원가입 성공";
             } catch (ParseException e) {
                 throw new CustomException("json parse error", JSON_PARSE_ERROR);
@@ -96,10 +102,10 @@ public class MemberController {
         if (!pattern.matcher(ssgameId).matches()) {
             throw new InvalidValueException(ssgameId, INVALID_ID_FORMAT);
         } else if (memberService.hasSsgameId(ssgameId)) {
-            status = HttpStatus.OK.value();
+            status = OK.value();
             msg = "이미 존재하는 ID입니다.";
         } else {
-            status = HttpStatus.NO_CONTENT.value();
+            status = NO_CONTENT.value();
             msg = "사용할 수 있는 ID입니다.";
         }
 
@@ -120,7 +126,7 @@ public class MemberController {
         if (errors.hasErrors()) {
             if (errors.hasFieldErrors()) {
                 // field error
-                status = HttpStatus.BAD_REQUEST.value();
+                status = BAD_REQUEST.value();
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
@@ -136,7 +142,7 @@ public class MemberController {
             } else {
                 String jwtToken = JwtTokenUtil.getToken(memberDto.getSsgameId());
 
-                status = HttpStatus.OK.value();
+                status = OK.value();
                 msg = "로그인에 성공했습니다.";
                 data.put("ssgameId", memberDto.getSsgameId());
                 data.put("steamID", memberDto.getSteamID());
@@ -166,8 +172,80 @@ public class MemberController {
             String ssgameId = details.getUsername();
 
             data.put("memberInfo", memberService.findResponseMemberDtoBySsgameId(ssgameId));
-            status = HttpStatus.OK.value();
+            status = OK.value();
             msg = "회원 정보 조회에 성공했습니다.";
+        }
+
+        return BaseResponseDto.builder()
+                .status(status)
+                .msg(msg)
+                .data(data)
+                .build();
+    }
+
+    // page={page}&size={size}&sort={sort}&filter={filter}&search={search}
+    @GetMapping("/games")
+    public BaseResponseDto games(Authentication authentication,
+                                 Pageable pageable,
+                                 @RequestParam String sort,
+                                 @RequestParam boolean filter,
+                                 @RequestParam(required = false) String search) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        Integer status = null;
+        String msg = null;
+        Map<String, Object> data = new HashMap<>();
+
+        if (authentication == null) {
+            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+        } else {
+            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+            Long memberSeq = details.getMember().getMemberSeq();
+
+            ResponseMemberGamePageDto responseMemberGamePageDto = memberGameListService.getResponseMemberGamePageDto(memberSeq, pageable, filter, search);
+
+            status = OK.value();
+            msg = "내 게임 목록을 조회했습니다.";
+            data.put("totalCnt", responseMemberGamePageDto.getTotalCnt());
+            data.put("totalPage", responseMemberGamePageDto.getTotalPage());
+            data.put("currentPage", responseMemberGamePageDto.getCurrentPage());
+            data.put("myGameInfos", responseMemberGamePageDto.getMemberGameDtos());
+        }
+
+        return BaseResponseDto.builder()
+                .status(status)
+                .msg(msg)
+                .data(data)
+                .build();
+    }
+    @PutMapping
+    public BaseResponseDto update(Authentication authentication, @Valid @RequestBody RequestUpdateMemberDto requestUpdateMemberDto, Errors errors) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        Integer status = null;
+        String msg = null;
+        Map<String, Object> data = new HashMap<>();
+
+        if (authentication == null) {
+            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+        }
+
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        String ssgameId = details.getUsername();
+
+        if (errors.hasErrors()) {
+            if (errors.hasFieldErrors()) {
+                // field error
+                status = BAD_REQUEST.value();
+                data.put("field", errors.getFieldError().getField());
+                msg = errors.getFieldError().getDefaultMessage();
+            } else {
+                throw new CustomException("global error", GLOBAL_ERROR);
+            }
+        } else {
+            memberService.updateMember(ssgameId, requestUpdateMemberDto);
+            status = OK.value();
+            msg = "회원 정보를 수정했습니다.";
         }
 
         return BaseResponseDto.builder()

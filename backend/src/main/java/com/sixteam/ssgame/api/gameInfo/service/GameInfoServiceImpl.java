@@ -46,23 +46,8 @@ public class GameInfoServiceImpl implements GameInfoService {
             throw new CustomException("game not found by " + gameSeq, ErrorStatus.GAME_NOT_FOUND);
         }
 
-        // movie json parsing -> mp4 480
-        String movieUrl = null;
-        String movieString = gameInfo.getMovies();
-        if (movieString != null) {
-            movieString = movieString.replaceAll("'", "\"").replaceAll("True", "true").replaceAll("False", "false");
-            // JSONParser로 JSONObject로 변환
-            JSONParser parser = new JSONParser();
-            JSONArray jsonArray = null;
-            try {
-                jsonArray = (JSONArray) parser.parse(movieString);
-                // 왠진 모르겠지만 다 날라가고 mp4부터 남는다. 나중에 오류 발생 여지 있음
-                JSONObject movieJson = (JSONObject) jsonArray.get(0);
-                movieUrl = (String) ((JSONObject) movieJson.get("mp4")).get("480");
-            } catch (ParseException e) {
-                log.error("Parse Exception: {}", LogUtil.getClassAndMethodName());
-            }
-        }
+        // movie json parsing 함수 호출
+        String movieUrl = jsonParsingMovies(gameInfo);
 
         // average rating 구하는 query dsl
         Double averageRating = memberGameListRepository.getAverageRatingByGameSeq(gameSeq).getAverageRating();
@@ -78,7 +63,6 @@ public class GameInfoServiceImpl implements GameInfoService {
         if (gameGenres != null) {
             for (GameGenre gameGenre : gameGenres) {
                 genreNames.add(gameGenre.getGenre().getGenreNameKr());
-                if (genreNames.size() == 3) break;
             }
         }
 
@@ -94,5 +78,30 @@ public class GameInfoServiceImpl implements GameInfoService {
                 .memberGameRating(isMemberRated ? memberGameList.getMemberGameRating() : -1)
                 .genres(genreNames)
                 .build();
+    }
+
+    @Override
+    public String jsonParsingMovies(GameInfo gameInfo) {
+        // movie json parsing -> mp4 480
+        String movieUrl = null;
+        String movieString = gameInfo.getMovies();
+
+        if (movieString != null && movieString.length() > 1) {
+            movieString = movieString.replaceAll("'", "\"").replaceAll("True", "true").replaceAll("False", "false");
+
+            // JSONParser로 JSONObject로 변환
+            JSONParser parser = new JSONParser();
+            JSONArray jsonArray = null;
+
+            try {
+                jsonArray = (JSONArray) parser.parse(movieString);
+                // 왠진 모르겠지만 다 날라가고 mp4부터 남는다. 나중에 오류 발생 여지 있음
+                JSONObject movieJson = (JSONObject) jsonArray.get(0);
+                movieUrl = (String) ((JSONObject) movieJson.get("mp4")).get("480");
+            } catch (ParseException e) {
+                log.error("Parse Exception: {}", LogUtil.getClassAndMethodName());
+            }
+        }
+        return movieUrl;
     }
 }
