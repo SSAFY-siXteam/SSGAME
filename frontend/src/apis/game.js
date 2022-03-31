@@ -3,7 +3,7 @@ import { MOCK_URL, URL } from "../commons/setting/apiConfig";
 
 async function getGame(header, param, success, fail) {
   await axios
-    .get(MOCK_URL + `game/${param.gameSeq}`, header)
+    .get(URL + `games/${param.gameSeq}`, header)
     .then(success)
     .catch(fail);
 }
