@@ -1,34 +1,47 @@
 import React, { useEffect, useState } from "react";
 import MyGameTemplate from "../../templates/MyGameTemplate/MyGameTemplate";
 import SelectBox from "../../atoms/SelectBox/SelectBox";
+import { getGame1 } from "../../../apis/game";
+import { getCookie } from "../../../utils/cookie";
+//test
 
 const MyGamePage = () => {
+  const [gameList, setGameList] = useState([]);
+  const [param, setParam] = useState({
+    page: 1,
+    size: 10,
+    sort: "playtime",
+    filter: false,
+  });
+
+  useEffect(() => {
+    getGame1(getCookie("SSGAME_USER_TOKEN"), param).then((res) => {
+      console.log(res);
+      console.log(res.data.data.myGameInfos);
+      setGameList(res.data.data.myGameInfos);
+    });
+  }, [param]);
+  const onChangeSelectBox = (e) => {
+    setParam({ ...param, sort: e.target.value });
+  };
   const onInput = (e) => {
-    console.log(e.target.value);
+    setParam({ ...param, search: e.target.value });
   };
   const onChangeCheck = () => {
-    console.log("a");
+    setParam({ ...param, filter: !param.filter });
   };
   const args = {
     onInput: onInput,
     onChangeCheck: onChangeCheck,
     selectBox: SelectBox({
       options: [
-        { value: "option1", name: "옵션1" },
-        { value: "option2", name: "옵션2" },
-        { value: "option3", name: "옵션3" },
+        { value: "playtime", name: "playtime" },
+        { value: "dic", name: "사전순" },
+        { value: "rating", name: "별점순" },
       ],
+      onChangeSelectBox: onChangeSelectBox,
     }),
-    gameList: [
-      { test: "test" },
-      { test: "test" },
-      { test: "test" },
-      { test: "test" },
-      { test: "test" },
-      { test: "test" },
-      { test: "test" },
-      { test: "test" },
-    ],
+    gameList: gameList,
   };
 
   return (
