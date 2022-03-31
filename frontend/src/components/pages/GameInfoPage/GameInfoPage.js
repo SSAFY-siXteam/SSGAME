@@ -7,7 +7,7 @@ import { getGame } from "../../../apis/game";
 import { useParams } from "react-router-dom";
 import { getCookie } from "../../../utils/cookie";
 
-const GamePage = () => {
+const GameInfoPage = () => {
   const [gameInfo, setGameInfo] = useState({});
   const param = useParams();
 
@@ -46,4 +46,4 @@ const GamePage = () => {
   );
 };
 
-export default GamePage;
+export default GameInfoPage;
