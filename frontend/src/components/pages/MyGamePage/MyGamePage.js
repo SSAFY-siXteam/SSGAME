@@ -13,7 +13,6 @@ const MyGamePage = () => {
     sort: "playtime",
     filter: false,
   });
-  const [debounceState, setDebounceState] = useState(false);
 
   useEffect(() => {
     getGame1(getCookie("SSGAME_USER_TOKEN"), param).then((res) => {
@@ -21,24 +20,15 @@ const MyGamePage = () => {
       console.log(res.data.data.myGameInfos);
       setGameList(res.data.data.myGameInfos);
     });
-  }, [debounceState]);
+  }, [param]);
   const onChangeSelectBox = (e) => {
-    console.log(e.target.value);
-    param.sort = e.target.value;
-    setParam(param);
-    setDebounceState(!debounceState);
+    setParam({ ...param, sort: e.target.value });
   };
   const onInput = (e) => {
-    console.log(e.target.value);
-    const search = e.target.value;
-    setParam(Object.assign(param, { search: search }));
-    setDebounceState(!debounceState);
+    setParam({ ...param, search: e.target.value });
   };
   const onChangeCheck = () => {
-    console.log("check");
-    param.filter = !param.filter;
-    setParam(param);
-    setDebounceState(!debounceState);
+    setParam({ ...param, filter: !param.filter });
   };
   const args = {
     onInput: onInput,

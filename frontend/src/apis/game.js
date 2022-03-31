@@ -15,22 +15,17 @@ async function getGame1(token, param) {
     search = "";
   }
   console.log(param);
-  return axios.get(
-    tempURL +
-      "/members/games?page=" +
-      param.page +
-      "&size=" +
-      param.size +
-      "&sort=" +
-      param.sort +
-      "&filter=" +
-      param.filter +
-      search,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+  return axios.get(tempURL + "/members/games", {
+    params: {
+      page: param.page,
+      size: param.size,
+      sort: param.sort,
+      filter: param.filter,
+      search: param.search,
+    },
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
 }
 export { getGame, getGame1 };
