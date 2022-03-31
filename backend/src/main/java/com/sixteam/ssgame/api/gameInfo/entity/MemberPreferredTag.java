@@ -2,6 +2,7 @@ package com.sixteam.ssgame.api.gameInfo.entity;
 
 import com.sixteam.ssgame.api.member.entity.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,5 +28,13 @@ public class MemberPreferredTag {
     @JoinColumn(name = "tag_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private Tag tag;
+
+
+    @Builder
+    public MemberPreferredTag(Member member, Tag tag, Double preferredTagRatio) {
+        this.member = member;
+        this.tag = tag;
+        this.preferredTagRatio = preferredTagRatio;
+    }
 
 }

@@ -46,6 +46,8 @@ public class MemberController {
     public BaseResponseDto register(@Valid @RequestBody RequestMemberDto requestMemberDto, Errors errors) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
+        System.out.println(requestMemberDto);
+
         Integer status = null;
         String msg = null;
         Map<String, Object> data = new HashMap<>();
@@ -183,6 +185,21 @@ public class MemberController {
                 .build();
     }
 
+
+    @PostMapping("/games")
+    public BaseResponseDto loadGames(Authentication authentication, @RequestParam String ssgameId) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        memberService.loadGameInfoBySsgameId(ssgameId);
+        memberService.calcMemberPrefferred(ssgameId);
+
+        return BaseResponseDto.builder()
+                .status(200)
+                .msg("게임 목록 및 가중치 갱신이 완료되었습니다")
+                .data(ssgameId)
+                .build();
+    }
+
     // page={page}&size={size}&sort={sort}&filter={filter}&search={search}
     @GetMapping("/games")
     public BaseResponseDto games(Authentication authentication,
@@ -218,6 +235,7 @@ public class MemberController {
                 .data(data)
                 .build();
     }
+
     @PutMapping
     public BaseResponseDto update(Authentication authentication, @Valid @RequestBody RequestUpdateMemberDto requestUpdateMemberDto, Errors errors) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
