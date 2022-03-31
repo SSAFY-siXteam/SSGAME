@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
 import static com.querydsl.core.types.dsl.MathExpressions.round;
