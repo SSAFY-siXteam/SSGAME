@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
 export const CardWapper = styled.div`
-  width: 200px;
+  /* width: 200px; */
   margin: 30px;
   display: inline-block;
+  cursor: pointer;
 `;
 
 export const CardImg = styled.div`
@@ -20,4 +21,8 @@ export const Genre = styled.div`
 
 export const PriceInfo = styled.div`
   float: right;
+`;
+
+export const InlineImg = styled.img`
+  display: inline-block;
 `;

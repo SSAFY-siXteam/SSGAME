@@ -1,13 +1,12 @@
 import React from "react";
-import MostPlayedGameItem from "./MostPlayedGameItem.js";
-import gold from "../../../assets/img/medals/gold.png";
+import ShortGameCard from "./ShortGameCard.js";
 
 export default {
-  title: "molecules/MostPlayedGameItem",
-  component: MostPlayedGameItem,
+  title: "molecules/ShortGameCard",
+  component: ShortGameCard,
 };
 
-const Template = (args) => <MostPlayedGameItem {...args} />;
+const Template = (args) => <ShortGameCard {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
@@ -17,5 +16,7 @@ Primary.args = {
     headerImage:
       "https://cdn.akamai.steamstatic.com/steam/apps/10/header.jpg?t=1602535893",
     genres: ["태그1", "태그2", "태그3"], //최대 3개
+    price: 10000,
+    averageRating: 4.3,
   },
 };
