@@ -17,4 +17,5 @@ public interface MemberGameListRepository extends JpaRepository<MemberGameList, 
     List<MemberGameList> findByMember(Member member);
 
     boolean existsByMemberAndGameInfo(Member member, GameInfo gameInfo);
+
 }

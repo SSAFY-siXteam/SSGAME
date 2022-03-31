@@ -10,7 +10,6 @@ import static com.sixteam.ssgame.api.gameInfo.entity.QTag.tag;
 
 public class TagRepositoryImpl implements TagRepositoryCustom {
 
-
     private final JPAQueryFactory queryFactory;
 
     public TagRepositoryImpl(EntityManager em) {

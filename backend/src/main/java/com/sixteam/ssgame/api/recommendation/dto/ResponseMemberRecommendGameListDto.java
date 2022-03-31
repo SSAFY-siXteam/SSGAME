@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class ResponseMemberRecommendGameListDto {
+
     List<ResponseMemberRecommendedGameInfoDto> responseMemberRecommendedGameInfoDtos = new ArrayList<>();
 
     @Builder
