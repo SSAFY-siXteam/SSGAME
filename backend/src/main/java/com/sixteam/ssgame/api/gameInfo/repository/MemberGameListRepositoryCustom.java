@@ -13,4 +13,5 @@ public interface MemberGameListRepositoryCustom {
     Integer countMemberGameListByFilterAndSearch(Long memberSeq, boolean filter, String search);
 
     List<MemberGameDto> findMemberGameDtos(Long memberSeq, Pageable pageable, boolean filter, String search);
+
 }

@@ -10,4 +10,5 @@ public interface GameInfoService {
     String jsonParsingMovies(GameInfo gameInfo);
 
     void updateMemberGameRating(Long gameSeq, Long memberSeq, Integer memberGameRating);
+
 }

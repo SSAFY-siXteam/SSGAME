@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberFrequentGenreRepository extends JpaRepository<MemberFrequentGenre, MemberGenreSeq> {
 
-
     void deleteByMember(Member member);
+
 }
