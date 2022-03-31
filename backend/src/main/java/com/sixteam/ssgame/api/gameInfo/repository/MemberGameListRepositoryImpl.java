@@ -4,16 +4,12 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sixteam.ssgame.api.gameInfo.dto.AverageRatingDto;
 import com.sixteam.ssgame.api.gameInfo.dto.QAverageRatingDto;
-<<<<<<< HEAD
-=======
 import com.sixteam.ssgame.api.member.dto.MemberGameDto;
 import com.sixteam.ssgame.api.member.dto.QMemberGameDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
->>>>>>> 4202ce6f3b20a4416b70fac36b4c6c96e1dac02c
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
 import static com.querydsl.core.types.dsl.MathExpressions.round;

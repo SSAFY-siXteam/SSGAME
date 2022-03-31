@@ -25,12 +25,10 @@ public interface MemberService {
 
     Member findMemberBySsgameId(String ssgameId);
 
-<<<<<<< HEAD
     boolean loadGameInfoBySsgameId(String ssgameId);
 
-
     boolean calcMemberPrefferred(String ssgameId);
-=======
+
     void updateMember(String ssgameId, RequestUpdateMemberDto requestUpdateMemberDto);
->>>>>>> 4202ce6f3b20a4416b70fac36b4c6c96e1dac02c
+
 }
