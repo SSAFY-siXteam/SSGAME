@@ -5,8 +5,19 @@ import java.util.Objects;
 
 public class GameMemberSeq implements Serializable {
 
-    private Long gameInfo;
-    private Long member;
+    private final Long gameInfo;
+    private final Long member;
+
+
+    public GameMemberSeq(Long gameInfo, Long member) {
+        this.gameInfo = gameInfo;
+        this.member = member;
+    }
+
+    public GameMemberSeq() {
+        this.gameInfo = (long) 0;
+        this.member = (long) 0;
+    }
 
     @Override
     public boolean equals(Object o) {

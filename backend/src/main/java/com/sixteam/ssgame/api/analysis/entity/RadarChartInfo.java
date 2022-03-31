@@ -3,12 +3,13 @@ package com.sixteam.ssgame.api.analysis.entity;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.entity.MemberCategorySeq;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.*;
+import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,4 +31,10 @@ public class RadarChartInfo {
     @Column(nullable = false)
     private Double categoryRatio;
 
+    @Builder
+    public RadarChartInfo(Member member, Category category, Double categoryRatio) {
+        this.member = member;
+        this.category = category;
+        this.categoryRatio = categoryRatio;
+    }
 }
