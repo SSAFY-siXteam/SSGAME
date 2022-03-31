@@ -3,6 +3,7 @@ package com.sixteam.ssgame.api.analysis.entity;
 import com.sixteam.ssgame.api.gameInfo.entity.Genre;
 import com.sixteam.ssgame.api.member.entity.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,10 @@ public class MemberFrequentGenre {
     @Column(nullable = false)
     private Long genreCount;
 
+    @Builder
+    public MemberFrequentGenre(Member member, Genre genre, Long genreCount) {
+        this.member = member;
+        this.genre = genre;
+        this.genreCount = genreCount;
+    }
 }
