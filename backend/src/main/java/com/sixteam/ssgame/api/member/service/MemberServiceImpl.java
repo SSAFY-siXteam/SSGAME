@@ -7,6 +7,7 @@ import com.sixteam.ssgame.api.gameInfo.repository.GameInfoRepository;
 import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
+import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberDto;
 
 import com.sixteam.ssgame.api.member.entity.Member;
@@ -167,5 +168,40 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findMemberBySsgameId(String ssgameId) {
         return memberRepository.findBySsgameId(ssgameId);
+    }
+
+    @Transactional
+    @Override
+    public void updateMember(String ssgameId, RequestUpdateMemberDto requestUpdateMemberDto) {
+
+        Member member = memberRepository.findBySsgameId(ssgameId);
+        if (member == null) {
+            throw new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND);
+        }
+
+        String password = member.getPassword();
+        if (!passwordEncoder.matches(requestUpdateMemberDto.getPrePassword(), password)) {
+            throw new CustomException("password not matches in update member", PASSWORD_NOT_MATCH);
+        }
+        String newPassword = requestUpdateMemberDto.getNewPassword();
+        if (newPassword != null) {
+            password = passwordEncoder.encode(newPassword);
+        }
+
+        String email = requestUpdateMemberDto.getEmail();
+        if (!member.getEmail().equals(email) && hasEmail(email)) {
+            throw new CustomException("email duplication in update member", EMAIL_DUPLICATION);
+        }
+        member.changeMember(password, email);
+
+        if (requestUpdateMemberDto.getIsCategoryChanged()) {
+            memberPreferredCategoryRepository.deleteAllByMember(member);
+            for (String categoryName : requestUpdateMemberDto.getPreferredCategories()) {
+                memberPreferredCategoryRepository.save(MemberPreferredCategory.builder()
+                        .member(member)
+                        .category(categoryRepository.findByCategoryName(categoryName))
+                        .build());
+            }
+        }
     }
 }
