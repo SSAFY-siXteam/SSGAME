@@ -8,4 +8,6 @@ public interface GameInfoService {
     ResponseGameInfoDto findResponseGameInfoDto(Long gameSeq, Long memberSeq);
 
     String jsonParsingMovies(GameInfo gameInfo);
+
+    void updateMemberGameRating(Long gameSeq, Long memberSeq, Integer memberGameRating);
 }
