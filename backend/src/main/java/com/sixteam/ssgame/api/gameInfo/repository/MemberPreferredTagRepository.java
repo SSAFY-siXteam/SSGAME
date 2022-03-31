@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberPreferredTagRepository extends JpaRepository<MemberPreferredTag, Long> {
 
-    void deleteAllByMember(Member member);
+    void deleteByMember(Member member);
 
 }

@@ -47,6 +47,8 @@ public class MemberController {
     public BaseResponseDto register(@Valid @RequestBody RequestMemberDto requestMemberDto, Errors errors) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
+        System.out.println(requestMemberDto);
+
         Integer status = null;
         String msg = null;
         Map<String, Object> data = new HashMap<>();
@@ -181,6 +183,21 @@ public class MemberController {
                 .status(status)
                 .msg(msg)
                 .data(data)
+                .build();
+    }
+
+
+    @PostMapping("/games")
+    public BaseResponseDto loadGames(Authentication authentication, @RequestParam String ssgameId) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        memberService.loadGameInfoBySsgameId(ssgameId);
+        memberService.calcMemberPrefferred(ssgameId);
+
+        return BaseResponseDto.builder()
+                .status(200)
+                .msg("게임 목록 및 가중치 갱신이 완료되었습니다")
+                .data(ssgameId)
                 .build();
     }
 
