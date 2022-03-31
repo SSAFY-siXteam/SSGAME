@@ -3,6 +3,7 @@ package com.sixteam.ssgame.api.member.entity;
 import com.sixteam.ssgame.api.analysis.entity.MemberFrequentGenre;
 import com.sixteam.ssgame.api.analysis.entity.RadarChartInfo;
 import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
+import com.sixteam.ssgame.api.recommendation.entity.MemberRecommendedGame;
 import lombok.*;
 
 import javax.persistence.*;
@@ -54,7 +55,7 @@ public class Member {
     @Column(nullable = false)
     private Long gameCount;
 
-    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdDate;
 
     @Column(nullable = false)
@@ -72,9 +73,11 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<MemberFrequentGenre> memberFrequentGenres = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<MemberRecommendedGame> memberRecommendedGames = new ArrayList<>();
 
     @Builder
-    public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl, boolean isPublic, Long gameCount, boolean isDeleted) {
+    public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, LocalDateTime createdDate, String avatarUrl, boolean isPublic, Long gameCount, boolean isDeleted) {
         this.memberSeq = memberSeq;
         this.ssgameId = ssgameId;
         this.password = password;
@@ -85,5 +88,11 @@ public class Member {
         this.isPublic = isPublic;
         this.gameCount = gameCount;
         this.isDeleted = isDeleted;
+        this.createdDate = LocalDateTime.now();
+    }
+
+    public void changeMember(String password, String email) {
+        this.password = password;
+        this.email = email;
     }
 }
