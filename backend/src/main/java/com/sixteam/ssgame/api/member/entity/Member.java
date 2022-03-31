@@ -3,6 +3,7 @@ package com.sixteam.ssgame.api.member.entity;
 import com.sixteam.ssgame.api.analysis.entity.MemberFrequentGenre;
 import com.sixteam.ssgame.api.analysis.entity.RadarChartInfo;
 import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
+import com.sixteam.ssgame.api.recommendation.entity.MemberRecommendedGame;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 public class Member {
 
+
     @OneToMany(mappedBy = "member", cascade = ALL)
     private final List<MemberPreferredCategory> memberPreferredCategories = new ArrayList<>();
     @OneToMany(mappedBy = "member", cascade = ALL)
@@ -34,6 +36,8 @@ public class Member {
     private final List<RadarChartInfo> radarChartInfos = new ArrayList<>();
     @OneToMany(mappedBy = "member", cascade = ALL)
     private final List<MemberFrequentGenre> memberFrequentGenres = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private final List<MemberRecommendedGame> memberRecommendedGames = new ArrayList<>();
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long memberSeq;
@@ -53,15 +57,13 @@ public class Member {
     private Boolean isPublic;
     @Column(nullable = false)
     private Long gameCount;
-    @Column(updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdDate;
     @Column(nullable = false)
     private Boolean isDeleted;
 
-
     @Builder
-    public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, String avatarUrl, boolean isPublic, Long gameCount, boolean isDeleted) {
-        this.createdDate = LocalDateTime.now();
+    public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, LocalDateTime createdDate, String avatarUrl, boolean isPublic, Long gameCount, boolean isDeleted) {
         this.memberSeq = memberSeq;
         this.ssgameId = ssgameId;
         this.password = password;
@@ -72,5 +74,11 @@ public class Member {
         this.isPublic = isPublic;
         this.gameCount = gameCount;
         this.isDeleted = isDeleted;
+        this.createdDate = LocalDateTime.now();
+    }
+
+    public void changeMember(String password, String email) {
+        this.password = password;
+        this.email = email;
     }
 }

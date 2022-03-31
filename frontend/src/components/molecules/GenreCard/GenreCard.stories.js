@@ -1,13 +1,13 @@
 import React from "react";
-import MostPlayedGames from "./MostPlayedGames.js";
+import GenreCard from "./GenreCard.js";
 import gold from "../../../assets/img/medals/gold.png";
 
 export default {
-  title: "organisms/MostPlayedGames",
-  component: MostPlayedGames,
+  title: "molecules/GenreCard",
+  component: GenreCard,
 };
 
-const Template = (args) => <MostPlayedGames {...args} />;
+const Template = (args) => <GenreCard {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {

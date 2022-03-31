@@ -83,20 +83,30 @@ public class SteamAPIScrap {
             JSONParser parser = new JSONParser();
             JSONObject totalInfoJson = (JSONObject) ((JSONObject) parser.parse(response)).get("response");
             if (totalInfoJson.size() == 0) {
-                // 구매한 게임이 없는 사용자 존재 -> exception 말고 다른 처리 필요
-                throw new CustomException("[Error] invalid steam ID : " + steamID, ErrorStatus.INVALID_STEAMID);
+                // {"response":{}}
+                // 게임 정보를 비공개로 설정한 사용자 -> member.isPublic = false
+                responseData.put("gameCount", 0L);
+                responseData.put("memberGameList", new HashMap<>());
+                responseData.put("isPublic", false);
+            } else if (totalInfoJson.size() == 1) {
+                // {"response":{"game_count":0}}
+                // 게임을 구매하지 않은 사용자 -> member.isPublic = true
+                responseData.put("gameCount", 0L);
+                responseData.put("memberGameList", new HashMap<>());
+                responseData.put("isPublic", true);
+            } else {
+                JSONArray gameInfoJsons = (JSONArray) totalInfoJson.get("games");
+
+                Map<Long, Long> memberGameList = new HashMap<>();
+                for (int i = 0; i < gameInfoJsons.size(); i++) {
+                    JSONObject gameInfoJson = (JSONObject) gameInfoJsons.get(i);
+                    memberGameList.put((Long) gameInfoJson.get("appid"), (Long) gameInfoJson.get("playtime_forever"));
+                }
+
+                responseData.put("gameCount", totalInfoJson.get("game_count"));
+                responseData.put("memberGameList", memberGameList);
+                responseData.put("isPublic", true);
             }
-
-            JSONArray gameInfoJsons = (JSONArray) totalInfoJson.get("games");
-
-            Map<Long, Long> memberGameList = new HashMap<>();
-            for (int i = 0; i < gameInfoJsons.size(); i++) {
-                JSONObject gameInfoJson = (JSONObject) gameInfoJsons.get(i);
-                memberGameList.put((Long) gameInfoJson.get("appid"), (Long) gameInfoJson.get("playtime_forever"));
-            }
-
-            responseData.put("gameCount", totalInfoJson.get("game_count"));
-            responseData.put("memberGameList", memberGameList);
         } else {
             throw new CustomException("[Error] api connection url : " + urlBuilder, ErrorStatus.API_NOT_CONNECTION);
         }

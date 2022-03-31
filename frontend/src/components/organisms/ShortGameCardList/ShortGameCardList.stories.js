@@ -1,9 +1,16 @@
 import React from "react";
-import GameCard from "../../molecules/GameCard/GameCard";
-import Title from "../../atoms/Title/Title";
+import ShortGameCardList from "./ShortGameCardList.js";
 
-const RecGames = () => {
-  const data = [
+export default {
+  title: "organisms/ShortGameCardList",
+  component: ShortGameCardList,
+};
+
+const Template = (args) => <ShortGameCardList {...args} />;
+
+export const Primary = Template.bind({});
+Primary.args = {
+  recommendedGameList: [
     {
       gameSeq: "1",
       gameName: "게임1",
@@ -44,15 +51,5 @@ const RecGames = () => {
       genres: ["태그1", "태그2", "태그3"], //최대 3개
       price: 10000,
     },
-  ];
-  return (
-    <div>
-      <Title title="Try also..." />
-      {data.map((game, index) => (
-        <GameCard key={index} info={game} />
-      ))}
-    </div>
-  );
+  ],
 };
-
-export default RecGames;
