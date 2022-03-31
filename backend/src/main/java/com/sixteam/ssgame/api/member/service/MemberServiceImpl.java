@@ -11,13 +11,16 @@ import com.sixteam.ssgame.api.gameInfo.repository.*;
 import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
+import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberSteamIDDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberDto;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.entity.MemberPreferredCategory;
 import com.sixteam.ssgame.api.member.repository.MemberPreferredCategoryRepository;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
+import com.sixteam.ssgame.api.recommendation.repository.MemberRecommendedGameRepository;
 import com.sixteam.ssgame.global.common.steamapi.SteamAPIScrap;
 import com.sixteam.ssgame.global.error.exception.CustomException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -50,17 +53,19 @@ public class MemberServiceImpl implements MemberService {
 
     private final GameInfoRepository gameInfoRepository;
 
+    private final MemberRecommendedGameRepository memberRecommendedGameRepository;
+
+    private final MemberFrequentGenreRepository memberFrequentGenreRepository;
+
+    private final RadarChartInfoRepository radarChartInfoRepository;
+
     private final TagRepository tagRepository;
 
     private final GameGenreRepository gameGenreRepository;
 
     private final GenreRepository genreRepository;
 
-    private final RadarChartInfoRepository radarChartInfoRepository;
-
     private final GameTagRepository gameTagRepository;
-
-    private final MemberFrequentGenreRepository memberFrequentGenreRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -411,6 +416,7 @@ public class MemberServiceImpl implements MemberService {
         }
         member.changeMember(password, email);
 
+        // 회원 선호 카테고리 변경
         if (requestUpdateMemberDto.getIsCategoryChanged()) {
             memberPreferredCategoryRepository.deleteAllByMember(member);
             for (String categoryName : requestUpdateMemberDto.getPreferredCategories()) {
@@ -420,6 +426,51 @@ public class MemberServiceImpl implements MemberService {
                         .build());
             }
         }
+
+    }
+
+    @Transactional
+    @Override
+    public void updateMemberSteamID(String ssgameId, RequestUpdateMemberSteamIDDto requestUpdateMemberSteamIDDto) {
+
+        Member member = memberRepository.findBySsgameId(ssgameId);
+        if (member == null) {
+            throw new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND);
+        }
+
+        String password = member.getPassword();
+        if (!passwordEncoder.matches(requestUpdateMemberSteamIDDto.getPassword(), password)) {
+            throw new CustomException("password not matches in update member", PASSWORD_NOT_MATCH);
+        }
+
+        String steamID = requestUpdateMemberSteamIDDto.getSteamID();
+        if (!member.getSteamID().equals(steamID) && hasSteamID(steamID)) {
+            throw new CustomException("steamID duplication in update member", STEAMID_DUPLICATION);
+        }
+
+        /**
+         * 변경되는 테이블
+         * 1. 사용자 게임
+         * 2. 사용자 추천 게임
+         * 3. 사용자 선호 태그
+         * 4. 사용자가 가장 많이 플레이한 장르
+         * 5. 분석그래프 정보
+         */
+
+        // 기존 steamID에 관련된 내용 삭제
+        memberGameListRepository.deleteByMember(member);
+        memberRecommendedGameRepository.deleteByMember(member);
+        memberPreferredTagRepository.deleteByMember(member);
+        memberFrequentGenreRepository.deleteByMember(member);
+        radarChartInfoRepository.deleteByMember(member);
+
+        // steamID 변경
+        member.changeMemberSteamID(steamID);
+
+        // 새로운 steamID로 재등록
+        
+
+        // 새로운 steamID.isPublic == false면 에러 반환
 
     }
 }

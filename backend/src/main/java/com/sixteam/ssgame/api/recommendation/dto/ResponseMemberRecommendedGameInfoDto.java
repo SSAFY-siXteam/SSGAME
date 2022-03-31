@@ -8,13 +8,21 @@ import java.util.List;
 
 @Data
 public class ResponseMemberRecommendedGameInfoDto {
+
     private Long gameSeq;
+
     private String gameName;
+
     private String headerImg;
+
     private List<String> genres = new ArrayList<>();
+
     private double averageRating;
+
     private Integer price;
+
     private String movies;
+
     private Integer recommendRanking;
 
     @Builder

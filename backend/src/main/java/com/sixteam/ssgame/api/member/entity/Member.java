@@ -27,40 +27,54 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 public class Member {
 
-
-    @OneToMany(mappedBy = "member", cascade = ALL)
-    private final List<MemberPreferredCategory> memberPreferredCategories = new ArrayList<>();
-    @OneToMany(mappedBy = "member", cascade = ALL)
-    private final List<MemberGameList> memberGameLists = new ArrayList<>();
-    @OneToMany(mappedBy = "member", cascade = ALL)
-    private final List<RadarChartInfo> radarChartInfos = new ArrayList<>();
-    @OneToMany(mappedBy = "member", cascade = ALL)
-    private final List<MemberFrequentGenre> memberFrequentGenres = new ArrayList<>();
-    @OneToMany(mappedBy = "member", cascade = ALL)
-    private final List<MemberRecommendedGame> memberRecommendedGames = new ArrayList<>();
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long memberSeq;
+
     @Column(nullable = false, unique = true)
     private String ssgameId;
+
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false, unique = true)
     private String email;
+
     @Column(name = "steam_id", nullable = false, unique = true)
     private String steamID;
+
     @Column(nullable = false)
     private String steamNickname;
+
     @Column(nullable = false)
     private String avatarUrl;
+
     @Column(nullable = false)
     private Boolean isPublic;
+
     @Column(nullable = false)
     private Long gameCount;
+
     @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdDate;
+
     @Column(nullable = false)
     private Boolean isDeleted;
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<MemberPreferredCategory> memberPreferredCategories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<MemberGameList> memberGameLists = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<RadarChartInfo> radarChartInfos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<MemberFrequentGenre> memberFrequentGenres = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<MemberRecommendedGame> memberRecommendedGames = new ArrayList<>();
 
     @Builder
     public Member(Long memberSeq, String ssgameId, String password, String email, String steamID, String steamNickname, LocalDateTime createdDate, String avatarUrl, boolean isPublic, Long gameCount, boolean isDeleted) {
@@ -80,5 +94,9 @@ public class Member {
     public void changeMember(String password, String email) {
         this.password = password;
         this.email = email;
+    }
+
+    public void changeMemberSteamID(String steamID) {
+        this.steamID = steamID;
     }
 }

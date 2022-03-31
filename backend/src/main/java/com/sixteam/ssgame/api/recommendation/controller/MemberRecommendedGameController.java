@@ -18,8 +18,7 @@ import java.util.HashMap;
 @RestController
 public class MemberRecommendedGameController {
 
-    @Autowired
-    private MemberRecommendedGameService memberRecommendedGameService;
+    private final MemberRecommendedGameService memberRecommendedGameService;
 
     @GetMapping
     public BaseResponseDto getRecommendedGameList(Authentication authentication) {
