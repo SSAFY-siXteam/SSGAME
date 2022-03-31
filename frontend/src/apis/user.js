@@ -7,7 +7,11 @@ export function signIn(user) {
   return axios.post(URL + "/members" + "/login", user);
 }
 
-export function getUserInfo(id, token) {
-  const header = { jwtToken: token };
-  return axios.get(URL + "/members/me" + { id }, header);
+export function getUserInfo(token) {
+  console.log(typeof token);
+  return axios.get(URL + "/members/me", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
 }
