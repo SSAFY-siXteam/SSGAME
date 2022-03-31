@@ -1,7 +1,13 @@
 import React from "react";
 import Fade from "react-reveal/Fade";
 import Bounce from "react-reveal/Bounce";
-import { CenterWrapper, ViewWrapper } from "./style";
+import {
+  CenterWrapper,
+  ViewWrapper,
+  ScrollWrapper,
+  ScrollSpan,
+  MainTitle,
+} from "./style";
 import Typist from "react-typist";
 
 const FadeModule = () => {
@@ -9,11 +15,15 @@ const FadeModule = () => {
     <div>
       <CenterWrapper>
         <Typist>
-          <ViewWrapper>
+          <MainTitle>
             <h1>Welcome, WE ARE SSAGAME.</h1>
             <h2>맞춤형 게임 추천 및 성향 분석 사이트 SSGAME입니다.</h2>
-          </ViewWrapper>
+          </MainTitle>
         </Typist>
+        <div>
+          <ScrollSpan />
+          <ScrollWrapper>Scroll</ScrollWrapper>
+        </div>
         <Fade left>
           <ViewWrapper>
             <h2>내가 매긴 별점을 기반으로,</h2>
