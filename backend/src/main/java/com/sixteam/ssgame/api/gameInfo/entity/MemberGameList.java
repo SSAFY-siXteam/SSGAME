@@ -39,8 +39,4 @@ public class MemberGameList {
         this.memberPlayTime = memberPlayTime;
         this.memberGameRating = memberGameRating;
     }
-
-    public void updateMemberGameRating (Integer memberGameRating){
-        this.memberGameRating = memberGameRating;
-    }
 }

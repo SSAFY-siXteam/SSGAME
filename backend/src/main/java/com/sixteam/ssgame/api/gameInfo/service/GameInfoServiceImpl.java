@@ -7,13 +7,11 @@ import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
 import com.sixteam.ssgame.api.gameInfo.repository.GameGenreRepository;
 import com.sixteam.ssgame.api.gameInfo.repository.GameInfoRepository;
 import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
-import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import com.sixteam.ssgame.global.common.util.LogUtil;
 import com.sixteam.ssgame.global.error.dto.ErrorStatus;
 import com.sixteam.ssgame.global.error.exception.CustomException;
 
-import com.sixteam.ssgame.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -105,26 +103,5 @@ public class GameInfoServiceImpl implements GameInfoService {
             }
         }
         return movieUrl;
-    }
-
-    @Override
-    @Transactional
-    public void updateMemberGameRating(Long memberSeq, Long gameSeq, Integer memberGameRating) {
-        Member member = memberRepository.findByMemberSeq(memberSeq);
-        if(member == null){
-            throw new EntityNotFoundException("사용자가 존재하지 않습니다.");
-        }
-
-        GameInfo gameInfo = gameInfoRepository.findByGameSeq(gameSeq);
-        if(gameInfo == null){
-            throw new EntityNotFoundException("게임정보가 존재하지 않습니다.");
-        }
-
-        MemberGameList memberGameList = memberGameListRepository.findByMemberAndGameInfo(member, gameInfo);
-        if(memberGameList == null){
-            throw new EntityNotFoundException("해당 정보가 존재하지 않습니다.");
-        }
-
-        memberGameList.updateMemberGameRating(memberGameRating);
     }
 }
