@@ -368,9 +368,6 @@ public class MemberServiceImpl implements MemberService {
         }
 
 
-        System.out.println(Arrays.toString(categoryValue));
-        System.out.println(Arrays.toString(categoryMax));
-
         radarChartInfoRepository.deleteByMember(member);
         for (Category category : categories) {
             if (categoryMax[category.getCategorySeq().intValue()] == 0) {

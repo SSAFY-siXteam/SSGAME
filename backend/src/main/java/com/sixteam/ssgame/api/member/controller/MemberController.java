@@ -188,6 +188,7 @@ public class MemberController {
         return BaseResponseDto.builder()
                 .status(200)
                 .msg("게임 목록 및 가중치 갱신이 완료되었습니다")
+                .data(ssgameId)
                 .build();
     }
 }
