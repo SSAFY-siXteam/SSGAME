@@ -2,7 +2,6 @@ package com.sixteam.ssgame.global.common.steamapi;
 
 import com.sixteam.ssgame.global.error.dto.ErrorStatus;
 import com.sixteam.ssgame.global.error.exception.CustomException;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -57,7 +56,7 @@ public class SteamAPIScrap {
             responseData.put("avatarUrl", playerInfoJson.get("avatarfull"));
             responseData.put("isPublic", (Long) playerInfoJson.get("communityvisibilitystate") == 3L);
         } else {
-            throw new CustomException("[Error] api connection url : " + urlBuilder.toString(), ErrorStatus.API_NOT_CONNECTION);
+            throw new CustomException("[Error] api connection url : " + urlBuilder, ErrorStatus.API_NOT_CONNECTION);
         }
 
         return responseData;
