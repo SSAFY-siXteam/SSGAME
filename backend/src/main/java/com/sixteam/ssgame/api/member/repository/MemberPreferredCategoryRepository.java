@@ -10,4 +10,5 @@ public interface MemberPreferredCategoryRepository extends JpaRepository<MemberP
 
     List<MemberPreferredCategory> findAllByMember(Member member);
 
+    void deleteAllByMember(Member member);
 }

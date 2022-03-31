@@ -10,16 +10,32 @@ import {
   StyledProfileInfo,
   StyledProfileInfoContent,
   StyledButtons,
+  StyledInfo,
 } from "./styles";
-const MyPageTemplate = ({ checkBox, profileImg, updateBtn, withdrawalBtn }) => {
+import Img from "../../atoms/Img/Img/Img";
+const MyPageTemplate = ({
+  userInfo,
+  checkBox,
+  profileImg,
+  updateBtn,
+  withdrawalBtn,
+}) => {
   return (
     <StyledMyPage>
       <StyledProfile>
-        <StyledImg>{profileImg}</StyledImg>
+        <StyledImg>
+          <Img path={userInfo.avatarUrl} />
+        </StyledImg>
         <StyledProfileInfo>
-          <StyledProfileInfoContent>아이디:</StyledProfileInfoContent>
-          <StyledProfileInfoContent>이메일:</StyledProfileInfoContent>
-          <StyledProfileInfoContent>SteamID:</StyledProfileInfoContent>
+          <StyledProfileInfoContent>
+            아이디: <StyledInfo>{userInfo.ssgameId}</StyledInfo>
+          </StyledProfileInfoContent>
+          <StyledProfileInfoContent>
+            이메일: <StyledInfo>{userInfo.email}</StyledInfo>
+          </StyledProfileInfoContent>
+          <StyledProfileInfoContent>
+            SteamID: <StyledInfo>{userInfo.steamID}</StyledInfo>
+          </StyledProfileInfoContent>
         </StyledProfileInfo>
       </StyledProfile>
 
