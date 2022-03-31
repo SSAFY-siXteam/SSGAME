@@ -2,6 +2,7 @@ package com.sixteam.ssgame.api.member.service;
 
 import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
+import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberDto;
 import com.sixteam.ssgame.api.member.entity.Member;
 import org.json.simple.parser.ParseException;
@@ -24,4 +25,5 @@ public interface MemberService {
 
     Member findMemberBySsgameId(String ssgameId);
 
+    void updateMember(String ssgameId, RequestUpdateMemberDto requestUpdateMemberDto);
 }
