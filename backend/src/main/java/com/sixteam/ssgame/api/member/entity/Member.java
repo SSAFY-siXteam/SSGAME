@@ -95,4 +95,8 @@ public class Member {
         this.password = password;
         this.email = email;
     }
+
+    public void changeMemberSteamID(String steamID) {
+        this.steamID = steamID;
+    }
 }
