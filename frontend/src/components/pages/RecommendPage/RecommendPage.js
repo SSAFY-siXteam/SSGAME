@@ -5,6 +5,7 @@ import ShortGameCardList from "../../organisms/ShortGameCardList/ShortGameCardLi
 import RecommendTemplate from "../../templates/RecommendTemplate/RecommendTemplate";
 import LongGameCardList from "../../organisms/LongGameCardList/LongGameCardList";
 import { getRecommendGames } from "../../../apis/recommend";
+import { getCookie } from "../../../utils/cookie";
 
 const RecommendPage = () => {
   const [recommendedGameList, setRecommendedGameList] = useState([]);
@@ -16,20 +17,22 @@ const RecommendPage = () => {
     getRecommendGames(
       {
         headers: {
-          // Authorization: `Bearer ` + jwtToken,
+          Authorization: `Bearer ` + getCookie("SSGAME_USER_TOKEN"),
         },
       },
       (response) => {
         // console.log(response);
-        setRecommendedGameList(response.data.data.recommendedGameList);
-        response.data.data.recommendedGameList.map((data, index) => {
-          if (index < 3) {
-            setTopRec((prev) => [...prev, data]);
-          } else {
-            setOtherRec((prev) => [...prev, data]);
-          }
-        });
-        setSelectVideo(response.data.data.recommendedGameList[0].movies);
+        if (response.status == 200) {
+          setRecommendedGameList(response.data.data.recommendedGameList);
+          response.data.data.recommendedGameList.map((data, index) => {
+            if (index < 3) {
+              setTopRec((prev) => [...prev, data]);
+            } else {
+              setOtherRec((prev) => [...prev, data]);
+            }
+          });
+          setSelectVideo(response.data.data.recommendedGameList[0].movies);
+        }
       },
       (e) => {
         alert("문제가 발생했습니다.");
