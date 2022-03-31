@@ -9,4 +9,6 @@ public interface MemberGameListRepository extends JpaRepository<MemberGameList, 
 
     MemberGameList findByMemberAndGameInfo(Member member, GameInfo gameInfo);
 
+    void deleteAllByMember(Member member);
+
 }
