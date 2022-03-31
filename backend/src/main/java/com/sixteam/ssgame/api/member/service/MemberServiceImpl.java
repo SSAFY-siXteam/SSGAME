@@ -20,7 +20,6 @@ import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import com.sixteam.ssgame.api.recommendation.repository.MemberRecommendedGameRepository;
 import com.sixteam.ssgame.global.common.steamapi.SteamAPIScrap;
 import com.sixteam.ssgame.global.error.exception.CustomException;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -340,22 +339,25 @@ public class MemberServiceImpl implements MemberService {
                         + Math.round(gameTag.getTagRatio() * TimeWeight * GameRatingWeight
                         * categoryWeight[tagsCategory.get(gameTag.getTag().getTagSeq())] * 100000.0) / 100000.0);
 
+
+
                 if (memberGame.getMemberPlayTime() != 0) {
                     categoryMax[tagsCategory.get(gameTag.getTag().getTagSeq())] += 5;
                     categoryValue[tagsCategory.get(gameTag.getTag().getTagSeq())] +=
-                            memberGame.getMemberGameRating() != 0 ? memberGame.getMemberGameRating() : 3;
+                            memberGame.getMemberGameRating() != 0 ? memberGame.getMemberGameRating() : 0;
+                    if(memberGame.getMemberGameRating() != 0){
+                        System.out.println("$%^"+memberGame.getMemberGameRating()+" "+memberGame.getGameInfo().getGameSeq());
+                    }
                 }
             }
         }
 
         //모든 value들의 총합을 구한뒤 각 value들을 valueSum으로 나눠 퍼센트를 구함.
         double valueSum = 0.0;
-        System.out.println("~~~~" + tagsValue);
 
         for (Tag tag : tags) {
             valueSum += tagsValue.get(tag.getTagSeq());
         }
-        System.out.println("&*(" + valueSum);
 
         for (Tag tag : tags) {
             tagsValue.put(tag.getTagSeq(), Math.round(tagsValue.get(tag.getTagSeq()) / valueSum * 100000.0) / 100000.0);
@@ -372,7 +374,11 @@ public class MemberServiceImpl implements MemberService {
 
 
         radarChartInfoRepository.deleteByMember(member);
+        System.out.println("!@#!@#"+Arrays.toString(categoryMax));
+        System.out.println(Arrays.toString(categoryValue));
+        double valueMax = (double)Arrays.stream(categoryMax).max().getAsInt();
         for (Category category : categories) {
+            System.out.println("~~~~"+category.getCategorySeq());
             if (categoryMax[category.getCategorySeq().intValue()] == 0) {
                 radarChartInfoRepository.save(RadarChartInfo.builder()
                         .member(member)
@@ -385,7 +391,7 @@ public class MemberServiceImpl implements MemberService {
                     .member(member)
                     .category(category)
                     .categoryRatio((double) categoryValue[category.getCategorySeq().intValue()]
-                            / (double) categoryMax[category.getCategorySeq().intValue()])
+                            / (double) categoryMax[category.getCategorySeq().intValue()]*(double)100)
                     .build());
         }
 

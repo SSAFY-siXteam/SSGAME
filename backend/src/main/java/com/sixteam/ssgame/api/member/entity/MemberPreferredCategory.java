@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Getter
@@ -23,7 +24,7 @@ public class MemberPreferredCategory {
     private Member member;
 
     @JoinColumn(name = "category_seq")
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER)
     @Id
     private Category category;
 
