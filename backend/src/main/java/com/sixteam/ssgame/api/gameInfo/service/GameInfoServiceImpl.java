@@ -63,7 +63,6 @@ public class GameInfoServiceImpl implements GameInfoService {
         if (gameGenres != null) {
             for (GameGenre gameGenre : gameGenres) {
                 genreNames.add(gameGenre.getGenre().getGenreNameKr());
-                if (genreNames.size() == 3) break;
             }
         }
 
