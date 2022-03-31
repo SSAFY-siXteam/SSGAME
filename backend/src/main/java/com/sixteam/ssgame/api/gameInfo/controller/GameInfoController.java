@@ -1,6 +1,5 @@
 package com.sixteam.ssgame.api.gameInfo.controller;
 
-import com.sixteam.ssgame.api.gameInfo.dto.request.RequestMemberGameRatingDto;
 import com.sixteam.ssgame.api.gameInfo.service.GameInfoService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
@@ -12,7 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,14 +54,4 @@ public class GameInfoController {
                 .build();
     }
 
-    @PutMapping("/{gameSeq}")
-    public BaseResponseDto updateGamePoint(@PathVariable Long gameSeq, Authentication authentication, @RequestBody RequestMemberGameRatingDto requestMemberGameRatingDto) {
-        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-        gameInfoService.updateMemberGameRating(details.getMember().getMemberSeq(), gameSeq, requestMemberGameRatingDto.getPoint());
-
-        return BaseResponseDto.builder()
-                .status(HttpStatus.OK.value())
-                .msg("별점 입력 및 수정 성공")
-                .build();
-    }
 }
