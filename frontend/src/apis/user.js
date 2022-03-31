@@ -8,8 +8,14 @@ export function signIn(user) {
 }
 
 export function getUserInfo(token) {
-  console.log(typeof token);
   return axios.get(URL + "/members/me", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+}
+export function putUserInfo(token, data) {
+  return axios.put(URL + "/members", data, {
     headers: {
       Authorization: "Bearer " + token,
     },

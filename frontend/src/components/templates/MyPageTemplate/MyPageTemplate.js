@@ -11,14 +11,20 @@ import {
   StyledProfileInfoContent,
   StyledButtons,
   StyledInfo,
+  StyledSteamIdInfo,
 } from "./styles";
 import Img from "../../atoms/Img/Img/Img";
+import { Input } from "../../atoms/Input/Input";
 const MyPageTemplate = ({
   userInfo,
   checkBox,
-  profileImg,
   updateBtn,
   withdrawalBtn,
+  onInputChangePassword,
+  onInputChangeNewPassword,
+  onInputChangeNewPasswordCheck,
+  email,
+  onEmailChange,
 }) => {
   return (
     <StyledMyPage>
@@ -31,15 +37,56 @@ const MyPageTemplate = ({
             아이디: <StyledInfo>{userInfo.ssgameId}</StyledInfo>
           </StyledProfileInfoContent>
           <StyledProfileInfoContent>
-            이메일: <StyledInfo>{userInfo.email}</StyledInfo>
+            이메일:{" "}
+            <StyledInfo>
+              <Input value={email} onInputChange={onEmailChange} />
+            </StyledInfo>
           </StyledProfileInfoContent>
           <StyledProfileInfoContent>
             SteamID: <StyledInfo>{userInfo.steamID}</StyledInfo>
+          </StyledProfileInfoContent>
+          <StyledSteamIdInfo>
+            스팀 아이디 변경 시 이전 데이터는 저장되지 않습니다!
+          </StyledSteamIdInfo>
+          <br />
+          <StyledProfileInfoContent>
+            현재 비밀번호:{" "}
+            <StyledInfo>
+              <Input
+                type="password"
+                placeholder="비밀번호를 입력해주세요"
+                size="25"
+                onInputChange={onInputChangePassword}
+              />
+            </StyledInfo>
+          </StyledProfileInfoContent>
+          <StyledProfileInfoContent>
+            새로운 비밀번호:{" "}
+            <StyledInfo>
+              <Input
+                type="password"
+                placeholder="비밀번호 변경 시 만 입력해주세요"
+                size="25"
+                onInputChange={onInputChangeNewPassword}
+              />
+            </StyledInfo>
+          </StyledProfileInfoContent>
+          <StyledProfileInfoContent>
+            비밀번호 재확인:{" "}
+            <StyledInfo>
+              <Input
+                type="password"
+                placeholder="비밀번호 변경 시 만 입력해주세요"
+                size="25"
+                onInputChange={onInputChangeNewPasswordCheck}
+              />
+            </StyledInfo>
           </StyledProfileInfoContent>
         </StyledProfileInfo>
       </StyledProfile>
 
       <CategoryHeader>선호 게임 카테고리</CategoryHeader>
+
       <div>{checkBox}</div>
       <StyledButtons>
         <StyledUpdateBtn>{updateBtn}</StyledUpdateBtn>
