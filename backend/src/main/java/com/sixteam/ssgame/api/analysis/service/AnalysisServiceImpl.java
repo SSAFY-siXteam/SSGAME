@@ -3,6 +3,7 @@ package com.sixteam.ssgame.api.analysis.service;
 
 import com.sixteam.ssgame.api.analysis.dto.MostPlayedGamesDto;
 import com.sixteam.ssgame.api.analysis.dto.MostPlayedGenreDto;
+import com.sixteam.ssgame.api.analysis.dto.RadarChartInfoDto;
 import com.sixteam.ssgame.api.analysis.entity.MemberFrequentGenre;
 import com.sixteam.ssgame.api.analysis.entity.RadarChartInfo;
 import com.sixteam.ssgame.api.analysis.repository.MemberFrequentGenreRepository;
@@ -40,10 +41,19 @@ public class AnalysisServiceImpl implements AnalysisService {
 
 
     @Override
-    public List<RadarChartInfo> getGraph(Long memberSeq) {
+    public List<RadarChartInfoDto> getGraph(Long memberSeq) {
 
         Member member = memberRepository.findByMemberSeq(memberSeq);
-        return radarChartInfoRepository.findByMember(member);
+
+        List<RadarChartInfoDto> radarChartInfoDtos = new LinkedList<>();
+        for (RadarChartInfo radarChartInfo : radarChartInfoRepository.findByMember(member)) {
+            radarChartInfoDtos.add(RadarChartInfoDto.builder()
+                    .subject(radarChartInfo.getCategory().getCategoryName())
+                    .categoryRatio(radarChartInfo.getCategoryRatio())
+                    .build());
+        }
+
+        return radarChartInfoDtos;
     }
 
     @Override
@@ -87,8 +97,8 @@ public class AnalysisServiceImpl implements AnalysisService {
                 break;
             }
             List<GameGenre> gameGenres = memberGameLists.get(i).getGameInfo().getGameGenres();
-            String[] genres = new String[((gameGenres.size() > 3) ? 3 : gameGenres.size())];
-            for (int j = 0; j < ((gameGenres.size() > 3) ? 3 : gameGenres.size()); j++) {
+            String[] genres = new String[Math.min(gameGenres.size(), 3)];
+            for (int j = 0; j < Math.min(gameGenres.size(), 3); j++) {
                 genres[j] = gameGenres.get(j).getGenre().getGenreNameKr();
             }
             mostPlayedGamesDtos.add(MostPlayedGamesDto.builder()
