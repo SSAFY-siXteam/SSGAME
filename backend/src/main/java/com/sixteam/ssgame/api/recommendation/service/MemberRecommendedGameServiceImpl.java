@@ -67,7 +67,7 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
         }
 
         // 추천 게임 개수 체크
-        if(responseMemberRecommendedGameInfoDtos.size() != 11) {
+        if(responseMemberRecommendedGameInfoDtos.size() < 11) {
             throw new CustomException("lack of recommended game", LACK_OF_RECOMMENDED_GAME);
         }
 
