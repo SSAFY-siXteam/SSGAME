@@ -1,7 +1,6 @@
 import React from "react";
 import {
   StyledMyPage,
-  StyledContent,
   CategoryHeader,
   StyledUpdateBtn,
   StyledWithdrawalBtn,
@@ -11,7 +10,6 @@ import {
   StyledProfileInfoContent,
   StyledButtons,
   StyledInfo,
-  StyledSteamIdInfo,
 } from "./styles";
 import Img from "../../atoms/Img/Img/Img";
 import { Input } from "../../atoms/Input/Input";
@@ -45,9 +43,7 @@ const MyPageTemplate = ({
           <StyledProfileInfoContent>
             SteamID: <StyledInfo>{userInfo.steamID}</StyledInfo>
           </StyledProfileInfoContent>
-          <StyledSteamIdInfo>
-            스팀 아이디 변경 시 이전 데이터는 저장되지 않습니다!
-          </StyledSteamIdInfo>
+
           <br />
           <StyledProfileInfoContent>
             현재 비밀번호:{" "}
