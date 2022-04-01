@@ -1,7 +1,11 @@
 package com.sixteam.ssgame.api.analysis.service;
 
+
 import com.sixteam.ssgame.api.analysis.dto.MostPlayedGamesDto;
+import com.sixteam.ssgame.api.analysis.dto.MostPlayedGenreDto;
+import com.sixteam.ssgame.api.analysis.entity.MemberFrequentGenre;
 import com.sixteam.ssgame.api.analysis.entity.RadarChartInfo;
+import com.sixteam.ssgame.api.analysis.repository.MemberFrequentGenreRepository;
 import com.sixteam.ssgame.api.analysis.repository.RadarChartInfoRepository;
 import com.sixteam.ssgame.api.gameInfo.entity.GameGenre;
 import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
@@ -28,9 +32,12 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     private final MemberRepository memberRepository;
 
+    private final MemberFrequentGenreRepository memberFrequentGenreRepository;
+
     private final MemberGameListRepository memberGameListRepository;
 
     private final GameGenreRepository gameGenreRepository;
+
 
     @Override
     public List<RadarChartInfo> getGraph(Long memberSeq) {
@@ -40,6 +47,35 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     @Override
+    public List<MostPlayedGenreDto> getMostPlayedGenres(Long memberSeq) {
+
+        Member member = memberRepository.findByMemberSeq(memberSeq);
+        System.out.println(member);
+        System.out.println("!");
+        List<MemberFrequentGenre> mostPlayedGenres = memberFrequentGenreRepository.findMostPlayedGenresByMember(member);
+        System.out.println("@");
+        List<MostPlayedGenreDto> mostPlayedGenreDtos = new LinkedList<>();
+        long sum = 0;
+        for (MemberFrequentGenre memberFrequentGenre : mostPlayedGenres) {
+            sum += memberFrequentGenre.getGenreCount();
+        }
+
+        for (int i = 0; i < 5; i++) {
+            if (mostPlayedGenres.get(i).getGenreCount() == 0) {
+                break;
+            }
+            mostPlayedGenreDtos.add(MostPlayedGenreDto.builder()
+                    .genre(mostPlayedGenres.get(i)
+                            .getGenre()
+                            .getGenreName())
+                    .ratio(mostPlayedGenres.get(i)
+                            .getGenreCount() * 100 / sum)
+                    .build());
+        }
+
+        return mostPlayedGenreDtos;
+    }
+
     public List<MostPlayedGamesDto> getMostPlayedGames(Long memberSeq) {
         Member member = memberRepository.findByMemberSeq(memberSeq);
 //        memberGameListRepository.findMostPlayedGamesByMember(member);

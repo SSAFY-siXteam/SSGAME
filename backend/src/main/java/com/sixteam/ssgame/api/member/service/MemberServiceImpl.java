@@ -383,12 +383,13 @@ public class MemberServiceImpl implements MemberService {
                     .member(member)
                     .category(category)
                     .categoryRatio((double) categoryValue[category.getCategorySeq().intValue()]
-                            / (double) categoryMax[category.getCategorySeq().intValue()])
+                            / (double) categoryMax[category.getCategorySeq().intValue()] * 100)
                     .build());
         }
 
         return true;
     }
+
 
     @Transactional
     @Override
@@ -465,7 +466,7 @@ public class MemberServiceImpl implements MemberService {
         member.changeMemberSteamID(steamID);
 
         // 새로운 steamID로 재등록
-        
+
 
         // 새로운 steamID.isPublic == false면 에러 반환
 
