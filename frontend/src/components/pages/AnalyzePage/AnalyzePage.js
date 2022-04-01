@@ -15,18 +15,17 @@ const AnalyzePage = () => {
   const [gamesData, setGamesData] = useState([]);
   const [genresData, setGenresData] = useState([]);
 
+  const jwtToken = getCookie("SSGAME_USER_TOKEN");
+
   useEffect(() => {
-    // jwtToken = getCookie();
     getAnalyzeGraph(
       {
         headers: {
-          // Authorization: `Bearer ` + jwtToken,
+          Authorization: `Bearer ` + jwtToken,
         },
       },
       (response) => {
-        if (response.status === 200) {
-          setGraphData(response.data.data.categories);
-        }
+        setGraphData(response.data.data.categories);
       },
       (e) => {
         console.log(e);
@@ -35,14 +34,11 @@ const AnalyzePage = () => {
     getAnalyzeGenres(
       {
         headers: {
-          // Authorization: `Bearer ` + jwtToken,
+          Authorization: `Bearer ` + jwtToken,
         },
       },
       (response) => {
-        if (response.status === 200) {
-          setGenresData(response.data.data.mostPlayedGenres);
-          console.log(response);
-        }
+        setGenresData(response.data.data.mostPlayedGenres);
       },
       (e) => {
         console.log(e);
@@ -51,13 +47,11 @@ const AnalyzePage = () => {
     getAnalyzeGames(
       {
         headers: {
-          // Authorization: `Bearer ` + jwtToken,
+          Authorization: `Bearer ` + jwtToken,
         },
       },
       (response) => {
-        if (response.status === 200) {
-          setGamesData(response.data.data.mostPlayedGames);
-        }
+        setGamesData(response.data.data.mostPlayedGames);
       },
       (e) => {
         console.log(e);
