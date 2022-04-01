@@ -21,9 +21,7 @@ const GameInfoPage = () => {
       param,
       (response) => {
         console.log(response);
-        if (response.status == 200) {
-          setGameInfo(response.data.data.gameInfo);
-        }
+        setGameInfo(response.data.data.gameInfo);
       },
       (e) => {
         alert("정보를 불러오는 데에 문제가 발생했습니다.");
