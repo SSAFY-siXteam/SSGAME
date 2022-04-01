@@ -382,7 +382,7 @@ public class MemberServiceImpl implements MemberService {
                     .member(member)
                     .category(category)
                     .categoryRatio((double) categoryValue[category.getCategorySeq().intValue()]
-                            / (double) categoryMax[category.getCategorySeq().intValue()])
+                            / (double) categoryMax[category.getCategorySeq().intValue()] * 100)
                     .build());
         }
 
