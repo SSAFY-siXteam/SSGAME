@@ -188,17 +188,29 @@ public class MemberController {
 
 
     @PostMapping("/games")
-    public BaseResponseDto loadGames(Authentication authentication, @RequestParam String ssgameId) {
+    public BaseResponseDto loadGames(Authentication authentication) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
-        memberService.loadGameInfoBySsgameId(ssgameId);
-        memberService.calcMemberPrefferred(ssgameId);
+        Integer status = null;
+        String msg = null;
+        Map<String, Object> data = new HashMap<>();
 
+        if (authentication == null) {
+            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+        } else {
+            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+            String ssgameId = details.getUsername();
+
+            memberService.loadGameInfoBySsgameId(ssgameId);
+            memberService.calcMemberPrefferred(ssgameId);
+            status = OK.value();
+            msg = "게임 목록 및 가중치 갱신이 완료되었습니다";
+        }
         return BaseResponseDto.builder()
                 .status(200)
-                .msg("게임 목록 및 가중치 갱신이 완료되었습니다")
-                .data(ssgameId)
+                .msg(msg)
                 .build();
+
     }
 
     // page={page}&size={size}&sort={sort}&filter={filter}&search={search}
