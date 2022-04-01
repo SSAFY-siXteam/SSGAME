@@ -14,10 +14,12 @@ const AnalyzePage = () => {
   const [graphData, setGraphData] = useState([]);
   const [gamesData, setGamesData] = useState([]);
   const [genresData, setGenresData] = useState([]);
+  const [isSuccessToLoad, setIsSueccessToLoad] = useState(true);
 
   const jwtToken = getCookie("SSGAME_USER_TOKEN");
 
   useEffect(() => {
+    const isSuccess = true;
     getAnalyzeGraph(
       {
         headers: {
@@ -25,10 +27,11 @@ const AnalyzePage = () => {
         },
       },
       (response) => {
+        console.log(response);
         setGraphData(response.data.data.categories);
       },
       (e) => {
-        console.log(e);
+        // if (isSuccessToLoad) setIsSueccessToLoad(false);
       }
     );
     getAnalyzeGenres(
@@ -38,10 +41,11 @@ const AnalyzePage = () => {
         },
       },
       (response) => {
-        setGenresData(response.data.data.mostPlayedGenres);
+        console.log(response);
+        setGenresData(response.data.data.MostPlayedGenres);
       },
       (e) => {
-        console.log(e);
+        // if (isSuccessToLoad) setIsSueccessToLoad(false);
       }
     );
     getAnalyzeGames(
@@ -51,12 +55,17 @@ const AnalyzePage = () => {
         },
       },
       (response) => {
+        console.log(response);
         setGamesData(response.data.data.mostPlayedGames);
       },
       (e) => {
-        console.log(e);
+        // if (isSuccessToLoad) setIsSueccessToLoad(false);
       }
     );
+    return () => {
+      console.log(isSuccessToLoad);
+      if (!isSuccess) setIsSueccessToLoad(false);
+    };
   }, []);
 
   const args = {
@@ -68,23 +77,19 @@ const AnalyzePage = () => {
     genres: GenreCardList({ data: genresData }),
   };
 
+  console.log(genresData);
+
   return (
     <>
-      {graphData[0] !== undefined &&
-      gamesData[0] !== undefined &&
-      genresData[0] !== undefined ? (
-        <div>
-          <AnalyzeTemplate
-            graph={args.graph}
-            games={args.games}
-            genres={args.genres}
-          />
-        </div>
-      ) : (
-        <div>Loading...</div>
-      )}
+      <div>
+        <AnalyzeTemplate
+          graph={args.graph}
+          games={args.games}
+          genres={args.genres}
+        />
+      </div>
     </>
   );
 };
 
-export default AnalyzePage;
+export default React.memo(AnalyzePage);
