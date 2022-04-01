@@ -17,4 +17,5 @@ public interface MemberGameListRepositoryCustom {
     List<MemberGameDto> findMemberGameDtos(Long memberSeq, Pageable pageable, boolean filter, String search);
 
     List<MemberGameList> findMostPlayedGamesByMember(Member member);
+
 }

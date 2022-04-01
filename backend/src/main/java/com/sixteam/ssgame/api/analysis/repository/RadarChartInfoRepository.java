@@ -12,4 +12,5 @@ public interface RadarChartInfoRepository extends JpaRepository<RadarChartInfo, 
     void deleteByMember(Member member);
 
     List<RadarChartInfo> findByMember(Member member);
+
 }
