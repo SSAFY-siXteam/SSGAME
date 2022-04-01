@@ -69,13 +69,21 @@ const AnalyzePage = () => {
   };
 
   return (
-    <div>
-      <AnalyzeTemplate
-        graph={args.graph}
-        games={args.games}
-        genres={args.genres}
-      />
-    </div>
+    <>
+      {graphData[0] !== undefined &&
+      gamesData[0] !== undefined &&
+      genresData[0] !== undefined ? (
+        <div>
+          <AnalyzeTemplate
+            graph={args.graph}
+            games={args.games}
+            genres={args.genres}
+          />
+        </div>
+      ) : (
+        <div>Loading...</div>
+      )}
+    </>
   );
 };
 
