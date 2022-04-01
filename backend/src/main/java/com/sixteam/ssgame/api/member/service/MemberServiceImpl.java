@@ -20,7 +20,6 @@ import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import com.sixteam.ssgame.api.recommendation.repository.MemberRecommendedGameRepository;
 import com.sixteam.ssgame.global.common.steamapi.SteamAPIScrap;
 import com.sixteam.ssgame.global.error.exception.CustomException;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -276,7 +275,6 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
-
     @Override
     @Transactional(readOnly = false)
     public boolean calcMemberPrefferred(String ssgameId) {
@@ -370,7 +368,6 @@ public class MemberServiceImpl implements MemberService {
                     .build());
         }
 
-
         radarChartInfoRepository.deleteByMember(member);
         for (Category category : categories) {
             if (categoryMax[category.getCategorySeq().intValue()] == 0) {
@@ -426,7 +423,6 @@ public class MemberServiceImpl implements MemberService {
                         .build());
             }
         }
-
     }
 
     @Transactional
