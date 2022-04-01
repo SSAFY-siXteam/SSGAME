@@ -8,10 +8,10 @@ import { getRecommendGames } from "../../../apis/recommend";
 import { getCookie } from "../../../utils/cookie";
 
 const RecommendPage = () => {
-  const [recommendedGameList, setRecommendedGameList] = useState([]);
-  const [topRec, setTopRec] = useState([]);
-  const [otherRec, setOtherRec] = useState([]);
-  const [selectVideo, setSelectVideo] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [topRec, setTopRec] = useState([]); // 트레일러를 볼 수 있는 추천 게임 중 top3 게임들
+  const [otherRec, setOtherRec] = useState([]); // top3에 포함되지 않은 나머지 8개의 게임들(트레일러 시청 지원하지 않음)
+  const [selectVideo, setSelectVideo] = useState(""); // 트레일러 보기로 선택된 비디오
 
   useEffect(() => {
     getRecommendGames(
@@ -21,18 +21,11 @@ const RecommendPage = () => {
         },
       },
       (response) => {
-        // console.log(response);
-        if (response.status == 200) {
-          setRecommendedGameList(response.data.data.recommendedGameList);
-          response.data.data.recommendedGameList.map((data, index) => {
-            if (index < 3) {
-              setTopRec((prev) => [...prev, data]);
-            } else {
-              setOtherRec((prev) => [...prev, data]);
-            }
-          });
-          setSelectVideo(response.data.data.recommendedGameList[0].movies);
-        }
+        const recommendedGameList = response.data.data.recommendedGameList;
+        setTopRec(recommendedGameList.slice(0, 3));
+        setOtherRec(recommendedGameList.slice(3));
+        setSelectVideo(response.data.data.recommendedGameList[0].movies);
+        setIsLoading(false);
       },
       (e) => {
         alert("문제가 발생했습니다.");
@@ -41,7 +34,6 @@ const RecommendPage = () => {
   }, []);
 
   const changeVideo = (movies) => {
-    // console.log(movies);
     setSelectVideo(movies);
   };
 
@@ -52,20 +44,24 @@ const RecommendPage = () => {
   // };
 
   return (
-    <div>
-      <Title title="맞춤 게임 추천" />
-      <RecommendTemplate
-        video={<Video path={selectVideo} />}
-        topRec={
-          <LongGameCardList
-            data={topRec}
-            itemBtn="트레일러 확인하기"
-            itemBtnOnClick={changeVideo}
+    <>
+      {!isLoading && (
+        <div>
+          <Title title="맞춤 게임 추천" />
+          <RecommendTemplate
+            video={<Video path={selectVideo} />}
+            topRec={
+              <LongGameCardList
+                data={topRec}
+                itemBtn="트레일러 확인하기"
+                itemBtnOnClick={changeVideo}
+              />
+            }
+            otherRec={<ShortGameCardList data={otherRec} />}
           />
-        }
-        otherRec={<ShortGameCardList data={otherRec} />}
-      />
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 
