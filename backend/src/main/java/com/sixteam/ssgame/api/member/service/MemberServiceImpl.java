@@ -276,7 +276,6 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
-
     @Override
     @Transactional(readOnly = false)
     public boolean calcMemberPrefferred(String ssgameId) {
@@ -370,7 +369,6 @@ public class MemberServiceImpl implements MemberService {
                     .build());
         }
 
-
         radarChartInfoRepository.deleteByMember(member);
         for (Category category : categories) {
             if (categoryMax[category.getCategorySeq().intValue()] == 0) {
@@ -426,7 +424,6 @@ public class MemberServiceImpl implements MemberService {
                         .build());
             }
         }
-
     }
 
     @Transactional

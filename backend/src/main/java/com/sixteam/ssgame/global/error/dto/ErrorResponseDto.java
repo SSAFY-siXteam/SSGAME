@@ -13,12 +13,12 @@ public class ErrorResponseDto {
 
     private ErrorResponseDto(final ErrorStatus errorStatus) {
         this.msg = errorStatus.getMsg();
-        this.status = errorStatus.getStatus();
+        this.status = errorStatus.getBackToFrontStatus();
     }
 
     private ErrorResponseDto(final ErrorStatus errorStatus, String msg) {
         this.msg = msg;
-        this.status = errorStatus.getStatus();
+        this.status = errorStatus.getBackToFrontStatus();
     }
 
     public static ErrorResponseDto of(final ErrorStatus errorStatus) {
