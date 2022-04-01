@@ -39,8 +39,6 @@ public class AnalysisController {
         String msg = null;
         Map<String, Object> data = new HashMap<>();
 
-        System.out.println("!" + authentication);
-
         if (authentication == null) {
             throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
         } else {
@@ -75,9 +73,7 @@ public class AnalysisController {
         Integer status = null;
         String msg = null;
         Map<String, Object> data = new HashMap<>();
-
-        System.out.println("!" + authentication);
-
+        
         if (authentication == null) {
             throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
         } else {

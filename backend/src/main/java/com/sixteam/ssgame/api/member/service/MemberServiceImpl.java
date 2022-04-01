@@ -340,14 +340,10 @@ public class MemberServiceImpl implements MemberService {
                         * categoryWeight[tagsCategory.get(gameTag.getTag().getTagSeq())] * 100000.0) / 100000.0);
 
 
-
                 if (memberGame.getMemberPlayTime() != 0) {
                     categoryMax[tagsCategory.get(gameTag.getTag().getTagSeq())] += 5;
                     categoryValue[tagsCategory.get(gameTag.getTag().getTagSeq())] +=
                             memberGame.getMemberGameRating() != 0 ? memberGame.getMemberGameRating() : 0;
-                    if(memberGame.getMemberGameRating() != 0){
-                        System.out.println("$%^"+memberGame.getMemberGameRating()+" "+memberGame.getGameInfo().getGameSeq());
-                    }
                 }
             }
         }
@@ -374,11 +370,8 @@ public class MemberServiceImpl implements MemberService {
 
 
         radarChartInfoRepository.deleteByMember(member);
-        System.out.println("!@#!@#"+Arrays.toString(categoryMax));
-        System.out.println(Arrays.toString(categoryValue));
-        double valueMax = (double)Arrays.stream(categoryMax).max().getAsInt();
+        double valueMax = (double) Arrays.stream(categoryMax).max().getAsInt();
         for (Category category : categories) {
-            System.out.println("~~~~"+category.getCategorySeq());
             if (categoryMax[category.getCategorySeq().intValue()] == 0) {
                 radarChartInfoRepository.save(RadarChartInfo.builder()
                         .member(member)
@@ -391,7 +384,7 @@ public class MemberServiceImpl implements MemberService {
                     .member(member)
                     .category(category)
                     .categoryRatio((double) categoryValue[category.getCategorySeq().intValue()]
-                            / (double) categoryMax[category.getCategorySeq().intValue()]*(double)100)
+                            / (double) categoryMax[category.getCategorySeq().intValue()] * (double) 100)
                     .build());
         }
 
@@ -474,7 +467,7 @@ public class MemberServiceImpl implements MemberService {
         member.changeMemberSteamID(steamID);
 
         // 새로운 steamID로 재등록
-        
+
 
         // 새로운 steamID.isPublic == false면 에러 반환
 
