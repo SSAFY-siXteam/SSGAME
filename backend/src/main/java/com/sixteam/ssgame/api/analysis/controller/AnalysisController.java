@@ -66,14 +66,16 @@ public class AnalysisController {
                 .build();
     }
 
+
     @GetMapping("/genres")
     public BaseResponseDto getMostPlayedGenre(Authentication authentication) {
+
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
         String msg = null;
         Map<String, Object> data = new HashMap<>();
-        
+
         if (authentication == null) {
             throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
         } else {
@@ -81,7 +83,6 @@ public class AnalysisController {
             Long memberSeq = details.getMember().getMemberSeq();
 
             data.put("MostPlayedGenres", analysisService.getMostPlayedGenres(memberSeq));
-
             status = HttpStatus.OK.value();
             msg = "가장 많이 플레이한 장르 조회 성공";
         }
@@ -93,4 +94,30 @@ public class AnalysisController {
                 .build();
     }
 
+    @GetMapping("/games")
+    public BaseResponseDto getMostPlayedGames(Authentication authentication) {
+
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        Integer status = null;
+        String msg = null;
+        Map<String, Object> data = new HashMap<>();
+
+        if (authentication == null) {
+            throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
+        } else {
+            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+            Long memberSeq = details.getMember().getMemberSeq();
+            
+            data.put("mostPlayedGames", analysisService.getMostPlayedGames(memberSeq));
+            status = HttpStatus.OK.value();
+            msg = "가장 많이 플레이한 게임 조회 성공";
+        }
+
+        return BaseResponseDto.builder()
+                .status(status)
+                .msg(msg)
+                .data(data)
+                .build();
+    }
 }

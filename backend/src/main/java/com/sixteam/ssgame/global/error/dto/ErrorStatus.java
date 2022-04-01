@@ -52,10 +52,13 @@ public enum ErrorStatus {
 
     private Integer status;
 
+    private Integer backToFrontStatus;
+
     private final String msg;
 
-    ErrorStatus(final int status, final String msg) {
-        this.status = status;
+    ErrorStatus(Integer backToFrontStatus, String msg) {
+        this.status = OK.value();
+        this.backToFrontStatus = backToFrontStatus;
         this.msg = msg;
     }
 }

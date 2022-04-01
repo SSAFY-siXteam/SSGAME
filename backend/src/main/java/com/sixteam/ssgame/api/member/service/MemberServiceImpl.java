@@ -275,7 +275,6 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
-
     @Override
     @Transactional(readOnly = false)
     public boolean calcMemberPrefferred(String ssgameId) {
@@ -339,57 +338,68 @@ public class MemberServiceImpl implements MemberService {
                         + Math.round(gameTag.getTagRatio() * TimeWeight * GameRatingWeight
                         * categoryWeight[tagsCategory.get(gameTag.getTag().getTagSeq())] * 100000.0) / 100000.0);
 
-
                 if (memberGame.getMemberPlayTime() != 0) {
                     categoryMax[tagsCategory.get(gameTag.getTag().getTagSeq())] += 5;
                     categoryValue[tagsCategory.get(gameTag.getTag().getTagSeq())] +=
                             memberGame.getMemberGameRating() != 0 ? memberGame.getMemberGameRating() : 0;
+
+                    if (memberGame.getMemberPlayTime() != 0) {
+                        categoryMax[tagsCategory.get(gameTag.getTag().getTagSeq())] += 5;
+                        categoryValue[tagsCategory.get(gameTag.getTag().getTagSeq())] +=
+                                memberGame.getMemberGameRating() != 0 ? memberGame.getMemberGameRating() : 3;
+
+                    }
                 }
             }
-        }
 
-        //모든 value들의 총합을 구한뒤 각 value들을 valueSum으로 나눠 퍼센트를 구함.
-        double valueSum = 0.0;
+            //모든 value들의 총합을 구한뒤 각 value들을 valueSum으로 나눠 퍼센트를 구함.
+            double valueSum = 0.0;
+            System.out.println("~~~~" + tagsValue);
 
-        for (Tag tag : tags) {
-            valueSum += tagsValue.get(tag.getTagSeq());
-        }
+            for (Tag tag : tags) {
+                valueSum += tagsValue.get(tag.getTagSeq());
+            }
+            System.out.println("&*(" + valueSum);
 
-        for (Tag tag : tags) {
-            tagsValue.put(tag.getTagSeq(), Math.round(tagsValue.get(tag.getTagSeq()) / valueSum * 100000.0) / 100000.0);
-        }
+            for (Tag tag : tags) {
+                tagsValue.put(tag.getTagSeq(), Math.round(tagsValue.get(tag.getTagSeq()) / valueSum * 100000.0) / 100000.0);
+            }
 
-        //멤버 선호 태그 테이블에 save
-        for (Tag tag : tags) {
-            memberPreferredTagRepository.save(MemberPreferredTag.builder()
-                    .member(member)
-                    .tag(tag)
-                    .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
-                    .build());
-        }
+            //멤버 선호 태그 테이블에 save
+            for (Tag tag : tags) {
+                memberPreferredTagRepository.save(MemberPreferredTag.builder()
+                        .member(member)
+                        .tag(tag)
+                        .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
+                        .build());
+            }
 
+            radarChartInfoRepository.deleteByMember(member);
 
-        radarChartInfoRepository.deleteByMember(member);
-        double valueMax = (double) Arrays.stream(categoryMax).max().getAsInt();
-        for (Category category : categories) {
-            if (categoryMax[category.getCategorySeq().intValue()] == 0) {
+            double valueMax = (double) Arrays.stream(categoryMax).max().getAsInt();
+
+            for (Category category : categories) {
+                if (categoryMax[category.getCategorySeq().intValue()] == 0) {
+                    radarChartInfoRepository.save(RadarChartInfo.builder()
+                            .member(member)
+                            .category(category)
+                            .categoryRatio(0.0)
+                            .build());
+                    continue;
+                }
                 radarChartInfoRepository.save(RadarChartInfo.builder()
                         .member(member)
                         .category(category)
-                        .categoryRatio(0.0)
-                        .build());
-                continue;
-            }
-            radarChartInfoRepository.save(RadarChartInfo.builder()
-                    .member(member)
-                    .category(category)
-                    .categoryRatio((double) categoryValue[category.getCategorySeq().intValue()]
-                            / (double) categoryMax[category.getCategorySeq().intValue()] * (double) 100)
-                    .build());
-        }
+                        .categoryRatio((double) categoryValue[category.getCategorySeq().intValue()]
+                                / (double) categoryMax[category.getCategorySeq().intValue()] * (double) 100)
+//                            / (double) categoryMax[category.getCategorySeq().intValue()])
 
+                        .build());
+            }
+        }
         return true;
     }
+
 
     @Transactional
     @Override
@@ -425,7 +435,6 @@ public class MemberServiceImpl implements MemberService {
                         .build());
             }
         }
-
     }
 
     @Transactional
