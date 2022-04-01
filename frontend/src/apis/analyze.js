@@ -1,7 +1,5 @@
-import { MOCK_URL } from "../commons/setting/apiConfig";
+import { URL, MOCK_URL } from "../commons/setting/apiConfig";
 import axios from "axios";
-
-const URL = MOCK_URL;
 
 export async function getAnalyzeGraph(header, success, fail) {
   try {
