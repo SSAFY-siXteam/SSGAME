@@ -51,9 +51,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
         Member member = memberRepository.findByMemberSeq(memberSeq);
         System.out.println(member);
-        System.out.println("!");
         List<MemberFrequentGenre> mostPlayedGenres = memberFrequentGenreRepository.findMostPlayedGenresByMember(member);
-        System.out.println("@");
         List<MostPlayedGenreDto> mostPlayedGenreDtos = new LinkedList<>();
         long sum = 0;
         for (MemberFrequentGenre memberFrequentGenre : mostPlayedGenres) {
