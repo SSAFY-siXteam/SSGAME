@@ -47,6 +47,9 @@ public class AnalysisServiceImpl implements AnalysisService {
 
         List<RadarChartInfoDto> radarChartInfoDtos = new LinkedList<>();
         for (RadarChartInfo radarChartInfo : radarChartInfoRepository.findByMember(member)) {
+            if (radarChartInfo.getCategory().getCategoryName().equals("none")) {
+                continue;
+            }
             radarChartInfoDtos.add(RadarChartInfoDto.builder()
                     .subject(radarChartInfo.getCategory().getCategoryName())
                     .categoryRatio(radarChartInfo.getCategoryRatio())
