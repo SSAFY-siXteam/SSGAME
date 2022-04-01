@@ -14,5 +14,4 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findBySsgameId(String id);
 
     Member findByMemberSeq(Long memberSeq);
-
 }
