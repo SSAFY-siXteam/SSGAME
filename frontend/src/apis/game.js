@@ -7,7 +7,7 @@ async function getGame(header, param, success, fail) {
     .then(success)
     .catch(fail);
 }
-async function getGame1(token, param) {
+async function getGameList(token, param) {
   let search;
   if (param.search !== undefined) {
     search = "&search=" + param.search;
@@ -28,4 +28,4 @@ async function getGame1(token, param) {
     },
   });
 }
-export { getGame, getGame1 };
+export { getGame, getGameList };
