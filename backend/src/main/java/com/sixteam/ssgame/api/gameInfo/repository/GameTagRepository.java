@@ -1,14 +1,13 @@
 package com.sixteam.ssgame.api.gameInfo.repository;
 
-import com.sixteam.ssgame.api.gameInfo.entity.GameGenre;
 import com.sixteam.ssgame.api.gameInfo.entity.GameInfo;
+import com.sixteam.ssgame.api.gameInfo.entity.GameTag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface GameGenreRepository extends JpaRepository<GameGenre, Long> {
+public interface GameTagRepository extends JpaRepository<GameTag, Long> {
 
-    List<GameGenre> findAllByGameInfo(GameInfo gameInfo);
-
+    List<GameTag> getByGameInfo(GameInfo gameInfo);
 
 }

@@ -4,13 +4,14 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sixteam.ssgame.api.gameInfo.dto.AverageRatingDto;
 import com.sixteam.ssgame.api.gameInfo.dto.QAverageRatingDto;
+import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
 import com.sixteam.ssgame.api.member.dto.MemberGameDto;
 import com.sixteam.ssgame.api.member.dto.QMemberGameDto;
+import com.sixteam.ssgame.api.member.entity.Member;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
 import static com.querydsl.core.types.dsl.MathExpressions.round;
@@ -18,7 +19,7 @@ import static com.sixteam.ssgame.api.gameInfo.entity.QGameInfo.gameInfo;
 import static com.sixteam.ssgame.api.gameInfo.entity.QMemberGameList.memberGameList;
 import static com.sixteam.ssgame.api.member.entity.QMember.member;
 
-public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCustom {
+public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCustom{
 
     private final JPAQueryFactory queryFactory;
 
@@ -99,5 +100,12 @@ public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCus
         query.orderBy(memberGameList.memberPlayTime.desc());
 
         return query.fetch();
+    }
+
+    @Override
+    public List<MemberGameList> findMostPlayedGamesByMember(Member member) {
+        return queryFactory.select(memberGameList)
+                .from(memberGameList)
+                .where(memberGameList.member.eq(member)).orderBy(memberGameList.memberPlayTime.desc()).fetch();
     }
 }

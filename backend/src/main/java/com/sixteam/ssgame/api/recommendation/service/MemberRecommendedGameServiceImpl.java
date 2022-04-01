@@ -8,9 +8,10 @@ import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import com.sixteam.ssgame.api.recommendation.dto.ResponseMemberRecommendGameListDto;
 import com.sixteam.ssgame.api.recommendation.dto.ResponseMemberRecommendedGameInfoDto;
 import com.sixteam.ssgame.api.recommendation.entity.MemberRecommendedGame;
-import com.sixteam.ssgame.api.recommendation.repository.MemberRecommendedGameRepository;
 import com.sixteam.ssgame.global.error.exception.CustomException;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,21 +21,17 @@ import java.util.stream.Collectors;
 
 import static com.sixteam.ssgame.global.error.dto.ErrorStatus.LACK_OF_RECOMMENDED_GAME;
 
-@Service
 @Transactional(readOnly = true)
+@Slf4j
+@RequiredArgsConstructor
+@Service
 public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameService {
 
-    @Autowired
-    private MemberRecommendedGameRepository recommendedGameRepository;
+    private final MemberRepository memberRepository;
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberGameListRepository memberGameListRepository;
 
-    @Autowired
-    private MemberGameListRepository memberGameListRepository;
-
-    @Autowired
-    private GameInfoService gameInfoService;
+    private final GameInfoService gameInfoService;
 
     @Override
     public ResponseMemberRecommendGameListDto getRecommendedGameList(Long memberSeq) {
@@ -70,7 +67,7 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
         }
 
         // 추천 게임 개수 체크
-        if(responseMemberRecommendedGameInfoDtos.size() != 11) {
+        if(responseMemberRecommendedGameInfoDtos.size() < 11) {
             throw new CustomException("lack of recommended game", LACK_OF_RECOMMENDED_GAME);
         }
 
