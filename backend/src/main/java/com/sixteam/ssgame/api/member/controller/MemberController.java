@@ -23,6 +23,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -298,12 +299,19 @@ public class MemberController {
                 throw new CustomException("global error", GLOBAL_ERROR);
             }
         } else {
-            memberService.updateMemberSteamID(ssgameId, requestUpdateMemberSteamIDDto);
+            try {
+                memberService.updateMemberSteamID(ssgameId, steamID);
+                status = OK.value();
+                msg = "steamID를 수정했습니다.";
+            } catch (ParseException | IOException e) {
+                throw new CustomException("json parse error", JSON_PARSE_ERROR);
+            }
         }
 
-
         return BaseResponseDto.builder()
-
+                .status(status)
+                .msg(msg)
+                .data(data)
                 .build();
     }
 }

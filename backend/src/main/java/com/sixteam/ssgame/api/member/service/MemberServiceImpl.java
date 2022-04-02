@@ -429,46 +429,45 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void updateMemberSteamID(String ssgameId, RequestUpdateMemberSteamIDDto requestUpdateMemberSteamIDDto) {
+    public void updateMemberSteamID(String ssgameId, String steamID) throws IOException, ParseException {
 
         Member member = memberRepository.findBySsgameId(ssgameId);
         if (member == null) {
             throw new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND);
         }
 
-        String password = member.getPassword();
-        if (!passwordEncoder.matches(requestUpdateMemberSteamIDDto.getPassword(), password)) {
-            throw new CustomException("password not matches in update member", PASSWORD_NOT_MATCH);
+        if (member.getSteamID().equals(steamID)) {
+            throw new CustomException("cannot be changed to the same steam id", SAME_STEAM_ID);
         }
 
-        String steamID = requestUpdateMemberSteamIDDto.getSteamID();
         if (!member.getSteamID().equals(steamID) && hasSteamID(steamID)) {
             throw new CustomException("steamID duplication in update member", STEAMID_DUPLICATION);
         }
 
+        // 새로운 steamID.isPublic == false면 에러 반환
+        Map<String, Object> steamGameData = SteamAPIScrap.getGameData(steamID);
+        if(!(boolean) steamGameData.get("isPublic")) {
+            throw new CustomException("steamID is not public", PRIVATE_STEAMID);
+        }
+
         /**
          * 변경되는 테이블
-         * 1. 사용자 게임
-         * 2. 사용자 추천 게임
-         * 3. 사용자 선호 태그
-         * 4. 사용자가 가장 많이 플레이한 장르
-         * 5. 분석그래프 정보
+         * 1. 사용자 게임 -> loadGameInfoBySsgameId
+         * 2. 사용자 추천 게임 -> 장고에서 진행 (프론트 요청사항)
+         * 3. 사용자 선호 태그 -> calcMemberPrefferred
+         * 4. 사용자가 가장 많이 플레이한 장르 -> loadGameInfoBySsgameId
+         * 5. 분석그래프 정보 -> calcMemberPrefferred
          */
 
         // 기존 steamID에 관련된 내용 삭제
         memberGameListRepository.deleteByMember(member);
-        memberRecommendedGameRepository.deleteByMember(member);
-        memberPreferredTagRepository.deleteByMember(member);
-        memberFrequentGenreRepository.deleteByMember(member);
-        radarChartInfoRepository.deleteByMember(member);
 
         // steamID 변경
-        member.changeMemberSteamID(steamID);
+        Map<String, Object> steamMemberData = SteamAPIScrap.getMemberData(steamID);
+        member.changeMemberSteamID(steamID, (String) steamMemberData.get("steamNickname"), (String) steamMemberData.get("avatarUrl"), true, (Long) steamGameData.get("gameCount"));
 
         // 새로운 steamID로 재등록
-
-
-        // 새로운 steamID.isPublic == false면 에러 반환
-
+        loadGameInfoBySsgameId(member.getSsgameId());
+        calcMemberPrefferred(member.getSsgameId());
     }
 }

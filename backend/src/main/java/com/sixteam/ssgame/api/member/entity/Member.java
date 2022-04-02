@@ -96,7 +96,11 @@ public class Member {
         this.email = email;
     }
 
-    public void changeMemberSteamID(String steamID) {
+    public void changeMemberSteamID(String steamID, String steamNickname, String avatarUrl, boolean isPublic, Long gameCount) {
         this.steamID = steamID;
+        this.steamNickname = steamNickname;
+        this.avatarUrl = avatarUrl;
+        this.isPublic = isPublic;
+        this.gameCount = gameCount;
     }
 }
