@@ -390,12 +390,11 @@ public class MemberServiceImpl implements MemberService {
         }
 
         String password = member.getPassword();
+        if (!passwordEncoder.matches(requestUpdateMemberDto.getPrePassword(), password)) {
+            throw new CustomException("password not matches in update member", PASSWORD_NOT_MATCH);
+        }
         String newPassword = requestUpdateMemberDto.getNewPassword();
-        String prePassword = requestUpdateMemberDto.getPrePassword();
-        if (newPassword != null && prePassword != null) {
-            if (!passwordEncoder.matches(prePassword, password)) {
-                throw new CustomException("password not matches in update member", PASSWORD_NOT_MATCH);
-            }
+        if (newPassword != null) {
             password = passwordEncoder.encode(newPassword);
         }
 
