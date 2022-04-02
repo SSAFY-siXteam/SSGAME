@@ -49,15 +49,13 @@ const LongGameCard = ({ info, onClick }) => {
             </InlineBlock>
           )}
         </NameText>
-        {info.genres.map((genre, index) => {
-          //   <InfoText key={index} text={genre} size="small" />
-          if (index < 3)
-            return (
-              <TagText key={index} size="small">
-                #{genre}
-              </TagText>
-            );
-        })}
+        {info.genres
+          .filter((g, index) => index < 3)
+          .map((genre, index) => (
+            <TagText key={index} size="small">
+              #{genre}
+            </TagText>
+          ))}
       </InfoGrid>
     </ItemGrid>
   );
