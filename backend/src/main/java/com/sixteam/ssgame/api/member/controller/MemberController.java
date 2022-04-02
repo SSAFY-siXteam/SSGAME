@@ -5,7 +5,6 @@ import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
-import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberSteamIDDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberGamePageDto;
 import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
@@ -24,6 +23,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -287,7 +287,7 @@ public class MemberController {
     }
 
     @PutMapping("/steamID")
-    public BaseResponseDto updateSteamID(Authentication authentication, @Valid @RequestParam RequestUpdateMemberSteamIDDto requestUpdateMemberSteamIDDto, Errors errors) {
+    public BaseResponseDto updateSteamID(Authentication authentication, @Valid @RequestBody String steamID, Errors errors) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
@@ -311,12 +311,19 @@ public class MemberController {
                 throw new CustomException("global error", GLOBAL_ERROR);
             }
         } else {
-            memberService.updateMemberSteamID(ssgameId, requestUpdateMemberSteamIDDto);
+            try {
+                memberService.updateMemberSteamID(ssgameId, steamID);
+                status = OK.value();
+                msg = "steamID를 수정했습니다.";
+            } catch (ParseException | IOException e) {
+                throw new CustomException("json parse error", JSON_PARSE_ERROR);
+            }
         }
 
-
         return BaseResponseDto.builder()
-
+                .status(status)
+                .msg(msg)
+                .data(data)
                 .build();
     }
 }
