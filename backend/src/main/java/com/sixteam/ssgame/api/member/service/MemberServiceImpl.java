@@ -11,13 +11,11 @@ import com.sixteam.ssgame.api.gameInfo.repository.*;
 import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
-import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberSteamIDDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberDto;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.entity.MemberPreferredCategory;
 import com.sixteam.ssgame.api.member.repository.MemberPreferredCategoryRepository;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
-import com.sixteam.ssgame.api.recommendation.repository.MemberRecommendedGameRepository;
 import com.sixteam.ssgame.global.common.steamapi.SteamAPIScrap;
 import com.sixteam.ssgame.global.error.exception.CustomException;
 
@@ -52,8 +50,6 @@ public class MemberServiceImpl implements MemberService {
     private final MemberGameListRepository memberGameListRepository;
 
     private final GameInfoRepository gameInfoRepository;
-
-    private final MemberRecommendedGameRepository memberRecommendedGameRepository;
 
     private final MemberFrequentGenreRepository memberFrequentGenreRepository;
 
@@ -90,13 +86,10 @@ public class MemberServiceImpl implements MemberService {
         String encryptedPassword = passwordEncoder.encode(requestMemberDto.getPassword());
         log.debug("패스워드 암호화 " + encryptedPassword);
 
-        Map<String, Object> steamAPIMemberData = new HashMap<>();
-        Map<String, Object> steamAPIGameData = new HashMap<>();
-
         String steamID = requestMemberDto.getSteamID();
 
-        steamAPIMemberData = SteamAPIScrap.getMemberData(steamID);
-        steamAPIGameData = SteamAPIScrap.getGameData(steamID);
+        Map<String, Object> steamAPIMemberData = SteamAPIScrap.getMemberData(steamID);
+        Map<String, Object> steamAPIGameData = SteamAPIScrap.getGameData(steamID);
 
         Member savedMember = memberRepository.save(Member.builder()
                 .ssgameId(requestMemberDto.getSsgameId())
@@ -290,12 +283,10 @@ public class MemberServiceImpl implements MemberService {
         Arrays.fill(categoryValue, 0);
         Arrays.fill(categoryMax, 0);
 
-
         //tag 들의 Value를 더하기 위한 Map
         HashMap<Long, Double> tagsValue = new HashMap<>();
         //태그들의 카테고리를 저장하기 위한 Map
         HashMap<Long, Integer> tagsCategory = new HashMap<>();
-
 
         for (Tag tag : tags) {
             // 태그마다 합을 구하기 위해 0으로 초기화
@@ -317,7 +308,6 @@ public class MemberServiceImpl implements MemberService {
 
         //멤버의 게임 리스트 가져오기
         List<MemberGameList> memberGameLists = memberGameListRepository.findByMember(member);
-
 
         for (MemberGameList memberGame : memberGameLists) {
             if (memberGame.getMemberPlayTime() == 0) {
@@ -389,7 +379,6 @@ public class MemberServiceImpl implements MemberService {
 
         return true;
     }
-
 
     @Transactional
     @Override
