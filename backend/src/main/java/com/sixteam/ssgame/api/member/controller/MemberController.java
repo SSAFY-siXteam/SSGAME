@@ -5,7 +5,6 @@ import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
-import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberSteamIDDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberGamePageDto;
 import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
@@ -275,7 +274,7 @@ public class MemberController {
     }
 
     @PutMapping("/steamID")
-    public BaseResponseDto updateSteamID(Authentication authentication, @Valid @RequestParam RequestUpdateMemberSteamIDDto requestUpdateMemberSteamIDDto, Errors errors) {
+    public BaseResponseDto updateSteamID(Authentication authentication, @Valid @RequestBody String steamID, Errors errors) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
