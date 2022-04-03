@@ -187,7 +187,7 @@ public class MemberController {
     }
 
 
-    @PostMapping("/games")
+    @GetMapping("/renewal")
     public BaseResponseDto loadGames(Authentication authentication) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
@@ -201,23 +201,24 @@ public class MemberController {
             CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
             String ssgameId = details.getUsername();
 
-            memberService.loadGameInfoBySsgameId(ssgameId);
-            memberService.calcMemberPrefferred(ssgameId);
-            status = OK.value();
-            msg = "게임 목록 및 가중치 갱신이 완료되었습니다";
+            if (memberService.updateMemberDataByssgameId(ssgameId)) {
+                status = OK.value();
+                msg = "사용자 정보를 최신화했습니다.";
+            } else {
+                status = ACCEPTED.value();
+                msg = "사용자 정보 갱신에 실패했습니다.";
+            }
         }
         return BaseResponseDto.builder()
-                .status(200)
+                .status(status)
                 .msg(msg)
                 .build();
-
     }
 
     // page={page}&size={size}&sort={sort}&filter={filter}&search={search}
     @GetMapping("/games")
     public BaseResponseDto games(Authentication authentication,
                                  Pageable pageable,
-                                 @RequestParam String sort,
                                  @RequestParam boolean filter,
                                  @RequestParam(required = false) String search) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());

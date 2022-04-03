@@ -103,4 +103,11 @@ public class Member {
         this.isPublic = isPublic;
         this.gameCount = gameCount;
     }
+
+    public void changeMemberSteamAPI(String steamNickname, String avatarUrl, boolean isPublic, Long gameCount) {
+        this.steamNickname = steamNickname;
+        this.avatarUrl = avatarUrl;
+        this.isPublic = isPublic;
+        this.gameCount = gameCount;
+    }
 }
