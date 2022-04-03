@@ -27,8 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.util.*;
 
 import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
@@ -120,8 +118,7 @@ public class MemberServiceImpl implements MemberService {
                 if (gameInfo == null) {
                     continue;
                 }
-                // 회원가입 하고 나서 수정할 때는... 또 다른 로직이 필요함...
-                // 새로 추가한 게임이나 기존 게임에서 플레이 시간만 업데이트 하는 로직
+
                 memberGameListRepository.save(MemberGameList.builder()
                         .member(savedMember)
                         .gameInfo(gameInfo)
@@ -182,22 +179,47 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findBySsgameId(ssgameId);
     }
 
+    @Transactional
     @Override
-    @Transactional(readOnly = false)
-    public boolean loadGameInfoBySsgameId(String ssgameId) {
+    public boolean updateMemberDataByssgameId(String ssgameId) {
 
         Member member = memberRepository.findBySsgameId(ssgameId);
         if (member == null) {
             return false;
         }
+
+        // steamID로 api 호출
+        Map<String, Object> steamGameData = loadGameInfoByMember(member);
+        if (!(boolean) steamGameData.get("isSuccess")) {
+            return false;
+        }
+        // 게임 정보 최신화 이후에 가중치 업데이트
+        if (!calcMemberPrefferred(member)) {
+            return false;
+        }
+
+        try {
+            Map<String, Object> steamMemberData = SteamAPIScrap.getMemberData(member.getSteamID());
+            member.changeMemberSteamAPI((String) steamMemberData.get("steamNickname"), (String) steamMemberData.get("avatarUrl"), true, (Long) steamGameData.get("gameCount"));
+        } catch (IOException | ParseException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Transactional(readOnly = false)
+    public Map<String, Object> loadGameInfoByMember(Member member) {
+
+        Map<String, Object> responseData = new HashMap<>();
+
         try {
             Map<String, Object> gameData = SteamAPIScrap.getGameData(member.getSteamID());
             Long gameCount = (long) gameData.get("gameCount");
+            responseData.put("gameCount", gameCount);
 //            memberGameListRepository.deleteByMember(member);
             //게임 갯수가 0개인 부분 필터링
-            if (gameCount == 0) {
-                System.out.println("No games");
-            } else {
+            if (gameCount != 0) {
                 List<Genre> genres = genreRepository.findAll();
                 Map<Long, Integer> genresCount = new HashMap<>();
 
@@ -252,28 +274,18 @@ public class MemberServiceImpl implements MemberService {
                             .build());
                 }
             }
-        } catch (MalformedURLException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
-            return false;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
+            responseData.put("isSuccess", false);
         }
 
-        return true;
+        responseData.put("isSuccess", true);
+        return responseData;
     }
 
-    @Override
     @Transactional(readOnly = false)
-    public boolean calcMemberPrefferred(String ssgameId) {
+    public boolean calcMemberPrefferred(Member member) {
 
-        Member member = memberRepository.findBySsgameId(ssgameId);
         List<Tag> tags = tagRepository.findAll();
         List<Category> categories = categoryRepository.findAll();
         //카테고리 퍼센트를 구하기 위한 배열들
@@ -339,12 +351,10 @@ public class MemberServiceImpl implements MemberService {
 
         //모든 value들의 총합을 구한뒤 각 value들을 valueSum으로 나눠 퍼센트를 구함.
         double valueSum = 0.0;
-        System.out.println("~~~~" + tagsValue);
 
         for (Tag tag : tags) {
             valueSum += tagsValue.get(tag.getTagSeq());
         }
-        System.out.println("&*(" + valueSum);
 
         for (Tag tag : tags) {
             tagsValue.put(tag.getTagSeq(), Math.round(tagsValue.get(tag.getTagSeq()) / valueSum * 100000.0) / 100000.0);
@@ -456,7 +466,7 @@ public class MemberServiceImpl implements MemberService {
         member.changeMemberSteamID(steamID, (String) steamMemberData.get("steamNickname"), (String) steamMemberData.get("avatarUrl"), true, (Long) steamGameData.get("gameCount"));
 
         // 새로운 steamID로 재등록
-        loadGameInfoBySsgameId(member.getSsgameId());
-        calcMemberPrefferred(member.getSsgameId());
+        loadGameInfoByMember(member);
+        calcMemberPrefferred(member);
     }
 }
