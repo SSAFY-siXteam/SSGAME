@@ -25,9 +25,7 @@ public interface MemberService {
 
     Member findMemberBySsgameId(String ssgameId);
 
-    boolean loadGameInfoBySsgameId(String ssgameId);
-
-    boolean calcMemberPrefferred(String ssgameId);
+    boolean updateMemberDataByssgameId(String ssgameId);
 
     void updateMember(String ssgameId, RequestUpdateMemberDto requestUpdateMemberDto);
 
