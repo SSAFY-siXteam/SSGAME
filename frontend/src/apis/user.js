@@ -16,3 +16,10 @@ export function getUserInfo(token) {
     },
   });
 }
+export function putUserInfo(token, data) {
+  return axios.put(URL + "/members", data, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+}

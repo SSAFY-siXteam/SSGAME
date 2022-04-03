@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import MyGameTemplate from "../../templates/MyGameTemplate/MyGameTemplate";
-import SelectBox from "../../atoms/SelectBox/SelectBox";
-import { getGame1 } from "../../../apis/game";
-import { getCookie } from "../../../utils/cookie";
+import MyGameTemplate from "../../../templates/MyPageTemplate/MyGameTemplate/MyGameTemplate";
+import SelectBox from "../../../atoms/SelectBox/SelectBox";
+import { getGameList } from "../../../../apis/game";
+import { getCookie } from "../../../../utils/cookie";
 //test
 
 const MyGamePage = () => {
@@ -15,7 +15,7 @@ const MyGamePage = () => {
   });
 
   useEffect(() => {
-    getGame1(getCookie("SSGAME_USER_TOKEN"), param).then((res) => {
+    getGameList(getCookie("SSGAME_USER_TOKEN"), param).then((res) => {
       console.log(res);
       console.log(res.data.data.myGameInfos);
       setGameList(res.data.data.myGameInfos);
