@@ -5,7 +5,6 @@ import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
-import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberSteamIDDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberGamePageDto;
 import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
@@ -24,6 +23,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -187,7 +187,7 @@ public class MemberController {
     }
 
 
-    @PostMapping("/games")
+    @GetMapping("/renewal")
     public BaseResponseDto loadGames(Authentication authentication) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
@@ -201,23 +201,24 @@ public class MemberController {
             CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
             String ssgameId = details.getUsername();
 
-            memberService.loadGameInfoBySsgameId(ssgameId);
-            memberService.calcMemberPrefferred(ssgameId);
-            status = OK.value();
-            msg = "게임 목록 및 가중치 갱신이 완료되었습니다";
+            if (memberService.updateMemberDataByssgameId(ssgameId)) {
+                status = OK.value();
+                msg = "사용자 정보를 최신화했습니다.";
+            } else {
+                status = ACCEPTED.value();
+                msg = "사용자 정보 갱신에 실패했습니다.";
+            }
         }
         return BaseResponseDto.builder()
-                .status(200)
+                .status(status)
                 .msg(msg)
                 .build();
-
     }
 
     // page={page}&size={size}&sort={sort}&filter={filter}&search={search}
     @GetMapping("/games")
     public BaseResponseDto games(Authentication authentication,
                                  Pageable pageable,
-                                 @RequestParam String sort,
                                  @RequestParam boolean filter,
                                  @RequestParam(required = false) String search) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
@@ -287,7 +288,7 @@ public class MemberController {
     }
 
     @PutMapping("/steamID")
-    public BaseResponseDto updateSteamID(Authentication authentication, @Valid @RequestParam RequestUpdateMemberSteamIDDto requestUpdateMemberSteamIDDto, Errors errors) {
+    public BaseResponseDto updateSteamID(Authentication authentication, @Valid @RequestBody String steamID, Errors errors) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
@@ -311,12 +312,19 @@ public class MemberController {
                 throw new CustomException("global error", GLOBAL_ERROR);
             }
         } else {
-            memberService.updateMemberSteamID(ssgameId, requestUpdateMemberSteamIDDto);
+            try {
+                memberService.updateMemberSteamID(ssgameId, steamID);
+                status = OK.value();
+                msg = "steamID를 수정했습니다.";
+            } catch (ParseException | IOException e) {
+                throw new CustomException("json parse error", JSON_PARSE_ERROR);
+            }
         }
 
-
         return BaseResponseDto.builder()
-
+                .status(status)
+                .msg(msg)
+                .data(data)
                 .build();
     }
 }
