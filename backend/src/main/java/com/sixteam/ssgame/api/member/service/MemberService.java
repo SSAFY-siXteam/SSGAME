@@ -3,7 +3,6 @@ package com.sixteam.ssgame.api.member.service;
 import com.sixteam.ssgame.api.member.dto.MemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
-import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberSteamIDDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberDto;
 import com.sixteam.ssgame.api.member.entity.Member;
 import org.json.simple.parser.ParseException;
@@ -26,12 +25,10 @@ public interface MemberService {
 
     Member findMemberBySsgameId(String ssgameId);
 
-    boolean loadGameInfoBySsgameId(String ssgameId);
-
-    boolean calcMemberPrefferred(String ssgameId);
+    boolean updateMemberDataByssgameId(String ssgameId);
 
     void updateMember(String ssgameId, RequestUpdateMemberDto requestUpdateMemberDto);
 
-    void updateMemberSteamID(String ssgameId, RequestUpdateMemberSteamIDDto requestUpdateMemberSteamIDDto);
+    void updateMemberSteamID(String ssgameId, String steamID) throws IOException, ParseException;
 
 }

@@ -8,8 +8,10 @@ import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import com.sixteam.ssgame.api.recommendation.dto.ResponseMemberRecommendGameListDto;
 import com.sixteam.ssgame.api.recommendation.dto.ResponseMemberRecommendedGameInfoDto;
 import com.sixteam.ssgame.api.recommendation.entity.MemberRecommendedGame;
+import com.sixteam.ssgame.global.error.dto.ErrorStatus;
 import com.sixteam.ssgame.global.error.exception.CustomException;
 
+import com.sixteam.ssgame.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,7 +38,9 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
     @Override
     public ResponseMemberRecommendGameListDto getRecommendedGameList(Long memberSeq) {
         Member member = memberRepository.findByMemberSeq(memberSeq);
-        // Todo : member exception
+        if (member == null){
+            throw new EntityNotFoundException("사용자가 존재하지 않습니다.");
+        }
 
         List<ResponseMemberRecommendedGameInfoDto> responseMemberRecommendedGameInfoDtos = new ArrayList<>();
 
@@ -44,7 +48,9 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
         for (MemberRecommendedGame memberRecommendedGame : member.getMemberRecommendedGames()) {
             // 게임 조회
             GameInfo gameInfo = memberRecommendedGame.getGameInfo();
-            // Todo : gameInfo exception
+            if (gameInfo == null){
+                throw new CustomException("게임정보가 존재하지 않습니다.", ErrorStatus.GAME_NOT_FOUND);
+            }
 
             // 각 게임 별점 평균 연산
             Double averageRating = memberGameListRepository.getAverageRatingByGameSeq(gameInfo.getGameSeq()).getAverageRating();
