@@ -2,12 +2,18 @@ import axios from "axios";
 import { MOCK_URL, URL } from "../commons/setting/apiConfig";
 const tempURL = "http://localhost:8080/api/v1";
 async function getGame(header, param, success, fail) {
-  await axios
-    .get(MOCK_URL + `game/${param.gameSeq}`, header)
-    .then(success)
-    .catch(fail);
+  try {
+    let response = await axios.get(URL + `games/${param.gameSeq}`, header);
+    if (response.data.status == 200) {
+      success(response);
+    } else if (response.data.status !== 200) {
+      alert("존재하지 않는 게임입니다. 다시 확인해주세요.");
+    }
+  } catch (error) {
+    fail(error);
+  }
 }
-async function getGame1(token, param) {
+async function getGameList(token, param) {
   let search;
   if (param.search !== undefined) {
     search = "&search=" + param.search;
@@ -28,4 +34,4 @@ async function getGame1(token, param) {
     },
   });
 }
-export { getGame, getGame1 };
+export { getGame, getGameList };

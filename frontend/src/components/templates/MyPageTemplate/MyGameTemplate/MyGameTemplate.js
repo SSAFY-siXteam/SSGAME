@@ -7,10 +7,10 @@ import {
   StyledGameList,
   GameRatingCardDiv,
 } from "./style";
-import Title from "../../atoms/Title/Title";
-import { Input } from "../../atoms/Input/Input";
-import { CheckBoxItem } from "../../molecules/CheckBoxItem/CheckBoxItem";
-import GameRatingCard from "../../organisms/GameRatingCard/GameRatingCard";
+import Title from "../../../atoms/Title/Title";
+import { Input } from "../../../atoms/Input/Input";
+import { CheckBoxItem } from "../../../molecules/CheckBoxItem/CheckBoxItem";
+import GameRatingCard from "../../../organisms/GameRatingCard/GameRatingCard";
 
 const MyGameTemplate = ({ onInput, onChangeCheck, selectBox, gameList }) => {
   return (

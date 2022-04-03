@@ -5,12 +5,12 @@ import styled from "styled-components";
 import Main from "./components/pages/Main/Main";
 import SignUpPage from "./components/pages/SignUpPage/SignUpPage";
 import AnalyzePage from "./components/pages/AnalyzePage/AnalyzePage";
-import MyPage from "./components/pages/MyPage/MyPage";
+import MyPage from "./components/pages/MyPage/MyPage/MyPage";
 import { setCookie, getCookie, removeCookie } from "./utils/cookie";
-import GamePage from "./components/pages/GamePage/GamePage";
+import GameInfoPage from "./components/pages/GameInfoPage/GameInfoPage";
 import { signIn } from "./apis/user";
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
-import MyGamePage from "./components/pages/MyGamePage/MyGamePage";
+import MyGamePage from "./components/pages/MyPage/MyGamePage/MyGamePage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -75,7 +75,7 @@ function App() {
           <Route path="/analyze" element={<AnalyzePage />} />
           <Route path="/register" element={<SignUpPage />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/game/:gameSeq" element={<GamePage />} />
+          <Route path="/game/:gameSeq" element={<GameInfoPage />} />
           <Route path="/recommend" element={<RecommendPage />} />
           <Route path="/mygame" element={<MyGamePage />} />
         </Routes>

@@ -10,6 +10,14 @@ import {
   InlineBlock,
 } from "./style";
 
+export function sliceText(str, len) {
+  if (str.length > len) {
+    return str.slice(0, len) + "...";
+  } else {
+    return str;
+  }
+}
+
 const LongGameCard = ({ info, onClick }) => {
   return (
     <ItemGrid onClick={onClick}>
@@ -18,7 +26,7 @@ const LongGameCard = ({ info, onClick }) => {
       </ItemImg>
       <InfoGrid price={info.price}>
         <NameText>
-          <InfoText text={info.gameName} size="large" />
+          <InfoText text={sliceText(info.gameName, 18)} size="large" />
           {info.averageRating && (
             <>
               <InlineBlock>
@@ -41,12 +49,13 @@ const LongGameCard = ({ info, onClick }) => {
             </InlineBlock>
           )}
         </NameText>
-        {info.genres.map((genre, index) => (
-          //   <InfoText key={index} text={genre} size="small" />
-          <TagText key={index} size="small">
-            #{genre}
-          </TagText>
-        ))}
+        {info.genres
+          .filter((g, index) => index < 3)
+          .map((genre, index) => (
+            <TagText key={index} size="small">
+              #{genre}
+            </TagText>
+          ))}
       </InfoGrid>
     </ItemGrid>
   );
