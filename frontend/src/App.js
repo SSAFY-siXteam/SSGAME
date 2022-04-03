@@ -5,12 +5,12 @@ import styled from "styled-components";
 import Main from "./components/pages/Main/Main";
 import SignUpPage from "./components/pages/SignUpPage/SignUpPage";
 import AnalyzePage from "./components/pages/AnalyzePage/AnalyzePage";
-import MyPage from "./components/pages/MyPage/MyPage";
+import MyPage from "./components/pages/MyPage/MyPage/MyPage";
 import { setCookie, getCookie, removeCookie } from "./utils/cookie";
 import GameInfoPage from "./components/pages/GameInfoPage/GameInfoPage";
 import { signIn } from "./apis/user";
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
-import MyGamePage from "./components/pages/MyGamePage/MyGamePage";
+import MyGamePage from "./components/pages/MyPage/MyGamePage/MyGamePage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
