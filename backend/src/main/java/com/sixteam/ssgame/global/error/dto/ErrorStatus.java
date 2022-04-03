@@ -38,6 +38,10 @@ public enum ErrorStatus {
     LOGIN_INPUT_INVALID(BAD_REQUEST.value(), "Login input is invalid"),
     SSGAMEID_NOT_FOUND(BAD_REQUEST.value(), "ID를 다시 확인해주세요."),
     PASSWORD_NOT_MATCH(UNAUTHORIZED.value(), "비밀번호를 다시 확인해주세요."),
+    // update steam id
+    SAME_STEAM_ID(BAD_REQUEST.value(), "동일한 Steam ID로는 변경이 불가능합니다."),
+    FAIL_TO_UPDATE_STEAMID(HttpStatus.INTERNAL_SERVER_ERROR.value(), "steamID 수정 실패"),
+    PRIVATE_STEAMID(BAD_REQUEST.value(), "Steam ID의 게임 공개 설정을 확인해주세요."),
 
     // API
     API_NOT_CONNECTION(BAD_GATEWAY.value(), "Fail to connect"),
