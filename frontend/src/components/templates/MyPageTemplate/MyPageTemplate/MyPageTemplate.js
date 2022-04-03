@@ -10,9 +10,9 @@ import {
   StyledProfileInfoContent,
   StyledButtons,
   StyledInfo,
-} from "./styles";
-import Img from "../../atoms/Img/Img/Img";
-import { Input } from "../../atoms/Input/Input";
+} from "../styles";
+import Img from "../../../atoms/Img/Img/Img";
+import { Input } from "../../../atoms/Input/Input";
 const MyPageTemplate = ({
   userInfo,
   checkBox,

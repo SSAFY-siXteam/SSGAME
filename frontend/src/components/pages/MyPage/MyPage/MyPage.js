@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import MyPageTemplate from "../../templates/MyPageTemplate/MyPageTemplate";
-import { CheckBoxModule } from "../../organisms/CheckBoxModule/CheckBoxModule";
+import MyPageTemplate from "../../../templates/MyPageTemplate/MyPageTemplate/MyPageTemplate";
+import { CheckBoxModule } from "../../../organisms/CheckBoxModule/CheckBoxModule";
 
-import Button from "../../atoms/Buttons/Button";
+import Button from "../../../atoms/Buttons/Button";
 
-import { getUserInfo, putUserInfo } from "../../../apis/user";
-import { getCookie } from "../../../utils/cookie";
+import { getUserInfo, putUserInfo } from "../../../../apis/user";
+import { getCookie } from "../../../../utils/cookie";
 
 const MyPage = () => {
   const [checkedItems, setCheckedItems] = useState(new Set());

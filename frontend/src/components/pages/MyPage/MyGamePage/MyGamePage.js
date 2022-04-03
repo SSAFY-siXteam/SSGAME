@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import MyGameTemplate from "../../templates/MyGameTemplate/MyGameTemplate";
-import SelectBox from "../../atoms/SelectBox/SelectBox";
-import { getGameList } from "../../../apis/game";
-import { getCookie } from "../../../utils/cookie";
+import MyGameTemplate from "../../../templates/MyGameTemplate/MyGameTemplate";
+import SelectBox from "../../../atoms/SelectBox/SelectBox";
+import { getGameList } from "../../../../apis/game";
+import { getCookie } from "../../../../utils/cookie";
 //test
 
 const MyGamePage = () => {
