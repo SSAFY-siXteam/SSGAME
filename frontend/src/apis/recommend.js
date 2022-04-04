@@ -19,10 +19,10 @@ async function updateRecommend(memberSeq, success, fail) {
     let response = await axios.get(
       `https://j6a306.p.ssafy.io/django/${memberSeq}`
     );
-    if (response.data.status == 200) {
+    if (response.status == 200) {
       success(response);
-    } else if (response.data.status !== 200) {
-      alert("게임 목록을 가져올 수 없습니다. 다시 시도해 주세요.");
+    } else if (response.status !== 200) {
+      console.log("updateRecommend is not success");
     }
   } catch (error) {
     fail(error);

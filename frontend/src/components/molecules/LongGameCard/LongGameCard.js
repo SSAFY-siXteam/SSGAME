@@ -27,7 +27,7 @@ const LongGameCard = ({ info, onClick }) => {
       <InfoGrid price={info.price}>
         <NameText>
           <InfoText text={sliceText(info.gameName, 15)} size="large" />
-          {info.averageRating && (
+          {info.averageRating !== undefined && (
             <>
               <InlineBlock>
                 <InlineBlock>
