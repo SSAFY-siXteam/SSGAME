@@ -10,6 +10,10 @@ const GameInfo = ({ gameInfo }) => {
       <Title title={gameInfo.gameName} />
       {gameInfo.isPlayed && <RatingStar />}
       <InfoText text={gameInfo.shortDescriptionKr} />
+      {/* {gameInfo.isPlayed && } */}
+      <GameInfoItem title="내 게임 평가" text={gameInfo.memberGameRating} />
+      {/* 별점 */}
+
       <GameInfoItem title="게임 평점" text={gameInfo.averageRating} />
       <GameInfoItem title="게임 장르" text={gameInfo.genres + " "} />
     </div>
