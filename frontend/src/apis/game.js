@@ -1,6 +1,6 @@
 import axios from "axios";
 import { MOCK_URL, URL } from "../commons/setting/apiConfig";
-const tempURL = "http://localhost:8080/api/v1";
+// const tempURL = "http://localhost:8080/api/v1";
 async function getGame(header, param, success, fail) {
   try {
     let response = await axios.get(URL + `games/${param.gameSeq}`, header);
@@ -21,7 +21,7 @@ async function getGameList(token, param) {
     search = "";
   }
   console.log(param);
-  return axios.get(tempURL + "/members/games", {
+  return axios.get(URL + "/members/games", {
     params: {
       page: param.page,
       size: param.size,
@@ -34,4 +34,18 @@ async function getGameList(token, param) {
     },
   });
 }
-export { getGame, getGameList };
+
+async function putGameRating(token, data) {
+  console.log(data);
+  return axios.put(
+    URL + "/games/" + data.gameSeq,
+    { point: data.point },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+}
+export { getGame, getGameList, putGameRating };
