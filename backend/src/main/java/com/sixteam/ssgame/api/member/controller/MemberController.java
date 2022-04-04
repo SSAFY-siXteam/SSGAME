@@ -12,21 +12,16 @@ import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
 import com.sixteam.ssgame.global.common.util.JwtTokenUtil;
 import com.sixteam.ssgame.global.common.util.LogUtil;
 import com.sixteam.ssgame.global.error.exception.CustomException;
-import com.sixteam.ssgame.global.error.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.parser.ParseException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 import static org.springframework.http.HttpStatus.*;
@@ -41,48 +36,27 @@ public class MemberController {
 
     private final MemberGameListService memberGameListService;
 
-    private final PasswordEncoder passwordEncoder;
-
     @PostMapping
     public BaseResponseDto register(@Valid @RequestBody RequestMemberDto requestMemberDto, Errors errors) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
-
-        System.out.println(requestMemberDto);
 
         Integer status = null;
         String msg = null;
         Map<String, Object> data = new HashMap<>();
 
-        String password = requestMemberDto.getPassword();
-
         if (errors.hasErrors()) {
             if (errors.hasFieldErrors()) {
-                // field error
+                // field error - Request Dto Validation check
                 status = BAD_REQUEST.value();
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
                 throw new CustomException("global error", GLOBAL_ERROR);
             }
-        } else if (memberService.hasSsgameId(requestMemberDto.getSsgameId())) {
-            throw new InvalidValueException(requestMemberDto.getSsgameId(), SSGAMEID_DUPLICATION);
-        } else if (password.contains(requestMemberDto.getSsgameId())) {
-            throw new InvalidValueException(requestMemberDto.getSsgameId(), PASSWORD_CONTAINED_SSGAMEID);
-        } else if (memberService.hasSteamID(requestMemberDto.getSteamID())) {
-            throw new InvalidValueException(requestMemberDto.getSteamID(), STEAMID_DUPLICATION);
-        } else if (memberService.hasEmail(requestMemberDto.getEmail())) {
-            throw new InvalidValueException(requestMemberDto.getEmail(), EMAIL_DUPLICATION);
         } else {
-            try {
-                data.put("isPublic", memberService.register(requestMemberDto));
-                status = CREATED.value();
-                msg = "회원가입 성공";
-            } catch (ParseException e) {
-                throw new CustomException("json parse error", JSON_PARSE_ERROR);
-            } catch (Exception e) {
-                log.error("회원가입 실패 " + e);
-                throw new CustomException("회원가입 실패", FAIL_TO_REGISTER);
-            }
+            data.put("isPublic", memberService.register(requestMemberDto));
+            status = CREATED.value();
+            msg = "회원가입 성공";
         }
 
         return BaseResponseDto.builder()
@@ -99,12 +73,7 @@ public class MemberController {
         Integer status = null;
         String msg = null;
 
-        String regx = "^[a-z]+[0-9a-z]{3,15}$";
-        Pattern pattern = Pattern.compile(regx);
-
-        if (!pattern.matcher(ssgameId).matches()) {
-            throw new InvalidValueException(ssgameId, INVALID_ID_FORMAT);
-        } else if (memberService.hasSsgameId(ssgameId)) {
+        if (memberService.hasSsgameId(ssgameId)) {
             status = OK.value();
             msg = "이미 존재하는 ID입니다.";
         } else {
@@ -136,22 +105,15 @@ public class MemberController {
                 throw new CustomException("global error", GLOBAL_ERROR);
             }
         } else {
-            // 입력한 아이디가 db에 있는지 확인
-            MemberDto memberDto = memberService.findMemberDtoBySsggameId(requestLoginMemberDto.getSsgameId());
-            if (memberDto == null) {
-                throw new CustomException("member not found", SSGAMEID_NOT_FOUND);
-            } else if (!passwordEncoder.matches(requestLoginMemberDto.getPassword(), memberDto.getPassword())) {
-                throw new InvalidValueException("wrong password", PASSWORD_NOT_MATCH);
-            } else {
-                String jwtToken = JwtTokenUtil.getToken(memberDto.getSsgameId());
+            MemberDto memberDto = memberService.findMemberDtoInLogin(requestLoginMemberDto);
+            String jwtToken = JwtTokenUtil.getToken(memberDto.getSsgameId());
 
-                status = OK.value();
-                msg = "로그인에 성공했습니다.";
-                data.put("memberSeq", memberDto.getMemberSeq());
-                data.put("ssgameId", memberDto.getSsgameId());
-                data.put("steamID", memberDto.getSteamID());
-                data.put("jwtToken", jwtToken);
-            }
+            status = OK.value();
+            msg = "로그인에 성공했습니다.";
+            data.put("memberSeq", memberDto.getMemberSeq());
+            data.put("ssgameId", memberDto.getSsgameId());
+            data.put("steamID", memberDto.getSteamID());
+            data.put("jwtToken", jwtToken);
         }
 
         return BaseResponseDto.builder()
@@ -165,51 +127,39 @@ public class MemberController {
     public BaseResponseDto me(Authentication authentication) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
-        Integer status = null;
-        String msg = null;
-        Map<String, Object> data = new HashMap<>();
-
         if (authentication == null) {
             throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
-        } else {
-            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-            String ssgameId = details.getUsername();
-
-            data.put("memberInfo", memberService.findResponseMemberDtoBySsgameId(ssgameId));
-            status = OK.value();
-            msg = "회원 정보 조회에 성공했습니다.";
         }
 
         return BaseResponseDto.builder()
-                .status(status)
-                .msg(msg)
-                .data(data)
+                .status(OK.value())
+                .msg("회원 정보 조회에 성공했습니다.")
+                .data(new HashMap<>(){{
+                    put("memberInfo", memberService.findResponseMemberDto((CustomUserDetails) authentication.getDetails()));
+                }})
                 .build();
     }
 
 
     @GetMapping("/renewal")
-    public BaseResponseDto loadGames(Authentication authentication) {
+    public BaseResponseDto renewal(Authentication authentication) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         Integer status = null;
         String msg = null;
-        Map<String, Object> data = new HashMap<>();
 
         if (authentication == null) {
             throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
-        } else {
-            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-            String ssgameId = details.getUsername();
-
-            if (memberService.updateMemberDataByssgameId(ssgameId)) {
-                status = OK.value();
-                msg = "사용자 정보를 최신화했습니다.";
-            } else {
-                status = ACCEPTED.value();
-                msg = "사용자 정보 갱신에 실패했습니다.";
-            }
         }
+
+        if (memberService.renewalMemberData((CustomUserDetails) authentication.getDetails())) {
+            status = OK.value();
+            msg = "사용자 정보를 최신화했습니다.";
+        } else {
+            status = ACCEPTED.value();
+            msg = "사용자 정보 갱신에 실패했습니다.";
+        }
+
         return BaseResponseDto.builder()
                 .status(status)
                 .msg(msg)
@@ -224,30 +174,24 @@ public class MemberController {
                                  @RequestParam(required = false) String search) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
-        Integer status = null;
-        String msg = null;
-        Map<String, Object> data = new HashMap<>();
-
         if (authentication == null) {
             throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
-        } else {
-            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-            Long memberSeq = details.getMember().getMemberSeq();
-
-            ResponseMemberGamePageDto responseMemberGamePageDto = memberGameListService.getResponseMemberGamePageDto(memberSeq, pageable, filter, search);
-
-            status = OK.value();
-            msg = "내 게임 목록을 조회했습니다.";
-            data.put("totalCnt", responseMemberGamePageDto.getTotalCnt());
-            data.put("totalPage", responseMemberGamePageDto.getTotalPage());
-            data.put("currentPage", responseMemberGamePageDto.getCurrentPage());
-            data.put("myGameInfos", responseMemberGamePageDto.getMemberGameDtos());
         }
 
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        Long memberSeq = details.getMember().getMemberSeq();
+
+        ResponseMemberGamePageDto responseMemberGamePageDto = memberGameListService.getResponseMemberGamePageDto(memberSeq, pageable, filter, search);
+
         return BaseResponseDto.builder()
-                .status(status)
-                .msg(msg)
-                .data(data)
+                .status(OK.value())
+                .msg("내 게임 목록을 조회했습니다.")
+                .data(new HashMap<>() {{
+                    put("totalCnt", responseMemberGamePageDto.getTotalCnt());
+                    put("totalPage", responseMemberGamePageDto.getTotalPage());
+                    put("currentPage", responseMemberGamePageDto.getCurrentPage());
+                    put("myGameInfos", responseMemberGamePageDto.getMemberGameDtos());
+                }})
                 .build();
     }
 
@@ -263,9 +207,6 @@ public class MemberController {
             throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
         }
 
-        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-        String ssgameId = details.getUsername();
-
         if (errors.hasErrors()) {
             if (errors.hasFieldErrors()) {
                 // field error
@@ -276,7 +217,7 @@ public class MemberController {
                 throw new CustomException("global error", GLOBAL_ERROR);
             }
         } else {
-            memberService.updateMember(ssgameId, requestUpdateMemberDto);
+            memberService.updateMember((CustomUserDetails) authentication.getDetails(), requestUpdateMemberDto);
             status = OK.value();
             msg = "회원 정보를 수정했습니다.";
         }
@@ -300,9 +241,6 @@ public class MemberController {
             throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
         }
 
-        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-        String ssgameId = details.getUsername();
-
         if (errors.hasErrors()) {
             if (errors.hasFieldErrors()) {
                 // field error
@@ -313,13 +251,9 @@ public class MemberController {
                 throw new CustomException("global error", GLOBAL_ERROR);
             }
         } else {
-            try {
-                memberService.updateMemberSteamID(ssgameId, steamID);
-                status = OK.value();
-                msg = "steamID를 수정했습니다.";
-            } catch (ParseException | IOException e) {
-                throw new CustomException("json parse error", JSON_PARSE_ERROR);
-            }
+            memberService.updateMemberSteamID((CustomUserDetails) authentication.getDetails(), steamID);
+            status = OK.value();
+            msg = "steamID를 수정했습니다.";
         }
 
         return BaseResponseDto.builder()
