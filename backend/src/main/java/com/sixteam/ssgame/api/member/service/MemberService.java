@@ -1,13 +1,12 @@
 package com.sixteam.ssgame.api.member.service;
 
 import com.sixteam.ssgame.api.member.dto.MemberDto;
+import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberDto;
 import com.sixteam.ssgame.api.member.entity.Member;
-import org.json.simple.parser.ParseException;
-
-import java.io.IOException;
+import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 
 public interface MemberService {
 
@@ -17,18 +16,18 @@ public interface MemberService {
 
     boolean hasSteamID(String steamID);
 
-    boolean register(RequestMemberDto requestMemberDto) throws IOException, ParseException;
+    boolean register(RequestMemberDto requestMemberDto);
 
-    MemberDto findMemberDtoBySsggameId(String ssgameId);
+    MemberDto findMemberDtoInLogin(RequestLoginMemberDto requestLoginMemberDto);
 
-    ResponseMemberDto findResponseMemberDtoBySsgameId(String ssgameId);
+    ResponseMemberDto findResponseMemberDto(CustomUserDetails details);
 
     Member findMemberBySsgameId(String ssgameId);
 
-    boolean updateMemberDataByssgameId(String ssgameId);
+    boolean renewalMemberData(CustomUserDetails details);
 
-    void updateMember(String ssgameId, RequestUpdateMemberDto requestUpdateMemberDto);
+    void updateMember(CustomUserDetails details, RequestUpdateMemberDto requestUpdateMemberDto);
 
-    void updateMemberSteamID(String ssgameId, String steamID) throws IOException, ParseException;
+    void updateMemberSteamID(CustomUserDetails details, String steamID);
 
 }
