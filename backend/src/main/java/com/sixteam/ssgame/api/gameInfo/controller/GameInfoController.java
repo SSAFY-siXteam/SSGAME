@@ -15,7 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.Map;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,32 +29,29 @@ public class GameInfoController {
     public BaseResponseDto get(@PathVariable Long gameSeq, Authentication authentication) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
-        Integer status = null;
-        String msg = null;
-        Map<String, Object> data = new HashMap<>();
-
         if (authentication == null) {
             throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
-        } else {
-            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-            Long memberSeq = details.getMember().getMemberSeq();
-
-            data.put("gameInfo", gameInfoService.findResponseGameInfoDto(gameSeq, memberSeq));
-
-            status = HttpStatus.OK.value();
-            msg = "게임 정보 조회 성공";
         }
 
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+
         return BaseResponseDto.builder()
-                .status(status)
-                .msg(msg)
-                .data(data)
+                .status(HttpStatus.OK.value())
+                .msg("게임 정보 조회 성공")
+                .data(new HashMap<>() {{
+                    put("gameInfo",  gameInfoService.findResponseGameInfoDto(gameSeq, details.getMember().getMemberSeq()));
+                }})
                 .build();
     }
 
     @PutMapping("/{gameSeq}")
     public BaseResponseDto updateGamePoint(@PathVariable Long gameSeq, Authentication authentication, @RequestBody RequestMemberGameRatingDto requestMemberGameRatingDto) {
+        if (authentication == null) {
+            throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
+        }
+
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+
         gameInfoService.updateMemberGameRating(details.getMember().getMemberSeq(), gameSeq, requestMemberGameRatingDto.getPoint());
 
         return BaseResponseDto.builder()
