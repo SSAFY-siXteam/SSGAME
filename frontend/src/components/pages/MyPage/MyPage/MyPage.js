@@ -6,7 +6,7 @@ import Button from "../../../atoms/Buttons/Button";
 
 import { getUserInfo, putUserInfo } from "../../../../apis/user";
 import { getCookie } from "../../../../utils/cookie";
-
+import { updateGameAnalysis } from "../../../../apis/game";
 const MyPage = () => {
   const [checkedItems, setCheckedItems] = useState(new Set());
   const [checkedBox, setCheckedBox] = useState([
@@ -139,6 +139,12 @@ const MyPage = () => {
         .then((res) => {
           if (res.data.status === 200) {
             alert(res.data.msg);
+            updateGameAnalysis(
+              getCookie("SSGAME_USER_TOKEN"),
+              getCookie("SSGAME_USER_SEQ")
+            ).then((res) => {
+              console.log(res, "장고 호출");
+            });
           } else {
             alert(res.data.msg);
           }
