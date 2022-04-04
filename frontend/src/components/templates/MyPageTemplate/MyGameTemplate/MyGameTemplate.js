@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyledMyGame,
   StyledBar,
@@ -7,10 +7,10 @@ import {
   StyledGameList,
   GameRatingCardDiv,
 } from "./style";
-import Title from "../../atoms/Title/Title";
-import { Input } from "../../atoms/Input/Input";
-import { CheckBoxItem } from "../../molecules/CheckBoxItem/CheckBoxItem";
-import GameRatingCard from "../../organisms/GameRatingCard/GameRatingCard";
+import Title from "../../../atoms/Title/Title";
+import { Input } from "../../../atoms/Input/Input";
+import { CheckBoxItem } from "../../../molecules/CheckBoxItem/CheckBoxItem";
+import GameRatingCard from "../../../organisms/GameRatingCard/GameRatingCard";
 
 const MyGameTemplate = ({ onInput, onChangeCheck, selectBox, gameList }) => {
   return (
@@ -32,11 +32,13 @@ const MyGameTemplate = ({ onInput, onChangeCheck, selectBox, gameList }) => {
         <StyledBarRight>{selectBox}</StyledBarRight>
       </StyledBar>
       <StyledGameList>
-        {gameList.map((game, index) => (
-          <GameRatingCardDiv key={index}>
-            <GameRatingCard />
-          </GameRatingCardDiv>
-        ))}
+        {gameList.map((content, index) => {
+          return (
+            <GameRatingCardDiv key={index}>
+              <GameRatingCard content={content} />
+            </GameRatingCardDiv>
+          );
+        })}
       </StyledGameList>
     </StyledMyGame>
   );
