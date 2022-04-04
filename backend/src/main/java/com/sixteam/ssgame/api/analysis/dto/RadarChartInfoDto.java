@@ -7,6 +7,7 @@ import lombok.Getter;
 public class RadarChartInfoDto {
 
     private String subject;
+
     private double categoryRatio;
 
     @Builder
