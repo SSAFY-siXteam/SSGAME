@@ -34,7 +34,7 @@ public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCus
                 .select(new QAverageRatingDto(
                         round(memberGameList.memberGameRating.avg(), 2).coalesce(0.0)))
                 .from(memberGameList)
-                .where(memberGameList.gameInfo.gameSeq.eq(gameSeq))
+                .where(memberGameList.gameInfo.gameSeq.eq(gameSeq).and(memberGameList.memberGameRating.ne(0)))
                 .fetchOne();
     }
 
@@ -67,7 +67,7 @@ public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCus
                         gameInfo.gameSeq,
                         gameInfo.gameName,
                         gameInfo.headerImage,
-                        memberGameList.memberGameRating.isNotNull().as("isRated"),
+                        memberGameList.memberGameRating.ne(0).as("isRated"),
                         memberGameList.memberGameRating,
                         memberGameList.memberPlayTime))
                 .from(memberGameList)
@@ -77,7 +77,7 @@ public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCus
 
         // filter == true : 미평가 게임만 필터링
         if (filter) {
-            query.where(memberGameList.memberGameRating.isNull());
+            query.where(memberGameList.memberGameRating.eq(0));
         }
 
         // 검색어가 있다면 검색
