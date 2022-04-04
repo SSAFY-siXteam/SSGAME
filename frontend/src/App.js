@@ -53,12 +53,18 @@ function App() {
               console.log(error);
             }
           );
-          updateRecommend(res.data.data.memberSeq, (response) => {
-            console.log(response),
-              (error) => {
-                console.log(error);
-              };
-          });
+          updateRecommend(
+            res.data.data.memberSeq,
+            (response) => {
+              console.log(response),
+                (error) => {
+                  console.log(error);
+                };
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
         } else {
           alert("실패");
           console.log(res);
