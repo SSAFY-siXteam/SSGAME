@@ -34,6 +34,9 @@ function App() {
           setCookie("SSGAME_USER_NO", res.data.data.steamID, {
             path: "/",
           });
+          setCookie("SSGAME_USER_SEQ", res.data.data.memberSeq, {
+            path: "/",
+          });
           setIsLoggedIn(true);
         } else {
           alert("실패");
