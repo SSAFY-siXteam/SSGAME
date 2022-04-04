@@ -11,6 +11,7 @@ import GameInfoPage from "./components/pages/GameInfoPage/GameInfoPage";
 import { signIn } from "./apis/user";
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
 import MyGamePage from "./components/pages/MyPage/MyGamePage/MyGamePage";
+import { updateGameAnalyzation } from "./apis/analyze";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,7 +35,23 @@ function App() {
           setCookie("SSGAME_USER_NO", res.data.data.steamID, {
             path: "/",
           });
+          setCookie("SSGAME_USER_SEQ", res.data.data.memberSeq, {
+            path: "/",
+          });
           setIsLoggedIn(true);
+          updateGameAnalyzation(
+            {
+              headers: {
+                Authorization: `Bearer ` + res.data.data.jwtToken,
+              },
+            },
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
         } else {
           alert("실패");
           console.log(res);
