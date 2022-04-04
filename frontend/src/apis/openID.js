@@ -15,7 +15,7 @@ export const openIDLogIn = () => {
   // // });
 
   // return popupWindow;
-  window.location.replace("http://localhost:4000" + "/auth/steam");
+  window.location.replace("https://j6a306.p.ssafy.io" + "/node/auth/steam");
 };
 export const openIDLogInCheck = async (id) => {
   // axios.get("http://localhost:4000" + "/user" + "/" + id);
@@ -27,7 +27,7 @@ export const openIDLogInCheck = async (id) => {
     },
   };
   const isChecked = await fetch(
-    "http://localhost:4000/user/" + id,
+    "https://j6a306.p.ssafy.io/node/user/" + id,
     requestOptions
   )
     .then((res) => res.json())

@@ -62,8 +62,8 @@ passport.deserializeUser(function (obj, done) {
 passport.use(
   new SteamStrategy(
     {
-      returnURL: "http://localhost:4000/auth/steam/return",
-      realm: "http://localhost:4000/",
+      returnURL: "https://j6a306.p.ssafy.io/node/auth/steam/return",
+      realm: "https://j6a306.p.ssafy.io/node",
       apiKey: "A523B13BD02DE21FB0088B9CD46DE699",
     },
     function (identifier, profile, done) {
@@ -103,7 +103,7 @@ app.use(passport.session());
 app.use(express.static(__dirname + "/../../public"));
 
 // 여기서 보내주면 되지 않을까?
-app.use("/user/:id", function (req, res) {
+app.use("/node/user/:id", function (req, res) {
   console.log(req.params.id, "param");
   // console.log(req.user.id);
   // 문제 ( javascript에서 접근하는 것과, node상에서 접근하는 것이 달라 문제가 생긴다...)
@@ -120,19 +120,19 @@ app.use("/user/:id", function (req, res) {
 //   // } else res.send({ userLoggedIn: false });
 //   res.json({ userLoggedIn: true });
 // });
-app.get("/", function (req, res) {
+app.get("/node", function (req, res) {
   // res.render("index", { user: req.user });
-  res.redirect("http://localhost:3000/register?userid=" + req.user.id);
+  res.redirect("https://j6a306.p.ssafy.io/register?userid=" + req.user.id);
 });
 
-app.get("/account", ensureAuthenticated, function (req, res) {
+app.get("/node/account", ensureAuthenticated, function (req, res) {
   res.render("account", { user: req.user });
 });
 
-app.get("/logout", function (req, res) {
+app.get("/node/logout", function (req, res) {
   req.logout();
   res.clearCookie("userId", { path: "/user" });
-  res.redirect("/");
+  res.redirect("/node");
 });
 
 // GET /auth/steam
@@ -141,10 +141,10 @@ app.get("/logout", function (req, res) {
 //   the user to steamcommunity.com.  After authenticating, Steam will redirect the
 //   user back to this application at /auth/steam/return
 app.get(
-  "/auth/steam",
-  passport.authenticate("steam", { failureRedirect: "/" }),
+  "/node/auth/steam",
+  passport.authenticate("steam", { failureRedirect: "/node" }),
   function (req, res) {
-    res.redirect("/");
+    res.redirect("/node");
   }
 );
 
@@ -154,12 +154,12 @@ app.get(
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.get(
-  "/auth/steam/return",
+  "/node/auth/steam/return",
   passport.authenticate("steam", { failureRedirect: "/" }),
   function (req, res) {
     console.log(req.user.id, "userid");
     store.set("user", { id: req.user.id });
-    res.redirect("/");
+    res.redirect("/node");
   }
 );
 
