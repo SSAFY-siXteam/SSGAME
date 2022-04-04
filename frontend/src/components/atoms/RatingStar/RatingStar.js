@@ -3,6 +3,7 @@ import { StarDiv, StarWrapper } from "./style";
 import blank_star from "../../../assets/img/star/blank_star.png";
 import filled_star from "../../../assets/img/star/filled_star.png";
 import { putGameRating } from "../../../apis/game";
+import { getCookie } from "../../../utils/cookie";
 
 const cardColor = "#090029";
 
@@ -10,13 +11,12 @@ const RatingStar = ({ content, onStarChange }) => {
   const starRef = useRef(null);
 
   const onStarClick = (key) => {
-    // putGameRating(getCookie("SSGAME_USER_TOKEN"), {
-    //   point: key + 1,
-    //   gameSeq: starRef.current.id,
-    // }).then(() => {
-    //   onStarChange();
-    // });
-    onStarChange();
+    putGameRating(getCookie("SSGAME_USER_TOKEN"), {
+      point: key + 1,
+      gameSeq: starRef.current.id,
+    }).then(() => {
+      onStarChange();
+    });
   };
 
   return (
