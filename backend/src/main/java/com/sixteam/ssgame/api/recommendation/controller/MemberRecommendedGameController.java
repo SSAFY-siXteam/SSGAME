@@ -3,8 +3,9 @@ package com.sixteam.ssgame.api.recommendation.controller;
 import com.sixteam.ssgame.api.recommendation.service.MemberRecommendedGameService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
+import com.sixteam.ssgame.global.error.dto.ErrorStatus;
+import com.sixteam.ssgame.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +23,11 @@ public class MemberRecommendedGameController {
 
     @GetMapping
     public BaseResponseDto getRecommendedGameList(Authentication authentication) {
-        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        if (authentication == null) {
+            throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
+        }
 
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
         return BaseResponseDto.builder()
                 .status(HttpStatus.OK.value())
                 .data(new HashMap<>() {{
