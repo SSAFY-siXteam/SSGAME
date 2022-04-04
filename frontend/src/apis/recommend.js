@@ -16,7 +16,9 @@ async function getRecommendGames(header, success, fail) {
 
 async function updateRecommend(memberSeq, success, fail) {
   try {
-    let response = await axios.get(URL + `recommend/${memberSeq}`);
+    let response = await axios.get(
+      `https://j6a306.p.ssafy.io/django/${memberSeq}`
+    );
     if (response.data.status == 200) {
       success(response);
     } else if (response.data.status !== 200) {
