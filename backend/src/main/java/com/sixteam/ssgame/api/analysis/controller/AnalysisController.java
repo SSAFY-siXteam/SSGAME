@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,26 +30,18 @@ public class AnalysisController {
     public BaseResponseDto getGraph(Authentication authentication) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
-        Integer status = null;
-        String msg = null;
-        Map<String, Object> data = new HashMap<>();
-
         if (authentication == null) {
             throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
-        } else {
-            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-            Long memberSeq = details.getMember().getMemberSeq();
-
-            data.put("categories", analysisService.getGraph(memberSeq));
-
-            status = HttpStatus.OK.value();
-            msg = "그래프 정보 조회 성공";
         }
 
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+
         return BaseResponseDto.builder()
-                .status(status)
-                .msg(msg)
-                .data(data)
+                .status(HttpStatus.OK.value())
+                .msg("그래프 정보 조회 성공")
+                .data(new HashMap<>() {{
+                    put("categories", analysisService.getGraph(details.getMember().getMemberSeq()));
+                }})
                 .build();
     }
 
@@ -60,25 +51,18 @@ public class AnalysisController {
 
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
-        Integer status = null;
-        String msg = null;
-        Map<String, Object> data = new HashMap<>();
-
         if (authentication == null) {
             throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
-        } else {
-            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-            Long memberSeq = details.getMember().getMemberSeq();
-
-            data.put("MostPlayedGenres", analysisService.getMostPlayedGenres(memberSeq));
-            status = HttpStatus.OK.value();
-            msg = "가장 많이 플레이한 장르 조회 성공";
         }
 
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+
         return BaseResponseDto.builder()
-                .status(status)
-                .msg(msg)
-                .data(data)
+                .status(HttpStatus.OK.value())
+                .msg("가장 많이 플레이한 장르 조회 성공")
+                .data(new HashMap<>() {{
+                    put("MostPlayedGenres", analysisService.getMostPlayedGenres(details.getMember().getMemberSeq()));
+                }})
                 .build();
     }
 
@@ -87,25 +71,18 @@ public class AnalysisController {
 
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
-        Integer status = null;
-        String msg = null;
-        Map<String, Object> data = new HashMap<>();
-
         if (authentication == null) {
             throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
-        } else {
-            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-            Long memberSeq = details.getMember().getMemberSeq();
-
-            data.put("mostPlayedGames", analysisService.getMostPlayedGames(memberSeq));
-            status = HttpStatus.OK.value();
-            msg = "가장 많이 플레이한 게임 조회 성공";
         }
 
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+
         return BaseResponseDto.builder()
-                .status(status)
-                .msg(msg)
-                .data(data)
+                .status(HttpStatus.OK.value())
+                .msg("가장 많이 플레이한 장르 게임 성공")
+                .data(new HashMap<>() {{
+                    put("mostPlayedGames", analysisService.getMostPlayedGames(details.getMember().getMemberSeq()));
+                }})
                 .build();
     }
 }
