@@ -31,4 +31,5 @@ public interface MemberService {
 
     void updateMemberSteamID(String ssgameId, String steamID) throws IOException, ParseException;
 
+    void deleteMember(String ssgameId);
 }

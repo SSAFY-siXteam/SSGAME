@@ -16,6 +16,8 @@ import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.entity.MemberPreferredCategory;
 import com.sixteam.ssgame.api.member.repository.MemberPreferredCategoryRepository;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
+import com.sixteam.ssgame.api.recommendation.entity.MemberRecommendedGame;
+import com.sixteam.ssgame.api.recommendation.repository.MemberRecommendedGameRepository;
 import com.sixteam.ssgame.global.common.steamapi.SteamAPIScrap;
 import com.sixteam.ssgame.global.error.exception.CustomException;
 
@@ -26,6 +28,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.io.IOException;
 import java.util.*;
 
@@ -38,6 +42,8 @@ import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+
+    private final MemberRecommendedGameRepository memberRecommendedGameRepository;
 
     private final MemberPreferredCategoryRepository memberPreferredCategoryRepository;
 
@@ -62,6 +68,8 @@ public class MemberServiceImpl implements MemberService {
     private final GameTagRepository gameTagRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final EntityManager em;
 
     @Override
     public boolean hasSsgameId(String ssgameId) {
@@ -468,5 +476,26 @@ public class MemberServiceImpl implements MemberService {
         // 새로운 steamID로 재등록
         loadGameInfoByMember(member);
         calcMemberPrefferred(member);
+    }
+
+
+
+    @Override
+    @Transactional
+    public void deleteMember(String ssgameId) {
+
+        Member member = memberRepository.findBySsgameId(ssgameId);
+        if (member == null) {
+            throw new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND);
+        }
+
+        radarChartInfoRepository.deleteByMember(member);
+        memberPreferredCategoryRepository.deleteAllByMember(member);
+        memberFrequentGenreRepository.deleteByMember(member);
+        memberPreferredTagRepository.deleteByMember(member);
+        memberGameListRepository.deleteByMember(member);
+        memberRecommendedGameRepository.deleteByMember(member);
+        memberGameListRepository.deleteByMember(member);
+        memberRepository.deleteById(member.getMemberSeq());
     }
 }

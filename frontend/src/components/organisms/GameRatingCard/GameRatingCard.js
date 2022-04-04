@@ -3,12 +3,13 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Img from "../../atoms/Img/Img/Img";
 import { GameRatingCardDiv, StarDiv } from "./style";
+import silver from "../../../assets/img/logo.png";
 import blank_star from "../../../assets/img/star/blank_star.png";
 import filled_star from "../../../assets/img/star/filled_star.png";
 const cardColor = "#1D0553";
 //test
 
-const GameRatingCard = ({ content }) => {
+const GameRatingCard = ({ content, img }) => {
   const [star, setStar] = useState([0, 0, 0, 0, 0]);
 
   const onStarClick = (key) => {
@@ -26,13 +27,11 @@ const GameRatingCard = ({ content }) => {
       <Card sx={{ width: 250 }}>
         <CardContent sx={{ bgcolor: cardColor }}>
           <CardContent sx={{ bgcolor: cardColor }}>
-            <Img path={content.headerImage} color={cardColor} />
+            <Img path={silver} color={cardColor} />
           </CardContent>
+          <CardContent sx={{ bgcolor: cardColor }}>게임 제목:</CardContent>
           <CardContent sx={{ bgcolor: cardColor }}>
-            게임 제목:{content.gameName}
-          </CardContent>
-          <CardContent sx={{ bgcolor: cardColor }}>
-            나의 플레이 타임: {Math.floor(content.memberPlayTime / 60)} 시간
+            나의 플레이 타임:
           </CardContent>
           <CardContent sx={{ bgcolor: cardColor }}>
             <StarDiv color={cardColor}>
