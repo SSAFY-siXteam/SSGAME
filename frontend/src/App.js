@@ -56,10 +56,7 @@ function App() {
           updateRecommend(
             res.data.data.memberSeq,
             (response) => {
-              console.log(response),
-                (error) => {
-                  console.log(error);
-                };
+              console.log(response);
             },
             (error) => {
               console.log(error);
