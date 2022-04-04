@@ -11,6 +11,12 @@ const GameInfoPage = () => {
   const [gameInfo, setGameInfo] = useState({});
   const param = useParams();
 
+  const [starChanged, setStarChanged] = useState(false);
+
+  const onStarChange = () => {
+    setStarChanged(!starChanged);
+  };
+
   useEffect(() => {
     getGame(
       {
@@ -27,12 +33,12 @@ const GameInfoPage = () => {
         alert("정보를 불러오는 데에 문제가 발생했습니다.");
       }
     );
-  }, []);
+  }, [starChanged]);
 
   const args = {
     img: Img({ path: gameInfo.headerImage }),
     video: Video({ path: gameInfo.movies }),
-    info: GameInfo({ gameInfo: gameInfo }),
+    info: GameInfo({ gameInfo: gameInfo, onStarChange: onStarChange }),
   };
 
   return (
