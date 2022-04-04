@@ -1,6 +1,5 @@
 package com.sixteam.ssgame.api.analysis.service;
 
-
 import com.sixteam.ssgame.api.analysis.dto.MostPlayedGamesDto;
 import com.sixteam.ssgame.api.analysis.dto.MostPlayedGenreDto;
 import com.sixteam.ssgame.api.analysis.dto.RadarChartInfoDto;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 
-
 @Transactional(readOnly = true)
 @Slf4j
 @RequiredArgsConstructor
@@ -36,7 +34,6 @@ public class AnalysisServiceImpl implements AnalysisService {
     private final MemberFrequentGenreRepository memberFrequentGenreRepository;
 
     private final MemberGameListRepository memberGameListRepository;
-
 
     @Override
     public List<RadarChartInfoDto> getGraph(Long memberSeq) {
