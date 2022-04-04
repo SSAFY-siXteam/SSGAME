@@ -77,7 +77,7 @@ public class GameInfoServiceImpl implements GameInfoService {
                 .averageRating(averageRating)
                 .isPlayed(isMemberPlayedGame)
                 .isRated(isMemberRated)
-                .memberGameRating(isMemberRated ? memberGameList.getMemberGameRating() : -1)
+                .memberGameRating(isMemberRated ? memberGameList.getMemberGameRating() : 0)
                 .genres(genreNames)
                 .build();
     }
