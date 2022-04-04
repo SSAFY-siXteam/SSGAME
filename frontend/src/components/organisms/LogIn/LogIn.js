@@ -25,6 +25,11 @@ const LogIn = ({ onLogIn }) => {
             // e.target.value = e.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
             setUserId(e.target.value);
           }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              onLogIn(userId, userPassword);
+            }
+          }}
         />
       </InputDiv>
       <InputDiv>
@@ -36,6 +41,11 @@ const LogIn = ({ onLogIn }) => {
           onInputChange={(e) => {
             // e.target.value = e.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
             setUserPassword(e.target.value);
+          }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              onLogIn(userId, userPassword);
+            }
           }}
         />
       </InputDiv>
