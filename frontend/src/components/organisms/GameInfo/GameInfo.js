@@ -7,9 +7,11 @@ import RatingStar from "../../atoms/RatingStar/RatingStar";
 const GameInfo = ({ gameInfo }) => {
   // gameInfo.memberGameRating
   const [starChanged, setStarChanged] = useState(false);
+  const [rate, setRate] = useState(0);
 
   const onStarChange = () => {
     setStarChanged(!starChanged);
+    setRate();
   };
 
   return (
@@ -20,7 +22,7 @@ const GameInfo = ({ gameInfo }) => {
       <GameInfoItem title="내 게임 평가" text={gameInfo.memberGameRating} />
       {/* 별점 */}
       <RatingStar
-        content={{ ...gameInfo, memberGameRating: 4 }}
+        content={{ ...gameInfo, memberGameRating: rate }}
         onStarChange={onStarChange}
       />
       <GameInfoItem title="게임 평점" text={gameInfo.averageRating} />
