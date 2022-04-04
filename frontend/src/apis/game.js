@@ -38,7 +38,7 @@ async function getGameList(token, param) {
 async function putGameRating(token, data) {
   console.log(data);
   return axios.put(
-    URL + "games/" + data.gameSeq,
+    URL + "/games/" + data.gameSeq,
     { point: data.point },
     {
       headers: {
