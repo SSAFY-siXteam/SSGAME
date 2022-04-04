@@ -1,7 +1,7 @@
 import axios from "axios";
 import { URL } from "../commons/setting/apiConfig";
 //env 이관
-// const URL = "http://localhost:8080/api/v1";
+// const URL = "http://localhost:8080/api/v1/";
 
 // Spring 서버 ID 로그인
 export function signIn(user) {
@@ -17,7 +17,7 @@ export function getUserInfo(token) {
   });
 }
 export function putUserInfo(token, data) {
-  return axios.put(URL + "/members", data, {
+  return axios.put(URL + "members", data, {
     headers: {
       Authorization: "Bearer " + token,
     },
