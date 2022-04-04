@@ -9,10 +9,12 @@ const GameInfo = ({ gameInfo, onStarChange }) => {
     <div>
       <Title title={gameInfo.gameName} />
       <InfoText text={gameInfo.shortDescriptionKr} />
-      {/* {gameInfo.isPlayed && } */}
-      <GameInfoItem title="내 게임 평가" text={gameInfo.memberGameRating} />
-      {/* 별점 */}
-      <RatingStar content={{ ...gameInfo }} onStarChange={onStarChange} />
+      {gameInfo.isPlayed && (
+        <>
+          <GameInfoItem title="내 게임 평가" text={gameInfo.memberGameRating} />
+          <RatingStar content={{ ...gameInfo }} onStarChange={onStarChange} />
+        </>
+      )}
       <GameInfoItem title="게임 평점" text={gameInfo.averageRating} />
       <GameInfoItem title="게임 장르" text={gameInfo.genres + " "} />
     </div>
