@@ -148,6 +148,7 @@ public class MemberServiceImpl implements MemberService {
                             .member(savedMember)
                             .gameInfo(gameInfo)
                             .memberPlayTime(memberGameList.get(steamAppid))
+                            .memberGameRating(0)
                             .build());
                 }
             }
