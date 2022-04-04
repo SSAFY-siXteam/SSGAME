@@ -48,6 +48,7 @@ const MyGamePage = () => {
       );
     });
   };
+
   const args = {
     onInput: onInput,
     onChangeCheck: onChangeCheck,
