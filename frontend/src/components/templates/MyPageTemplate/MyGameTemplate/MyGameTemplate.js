@@ -11,8 +11,19 @@ import Title from "../../../atoms/Title/Title";
 import { Input } from "../../../atoms/Input/Input";
 import { CheckBoxItem } from "../../../molecules/CheckBoxItem/CheckBoxItem";
 import GameRatingCard from "../../../organisms/GameRatingCard/GameRatingCard";
-
-const MyGameTemplate = ({ onInput, onChangeCheck, selectBox, gameList }) => {
+import Pagination from "../../../organisms/Pagination/Pagination";
+const MyGameTemplate = ({
+  onInput,
+  onChangeCheck,
+  selectBox,
+  gameList,
+  totalPage,
+  page,
+  setPage,
+}) => {
+  useEffect(() => {
+    console.log(page, "page");
+  }, [page]);
   return (
     <StyledMyGame>
       <Title title={"내가 플레이 한 게임"} />
@@ -40,6 +51,7 @@ const MyGameTemplate = ({ onInput, onChangeCheck, selectBox, gameList }) => {
           );
         })}
       </StyledGameList>
+      <Pagination total={totalPage} page={page} setPage={setPage}></Pagination>
     </StyledMyGame>
   );
 };
