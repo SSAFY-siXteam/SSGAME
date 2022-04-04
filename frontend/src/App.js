@@ -12,6 +12,7 @@ import { signIn } from "./apis/user";
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
 import MyGamePage from "./components/pages/MyPage/MyGamePage/MyGamePage";
 import { updateGameAnalyzation } from "./apis/analyze";
+import { updateRecommend } from "./apis/recommend";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,6 +53,12 @@ function App() {
               console.log(error);
             }
           );
+          updateRecommend(res.data.data.memberSeq, (response) => {
+            console.log(response),
+              (error) => {
+                console.log(error);
+              };
+          });
         } else {
           alert("실패");
           console.log(res);
