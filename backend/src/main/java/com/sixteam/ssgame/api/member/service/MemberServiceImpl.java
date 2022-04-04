@@ -9,6 +9,7 @@ import com.sixteam.ssgame.api.analysis.repository.RadarChartInfoRepository;
 import com.sixteam.ssgame.api.gameInfo.entity.*;
 import com.sixteam.ssgame.api.gameInfo.repository.*;
 import com.sixteam.ssgame.api.member.dto.MemberDto;
+import com.sixteam.ssgame.api.member.dto.request.RequestLoginMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestMemberDto;
 import com.sixteam.ssgame.api.member.dto.request.RequestUpdateMemberDto;
 import com.sixteam.ssgame.api.member.dto.response.ResponseMemberDto;
@@ -16,9 +17,11 @@ import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.entity.MemberPreferredCategory;
 import com.sixteam.ssgame.api.member.repository.MemberPreferredCategoryRepository;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
+import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.steamapi.SteamAPIScrap;
 import com.sixteam.ssgame.global.error.exception.CustomException;
 
+import com.sixteam.ssgame.global.error.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -28,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 
@@ -65,6 +69,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean hasSsgameId(String ssgameId) {
+
+        String regx = "^[a-z]+[0-9a-z]{3,15}$";
+        Pattern pattern = Pattern.compile(regx);
+
+        if (!pattern.matcher(ssgameId).matches()) {
+            throw new InvalidValueException(ssgameId, INVALID_ID_FORMAT);
+        }
+
         return memberRepository.existsBySsgameId(ssgameId);
     }
 
@@ -80,62 +92,110 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public boolean register(RequestMemberDto requestMemberDto) throws IOException, ParseException {
+    public boolean register(RequestMemberDto requestMemberDto) {
+
+        String ssgameId = requestMemberDto.getSsgameId();
+        String steamID = requestMemberDto.getSteamID();
+        // validation check
+        if (hasSsgameId(ssgameId)) {
+            throw new InvalidValueException(ssgameId, SSGAMEID_DUPLICATION);
+        } else if (requestMemberDto.getPassword().contains(ssgameId)) {
+            throw new InvalidValueException(ssgameId, PASSWORD_CONTAINED_SSGAMEID);
+        } else if (hasSteamID(steamID)) {
+            throw new InvalidValueException(steamID, STEAMID_DUPLICATION);
+        } else if (hasEmail(requestMemberDto.getEmail())) {
+            throw new InvalidValueException(requestMemberDto.getEmail(), EMAIL_DUPLICATION);
+        }
+
         String encryptedPassword = passwordEncoder.encode(requestMemberDto.getPassword());
         log.debug("패스워드 암호화 " + encryptedPassword);
 
-        String steamID = requestMemberDto.getSteamID();
+        try {
+            Map<String, Object> steamAPIMemberData = SteamAPIScrap.getMemberData(steamID);
+            Map<String, Object> steamAPIGameData = SteamAPIScrap.getGameData(steamID);
 
-        Map<String, Object> steamAPIMemberData = SteamAPIScrap.getMemberData(steamID);
-        Map<String, Object> steamAPIGameData = SteamAPIScrap.getGameData(steamID);
-
-        Member savedMember = memberRepository.save(Member.builder()
-                .ssgameId(requestMemberDto.getSsgameId())
-                .password(encryptedPassword)
-                .email(requestMemberDto.getEmail())
-                .steamID(steamID)
-                .steamNickname((String) steamAPIMemberData.get("steamNickname"))
-                .avatarUrl((String) steamAPIMemberData.get("avatarUrl"))
-                .isPublic((boolean) steamAPIGameData.get("isPublic"))
-                .gameCount((Long) steamAPIGameData.get("gameCount"))
-                .isDeleted(false)
-                .build());
-
-        List<String> preferredCategories = requestMemberDto.getPreferredCategories();
-        for (String preferredCategory : preferredCategories) {
-            memberPreferredCategoryRepository.save(MemberPreferredCategory.builder()
-                    .member(savedMember)
-                    .category(categoryRepository.findByCategoryName(preferredCategory))
+            Member savedMember = memberRepository.save(Member.builder()
+                    .ssgameId(ssgameId)
+                    .password(encryptedPassword)
+                    .email(requestMemberDto.getEmail())
+                    .steamID(steamID)
+                    .steamNickname((String) steamAPIMemberData.get("steamNickname"))
+                    .avatarUrl((String) steamAPIMemberData.get("avatarUrl"))
+                    .isPublic((boolean) steamAPIGameData.get("isPublic"))
+                    .gameCount((Long) steamAPIGameData.get("gameCount"))
+                    .isDeleted(false)
                     .build());
-        }
 
-        Map<Long, Long> memberGameList = (Map<Long, Long>) steamAPIGameData.get("memberGameList");
-
-        if (memberGameList.size() != 0) {
-            for (Long steamAppid : memberGameList.keySet()) {
-                GameInfo gameInfo = gameInfoRepository.findBySteamAppid(steamAppid);
-                // steam app id에 해당하는 게임 저장
-                if (gameInfo == null) {
-                    continue;
-                }
-
-                memberGameListRepository.save(MemberGameList.builder()
+            List<String> preferredCategories = requestMemberDto.getPreferredCategories();
+            for (String preferredCategory : preferredCategories) {
+                memberPreferredCategoryRepository.save(MemberPreferredCategory.builder()
                         .member(savedMember)
-                        .gameInfo(gameInfo)
-                        .memberPlayTime(memberGameList.get(steamAppid))
+                        .category(categoryRepository.findByCategoryName(preferredCategory))
                         .build());
             }
+
+            Map<Long, Long> memberGameList = (Map<Long, Long>) steamAPIGameData.get("memberGameList");
+
+            if (memberGameList.size() != 0) {
+                for (Long steamAppid : memberGameList.keySet()) {
+                    GameInfo gameInfo = gameInfoRepository.findBySteamAppid(steamAppid);
+                    // steam app id에 해당하는 게임 저장
+                    if (gameInfo == null) {
+                        continue;
+                    }
+
+                    memberGameListRepository.save(MemberGameList.builder()
+                            .member(savedMember)
+                            .gameInfo(gameInfo)
+                            .memberPlayTime(memberGameList.get(steamAppid))
+                            .memberGameRating(0)
+                            .build());
+                }
+            }
+
+            return savedMember.getIsPublic();
+        } catch (ParseException e) {
+            throw new CustomException("json parse error", JSON_PARSE_ERROR);
+        } catch (Exception e) {
+            throw new CustomException("회원가입 실패", FAIL_TO_REGISTER);
         }
-        return savedMember.getIsPublic();
     }
 
     @Override
-    public MemberDto findMemberDtoBySsggameId(String ssgameId) {
+    public MemberDto findMemberDtoInLogin(RequestLoginMemberDto requestLoginMemberDto) {
 
+        Member member = memberRepository.findBySsgameId(requestLoginMemberDto.getSsgameId());
+        if (member == null) {
+            throw new CustomException("cannot find member by " + requestLoginMemberDto.getSsgameId(), SSGAMEID_NOT_FOUND);
+        } else if (!passwordEncoder.matches(requestLoginMemberDto.getPassword(), member.getPassword())) {
+            throw new InvalidValueException("wrong password", PASSWORD_NOT_MATCH);
+        }
+
+        return findMemberDtoByMember(member);
+    }
+
+    @Override
+    public ResponseMemberDto findResponseMemberDto(CustomUserDetails details) {
+
+        String ssgameId = details.getUsername();
         Member member = memberRepository.findBySsgameId(ssgameId);
         if (member == null) {
             throw new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND);
         }
+        MemberDto memberDto = findMemberDtoByMember(member);
+
+        return ResponseMemberDto.builder()
+                .ssgameId(memberDto.getSsgameId())
+                .email(memberDto.getEmail())
+                .steamID(memberDto.getSteamID())
+                .steamNickname(memberDto.getSteamNickname())
+                .avatarUrl(memberDto.getAvatarUrl())
+                .gameCount(memberDto.getGameCount())
+                .preferredCategories(memberDto.getPreferredCategories())
+                .build();
+    }
+
+    private MemberDto findMemberDtoByMember(Member member) {
 
         List<MemberPreferredCategory> categories = memberPreferredCategoryRepository.findAllByMember(member);
 
@@ -159,30 +219,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ResponseMemberDto findResponseMemberDtoBySsgameId(String ssgameId) {
-
-        MemberDto member = findMemberDtoBySsggameId(ssgameId);
-
-        return ResponseMemberDto.builder()
-                .ssgameId(member.getSsgameId())
-                .email(member.getEmail())
-                .steamID(member.getSteamID())
-                .steamNickname(member.getSteamNickname())
-                .avatarUrl(member.getAvatarUrl())
-                .gameCount(member.getGameCount())
-                .preferredCategories(member.getPreferredCategories())
-                .build();
-    }
-
-    @Override
     public Member findMemberBySsgameId(String ssgameId) {
         return memberRepository.findBySsgameId(ssgameId);
     }
 
     @Transactional
     @Override
-    public boolean updateMemberDataByssgameId(String ssgameId) {
+    public boolean renewalMemberData(CustomUserDetails details) {
 
+        String ssgameId = details.getUsername();
         Member member = memberRepository.findBySsgameId(ssgameId);
         if (member == null) {
             return false;
@@ -392,7 +437,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void updateMember(String ssgameId, RequestUpdateMemberDto requestUpdateMemberDto) {
+    public void updateMember(CustomUserDetails details, RequestUpdateMemberDto requestUpdateMemberDto) {
+
+        String ssgameId = details.getUsername();
 
         Member member = memberRepository.findBySsgameId(ssgameId);
         if (member == null) {
@@ -428,7 +475,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void updateMemberSteamID(String ssgameId, String steamID) throws IOException, ParseException {
+    public void updateMemberSteamID(CustomUserDetails details, String steamID) {
+
+        String ssgameId = details.getUsername();
 
         Member member = memberRepository.findBySsgameId(ssgameId);
         if (member == null) {
@@ -443,30 +492,34 @@ public class MemberServiceImpl implements MemberService {
             throw new CustomException("steamID duplication in update member", STEAMID_DUPLICATION);
         }
 
-        // 새로운 steamID.isPublic == false면 에러 반환
-        Map<String, Object> steamGameData = SteamAPIScrap.getGameData(steamID);
-        if(!(boolean) steamGameData.get("isPublic")) {
-            throw new CustomException("steamID is not public", PRIVATE_STEAMID);
+        try {
+            // 새로운 steamID.isPublic == false면 에러 반환
+            Map<String, Object> steamGameData = SteamAPIScrap.getGameData(steamID);
+            if(!(boolean) steamGameData.get("isPublic")) {
+                throw new CustomException("steamID is not public", PRIVATE_STEAMID);
+            }
+
+            /**
+             * 변경되는 테이블
+             * 1. 사용자 게임 -> loadGameInfoBySsgameId
+             * 2. 사용자 추천 게임 -> 장고에서 진행 (프론트 요청사항)
+             * 3. 사용자 선호 태그 -> calcMemberPrefferred
+             * 4. 사용자가 가장 많이 플레이한 장르 -> loadGameInfoBySsgameId
+             * 5. 분석그래프 정보 -> calcMemberPrefferred
+             */
+
+            // 기존 steamID에 관련된 내용 삭제
+            memberGameListRepository.deleteByMember(member);
+
+            // steamID 변경
+            Map<String, Object> steamMemberData = SteamAPIScrap.getMemberData(steamID);
+            member.changeMemberSteamID(steamID, (String) steamMemberData.get("steamNickname"), (String) steamMemberData.get("avatarUrl"), true, (Long) steamGameData.get("gameCount"));
+
+            // 새로운 steamID로 재등록
+            loadGameInfoByMember(member);
+            calcMemberPrefferred(member);
+        } catch (ParseException | IOException e) {
+            throw new CustomException("json parse error", JSON_PARSE_ERROR);
         }
-
-        /**
-         * 변경되는 테이블
-         * 1. 사용자 게임 -> loadGameInfoBySsgameId
-         * 2. 사용자 추천 게임 -> 장고에서 진행 (프론트 요청사항)
-         * 3. 사용자 선호 태그 -> calcMemberPrefferred
-         * 4. 사용자가 가장 많이 플레이한 장르 -> loadGameInfoBySsgameId
-         * 5. 분석그래프 정보 -> calcMemberPrefferred
-         */
-
-        // 기존 steamID에 관련된 내용 삭제
-        memberGameListRepository.deleteByMember(member);
-
-        // steamID 변경
-        Map<String, Object> steamMemberData = SteamAPIScrap.getMemberData(steamID);
-        member.changeMemberSteamID(steamID, (String) steamMemberData.get("steamNickname"), (String) steamMemberData.get("avatarUrl"), true, (Long) steamGameData.get("gameCount"));
-
-        // 새로운 steamID로 재등록
-        loadGameInfoByMember(member);
-        calcMemberPrefferred(member);
     }
 }
