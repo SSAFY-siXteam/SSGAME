@@ -12,10 +12,7 @@ import { signIn } from "./apis/user";
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
 import MyGamePage from "./components/pages/MyPage/MyGamePage/MyGamePage";
 import { updateGameAnalyzation } from "./apis/analyze";
-<<<<<<< HEAD
 import { updateRecommend } from "./apis/recommend";
-=======
->>>>>>> a25632589f044792fd2527800a2940176f0066cc
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
