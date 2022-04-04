@@ -18,9 +18,9 @@ export function sliceText(str, len) {
   }
 }
 
-const LongGameCard = ({ info, onClick }) => {
+const LongGameCard = ({ info, onClick, isMovie }) => {
   return (
-    <ItemGrid onClick={onClick}>
+    <ItemGrid onClick={onClick} isMovie={isMovie}>
       <ItemImg>
         <Img path={info.headerImage} />
       </ItemImg>

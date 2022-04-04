@@ -58,6 +58,7 @@ const RecommendPage = () => {
                   data={recommendedGameList.filter((game, index) => index < 3)}
                   itemBtn="트레일러 확인하기"
                   itemBtnOnClick={changeVideo}
+                  isMovie={true}
                 />
               }
               otherRec={
