@@ -12,7 +12,9 @@ import { signIn } from "./apis/user";
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
 import MyGamePage from "./components/pages/MyPage/MyGamePage/MyGamePage";
 import { updateGameAnalyzation } from "./apis/analyze";
+import { updateRecommend } from "./apis/recommend";
 import { updateGameAnalysis } from "./apis/game";
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const onLogIn = (userId, userPassword) => {
@@ -37,12 +39,12 @@ function App() {
           setCookie("SSGAME_USER_SEQ", res.data.data.memberSeq, {
             path: "/",
           });
-          updateGameAnalysis(
-            getCookie("SSGAME_USER_TOKEN"),
-            getCookie("SSGAME_USER_SEQ")
-          ).then((res) => {
-            console.log(res);
-          });
+          // updateGameAnalysis(
+          //   getCookie("SSGAME_USER_TOKEN"),
+          //   getCookie("SSGAME_USER_SEQ")
+          // ).then((res) => {
+          //   console.log(res);
+          // });
           setIsLoggedIn(true);
           updateGameAnalyzation(
             {
@@ -50,6 +52,15 @@ function App() {
                 Authorization: `Bearer ` + res.data.data.jwtToken,
               },
             },
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+          updateRecommend(
+            res.data.data.memberSeq,
             (response) => {
               console.log(response);
             },
