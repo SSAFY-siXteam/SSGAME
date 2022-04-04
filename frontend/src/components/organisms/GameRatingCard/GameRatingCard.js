@@ -35,9 +35,7 @@ const GameRatingCard = ({ content, onStarChange }) => {
           <CardContent sx={{ bgcolor: cardColor }}>
             나의 플레이 타임: {Math.floor(content.memberPlayTime / 60)} 시간
           </CardContent>
-          <CardContent sx={{ bgcolor: cardColor }}>
-            별점 : {content.memberGameRating}
-          </CardContent>
+
           <CardContent sx={{ bgcolor: cardColor }}>
             <StarDiv color={cardColor}>
               {Array(content.memberGameRating)
