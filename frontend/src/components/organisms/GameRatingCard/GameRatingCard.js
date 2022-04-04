@@ -10,24 +10,15 @@ import { getCookie } from "../../../utils/cookie";
 const cardColor = "#1D0553";
 //test
 
-const GameRatingCard = ({ content }) => {
+const GameRatingCard = ({ content, onStarChange }) => {
   const starRef = useRef(null);
-  const [star, setStar] = useState([
-    ...Array(content.memberGameRating)
-      .fill(1)
-      .concat(Array(5 - content.memberGameRating).fill(0)),
-  ]);
 
   const onStarClick = (key) => {
     putGameRating(getCookie("SSGAME_USER_TOKEN"), {
       point: key + 1,
       gameSeq: starRef.current.id,
     }).then(() => {
-      setStar(
-        Array(key + 1)
-          .fill(1)
-          .concat(Array(4 - key).fill(0))
-      );
+      onStarChange();
     });
   };
 

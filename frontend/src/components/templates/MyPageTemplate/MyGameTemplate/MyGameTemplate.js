@@ -20,6 +20,7 @@ const MyGameTemplate = ({
   totalPage,
   page,
   setPage,
+  onStarChange,
 }) => {
   useEffect(() => {
     console.log(page, "page");
@@ -46,7 +47,7 @@ const MyGameTemplate = ({
         {gameList.map((content, index) => {
           return (
             <GameRatingCardDiv key={index}>
-              <GameRatingCard content={content} />
+              <GameRatingCard content={content} onStarChange={onStarChange} />
             </GameRatingCardDiv>
           );
         })}

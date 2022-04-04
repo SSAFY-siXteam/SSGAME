@@ -8,6 +8,7 @@ import { getCookie } from "../../../../utils/cookie";
 
 const MyGamePage = () => {
   const [gameList, setGameList] = useState([]);
+  const [starChanged, setStarChanged] = useState(false);
   const [param, setParam] = useState({
     page: 1,
     size: 8,
@@ -23,7 +24,10 @@ const MyGamePage = () => {
       setTotalPage(res.data.data.totalPage);
       setGameList([...res.data.data.myGameInfos]);
     });
-  }, [param]);
+  }, [param, starChanged]);
+  const onStarChange = () => {
+    setStarChanged(!starChanged);
+  };
   const setPage = (page) => {
     setParam({ ...param, page: page });
   };
@@ -35,18 +39,6 @@ const MyGamePage = () => {
   };
   const onChangeCheck = () => {
     setParam({ ...param, filter: !param.filter });
-  };
-  const onStarClick = (key) => {
-    putGameRating(getCookie("SSGAME_USER_TOKEN"), {
-      point: key + 1,
-      gameSeq: starRef.current.id,
-    }).then(() => {
-      setStar(
-        Array(key + 1)
-          .fill(1)
-          .concat(Array(4 - key).fill(0))
-      );
-    });
   };
 
   const args = {
@@ -61,7 +53,7 @@ const MyGamePage = () => {
       onChangeSelectBox: onChangeSelectBox,
     }),
     gameList: gameList,
-    onStarClick: onStarClick,
+    onStarChange: onStarChange,
     totalPage: totalPage,
     page: param.page,
     setPage: setPage,
