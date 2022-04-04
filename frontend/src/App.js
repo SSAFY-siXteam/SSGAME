@@ -40,7 +40,9 @@ function App() {
           updateGameAnalysis(
             getCookie("SSGAME_USER_TOKEN"),
             getCookie("SSGAME_USER_SEQ")
-          );
+          ).then((res) => {
+            console.log(res);
+          });
           setIsLoggedIn(true);
           updateGameAnalyzation(
             {

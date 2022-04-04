@@ -50,9 +50,11 @@ async function putGameRating(token, data) {
 }
 
 async function updateGameAnalysis(token, memberSeq) {
+  console.log("start");
   return axios.get(DJANGO_URL + memberSeq, {
     headers: {
       Authorization: "Bearer" + token,
+      "Content-Type": "application/json",
     },
   });
 }
