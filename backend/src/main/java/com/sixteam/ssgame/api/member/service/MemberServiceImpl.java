@@ -534,10 +534,8 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void deleteMember(String ssgameId) {
 
-        Member member = memberRepository.findBySsgameId(ssgameId);
-        if (member == null) {
-            throw new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND);
-        }
+        Member member = memberRepository.findBySsgameId(ssgameId)
+                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
 
         radarChartInfoRepository.deleteByMember(member);
         memberPreferredCategoryRepository.deleteAllByMember(member);
