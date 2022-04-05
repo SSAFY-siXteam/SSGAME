@@ -51,7 +51,7 @@ public class MemberController {
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
-                throw new CustomException("global error", GLOBAL_ERROR);
+                throw new CustomException(LogUtil.getElement(), GLOBAL_ERROR);
             }
         } else {
             data.put("isPublic", memberService.register(requestMemberDto));
@@ -102,7 +102,7 @@ public class MemberController {
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
-                throw new CustomException("global error", GLOBAL_ERROR);
+                throw new CustomException(LogUtil.getElement(), GLOBAL_ERROR);
             }
         } else {
             MemberDto memberDto = memberService.findMemberDtoInLogin(requestLoginMemberDto);
@@ -128,7 +128,7 @@ public class MemberController {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         return BaseResponseDto.builder()
@@ -149,7 +149,7 @@ public class MemberController {
         String msg = null;
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         if (memberService.renewalMemberData((CustomUserDetails) authentication.getDetails())) {
@@ -175,7 +175,7 @@ public class MemberController {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
@@ -204,7 +204,7 @@ public class MemberController {
         Map<String, Object> data = new HashMap<>();
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         if (errors.hasErrors()) {
@@ -214,7 +214,7 @@ public class MemberController {
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
-                throw new CustomException("global error", GLOBAL_ERROR);
+                throw new CustomException(LogUtil.getElement(), GLOBAL_ERROR);
             }
         } else {
             memberService.updateMember((CustomUserDetails) authentication.getDetails(), requestUpdateMemberDto);
@@ -238,7 +238,7 @@ public class MemberController {
         Map<String, Object> data = new HashMap<>();
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         if (errors.hasErrors()) {
@@ -248,7 +248,7 @@ public class MemberController {
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
-                throw new CustomException("global error", GLOBAL_ERROR);
+                throw new CustomException(LogUtil.getElement(), GLOBAL_ERROR);
             }
         } else {
             memberService.updateMemberSteamID((CustomUserDetails) authentication.getDetails(), steamID);
