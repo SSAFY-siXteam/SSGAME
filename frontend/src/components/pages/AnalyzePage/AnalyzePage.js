@@ -15,6 +15,7 @@ const AnalyzePage = () => {
   const [gamesData, setGamesData] = useState([]);
   const [genresData, setGenresData] = useState([]);
   const [isSuccessToLoad, setIsSueccessToLoad] = useState(true);
+  const [steamNickname, setSteamNickname] = useState("");
 
   const jwtToken = getCookie("SSGAME_USER_TOKEN");
 
@@ -29,6 +30,7 @@ const AnalyzePage = () => {
       (response) => {
         console.log(response);
         setGraphData(response.data.data.categories);
+        setSteamNickname(response.data.data.steamNickname);
       },
       (e) => {
         // if (isSuccessToLoad) setIsSueccessToLoad(false);
@@ -69,7 +71,7 @@ const AnalyzePage = () => {
   }, []);
 
   const args = {
-    graph: AnalyzeGraph({ data: graphData }),
+    graph: AnalyzeGraph({ data: graphData, steamNickname: steamNickname }),
     games: LongGameCardList({
       data: gamesData,
       title: "가장 많이 플레이 한 게임 top5",
