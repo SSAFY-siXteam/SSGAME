@@ -32,6 +32,7 @@ public enum ErrorStatus {
     STEAMID_DUPLICATION(CONFLICT.value(), "해당 Steam ID로 가입한 계정이 존재합니다."),    // 409, "Steam ID is Duplication"
     PASSWORD_CONTAINED_SSGAMEID(BAD_REQUEST.value(), "패스워드에 ID가 포함될 수 없습니다."),          // "ssgameId into password"
     FAIL_TO_REGISTER(HttpStatus.INTERNAL_SERVER_ERROR.value(), "회원가입 실패"),
+    MEMBER_NOT_FOUND(BAD_REQUEST.value(), "사용자가 존재하지 않습니다."),
     // id check
     INVALID_ID_FORMAT(BAD_REQUEST.value(), "ID 형식에 맞지 않습니다."),
     // login
@@ -49,6 +50,7 @@ public enum ErrorStatus {
 
     // Game Info
     GAME_NOT_FOUND(BAD_GATEWAY.value(), "존재하지 않는 게임입니다."),
+    INVALID_RANGE_OF_RATING(BAD_REQUEST.value(), "별점은 1이상 5이하의 정수입니다."),
 
     // RecommendedGame
     LACK_OF_RECOMMENDED_GAME(FAILED_DEPENDENCY.value(), "추천 게임 목록 개수가 부족합니다.")

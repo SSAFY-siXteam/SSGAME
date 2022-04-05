@@ -30,4 +30,5 @@ public interface MemberService {
 
     void updateMemberSteamID(CustomUserDetails details, String steamID);
 
+    void deleteMember(String ssgameId);
 }
