@@ -43,7 +43,8 @@ public class MemberGameList {
     private Integer memberGameRating;
 
     @Builder
-    public MemberGameList(Member member, GameInfo gameInfo, Long memberPlayTime, Integer memberGameRating) {
+    public MemberGameList(Long memberGameListSeq, Member member, GameInfo gameInfo, Long memberPlayTime, Integer memberGameRating) {
+        this.memberGameListSeq = memberGameListSeq;
         this.member = member;
         this.gameInfo = gameInfo;
         this.memberPlayTime = memberPlayTime;
