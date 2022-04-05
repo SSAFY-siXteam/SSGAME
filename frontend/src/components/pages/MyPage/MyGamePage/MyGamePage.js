@@ -3,7 +3,6 @@ import MyGameTemplate from "../../../templates/MyPageTemplate/MyGameTemplate/MyG
 import SelectBox from "../../../atoms/SelectBox/SelectBox";
 import { getGameList } from "../../../../apis/game";
 import { getCookie } from "../../../../utils/cookie";
-
 //test
 
 const MyGamePage = () => {
@@ -40,7 +39,6 @@ const MyGamePage = () => {
   const onChangeCheck = () => {
     setParam({ ...param, filter: !param.filter });
   };
-
   const args = {
     onInput: onInput,
     onChangeCheck: onChangeCheck,

@@ -8,7 +8,7 @@ const ShortGameCardList = ({ data }) => {
   return (
     <div>
       <Title title="Try also..." />
-      {data.length == 7 &&
+      {data.length > 0 &&
         data.map((game, index) => (
           <ShortGameCard
             key={index}

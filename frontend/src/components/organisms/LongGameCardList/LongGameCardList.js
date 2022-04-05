@@ -4,7 +4,13 @@ import LongGameCard from "../../molecules/LongGameCard/LongGameCard";
 import { StyledTitle, GameItems, MovieBtn } from "./style.js";
 import { useNavigate } from "react-router-dom";
 
-const LongGameCardList = ({ data, title, itemBtn, itemBtnOnClick }) => {
+const LongGameCardList = ({
+  data,
+  title,
+  itemBtn,
+  itemBtnOnClick,
+  isMovie,
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -25,6 +31,7 @@ const LongGameCardList = ({ data, title, itemBtn, itemBtnOnClick }) => {
                     navigate(`/game/${info.gameSeq}`);
                   }}
                   info={info}
+                  isMovie={isMovie}
                 />
                 {itemBtn && (
                   <>
