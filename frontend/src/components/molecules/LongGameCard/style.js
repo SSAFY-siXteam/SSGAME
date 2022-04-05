@@ -6,7 +6,10 @@ export const ItemGrid = styled.div`
   margin-bottom: 20px;
   margin-top: 0;
   cursor: pointer;
+<<<<<<< HEAD
+=======
   border-bottom: ${(props) => (props.isMovie ? "" : "solid 1px white")};
+>>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0
 `;
 
 export const ItemImg = styled.div`

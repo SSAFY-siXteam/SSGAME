@@ -45,10 +45,8 @@ public class AnalysisController {
                 .build();
     }
 
-
     @GetMapping("/genres")
     public BaseResponseDto getMostPlayedGenre(Authentication authentication) {
-
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         if (authentication == null) {
@@ -68,7 +66,6 @@ public class AnalysisController {
 
     @GetMapping("/games")
     public BaseResponseDto getMostPlayedGames(Authentication authentication) {
-
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         if (authentication == null) {
