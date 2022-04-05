@@ -10,6 +10,10 @@ public class LogUtil {
         return Thread.currentThread().getStackTrace()[1].getMethodName();
     }
 
+    public static String getElement() {
+        return Thread.currentThread().getStackTrace()[2].toString();
+    }
+
     public static String getClassAndMethodName() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         String className = stackTrace[2].getClassName();
