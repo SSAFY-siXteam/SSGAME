@@ -10,7 +10,8 @@ import {
   StyledProfileInfoContent,
   StyledButtons,
   StyledInfo,
-} from "../styles";
+  StyleNickName,
+} from "./styles";
 import Img from "../../../atoms/Img/Img/Img";
 import { Input } from "../../../atoms/Input/Input";
 const MyPageTemplate = ({
@@ -29,7 +30,9 @@ const MyPageTemplate = ({
       <StyledProfile>
         <StyledImg>
           <Img path={userInfo.avatarUrl} />
+          <StyleNickName>{userInfo.steamNickname}</StyleNickName>
         </StyledImg>
+
         <StyledProfileInfo>
           <StyledProfileInfoContent>
             아이디: <StyledInfo>{userInfo.ssgameId}</StyledInfo>
