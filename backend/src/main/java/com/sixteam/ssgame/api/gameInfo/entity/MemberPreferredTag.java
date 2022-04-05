@@ -29,12 +29,10 @@ public class MemberPreferredTag {
     @ManyToOne(fetch = FetchType.LAZY)
     private Tag tag;
 
-
     @Builder
     public MemberPreferredTag(Member member, Tag tag, Double preferredTagRatio) {
         this.member = member;
         this.tag = tag;
         this.preferredTagRatio = preferredTagRatio;
     }
-
 }
