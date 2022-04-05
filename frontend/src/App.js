@@ -5,15 +5,19 @@ import styled from "styled-components";
 import Main from "./components/pages/Main/Main";
 import SignUpPage from "./components/pages/SignUpPage/SignUpPage";
 import AnalyzePage from "./components/pages/AnalyzePage/AnalyzePage";
-import MyPage from "./components/pages/MyPage/MyPage/MyPage";
+import MyPage from "./components/pages/MyPage/MyPage";
 import { setCookie, getCookie, removeCookie } from "./utils/cookie";
-import GameInfoPage from "./components/pages/GameInfoPage/GameInfoPage";
+import GamePage from "./components/pages/GamePage/GamePage";
 import { signIn } from "./apis/user";
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
+<<<<<<< HEAD
+import MyGamePage from "./components/pages/MyGamePage/MyGamePage";
+=======
 import MyGamePage from "./components/pages/MyPage/MyGamePage/MyGamePage";
 import { updateGameAnalyzation } from "./apis/analyze";
 import { updateRecommend } from "./apis/recommend";
 import { updateGameAnalysis } from "./apis/game";
+>>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -36,6 +40,9 @@ function App() {
           setCookie("SSGAME_USER_NO", res.data.data.steamID, {
             path: "/",
           });
+<<<<<<< HEAD
+          setIsLoggedIn(true);
+=======
           setCookie("SSGAME_USER_SEQ", res.data.data.memberSeq, {
             path: "/",
           });
@@ -68,6 +75,7 @@ function App() {
               console.log(error);
             }
           );
+>>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0
         } else {
           alert(res.data.msg);
           console.log(res);
@@ -98,7 +106,7 @@ function App() {
           <Route path="/analyze" element={<AnalyzePage />} />
           <Route path="/register" element={<SignUpPage />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/game/:gameSeq" element={<GameInfoPage />} />
+          <Route path="/game/:gameSeq" element={<GamePage />} />
           <Route path="/recommend" element={<RecommendPage />} />
           <Route path="/mygame" element={<MyGamePage />} />
         </Routes>

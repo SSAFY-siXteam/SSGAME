@@ -12,7 +12,9 @@ import com.sixteam.ssgame.api.gameInfo.entity.MemberGameList;
 import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
-import com.sixteam.ssgame.global.error.exception.EntityNotFoundException;
+import com.sixteam.ssgame.global.common.util.LogUtil;
+import com.sixteam.ssgame.global.error.exception.CustomException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 
 @Transactional(readOnly = true)
 @Slf4j
@@ -39,7 +43,11 @@ public class AnalysisServiceImpl implements AnalysisService {
     public List<RadarChartInfoDto> getGraph(Long memberSeq) {
 
         Member member = memberRepository.findByMemberSeq(memberSeq)
-                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
+
+        if (member.getGameCount() == 0) {
+            throw new CustomException(LogUtil.getElement(), NO_GAME_PLAYED);
+        }
 
         List<RadarChartInfoDto> radarChartInfoDtos = new LinkedList<>();
         for (RadarChartInfo radarChartInfo : radarChartInfoRepository.findByMember(member)) {
@@ -59,7 +67,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     public List<MostPlayedGenreDto> getMostPlayedGenres(Long memberSeq) {
 
         Member member = memberRepository.findByMemberSeq(memberSeq)
-                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         List<MemberFrequentGenre> mostPlayedGenres = memberFrequentGenreRepository.findMostPlayedGenresByMember(member);
 
@@ -87,7 +95,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     public List<MostPlayedGamesDto> getMostPlayedGames(Long memberSeq) {
         Member member = memberRepository.findByMemberSeq(memberSeq)
-                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         List<MemberGameList> memberGameLists = memberGameListRepository.findMostPlayedGamesByMember(member);
         List<MostPlayedGamesDto> mostPlayedGamesDtos = new LinkedList<>();
