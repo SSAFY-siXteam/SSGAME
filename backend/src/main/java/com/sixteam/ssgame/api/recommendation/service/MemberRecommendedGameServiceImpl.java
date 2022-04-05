@@ -7,10 +7,10 @@ import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import com.sixteam.ssgame.api.recommendation.dto.ResponseMemberRecommendedGameInfoDto;
 import com.sixteam.ssgame.api.recommendation.entity.MemberRecommendedGame;
+import com.sixteam.ssgame.global.common.util.LogUtil;
 import com.sixteam.ssgame.global.error.dto.ErrorStatus;
 import com.sixteam.ssgame.global.error.exception.CustomException;
 
-import com.sixteam.ssgame.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.sixteam.ssgame.global.error.dto.ErrorStatus.LACK_OF_RECOMMENDED_GAME;
+import static com.sixteam.ssgame.global.error.dto.ErrorStatus.MEMBER_NOT_FOUND;
 
 @Transactional(readOnly = true)
 @Slf4j
@@ -38,7 +39,7 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
     public List<ResponseMemberRecommendedGameInfoDto> getRecommendedGameList(Long memberSeq) {
 
         Member member = memberRepository.findByMemberSeq(memberSeq)
-                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         List<ResponseMemberRecommendedGameInfoDto> responseMemberRecommendedGameInfoDtos = new ArrayList<>();
 
@@ -47,7 +48,7 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
             // 게임 조회
             GameInfo gameInfo = memberRecommendedGame.getGameInfo();
             if (gameInfo == null){
-                throw new CustomException("게임정보가 존재하지 않습니다.", ErrorStatus.GAME_NOT_FOUND);
+                throw new CustomException(LogUtil.getElement(), ErrorStatus.GAME_NOT_FOUND);
             }
 
             // 각 게임 별점 평균 연산
@@ -72,7 +73,7 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
 
         // 추천 게임 개수 체크
         if(responseMemberRecommendedGameInfoDtos.size() < 11) {
-            throw new CustomException("lack of recommended game", LACK_OF_RECOMMENDED_GAME);
+            throw new CustomException(LogUtil.getElement(), LACK_OF_RECOMMENDED_GAME);
         }
 
         return responseMemberRecommendedGameInfoDtos;
