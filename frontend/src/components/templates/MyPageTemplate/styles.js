@@ -30,7 +30,7 @@ export const StyledProfileInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-left: 40px;
-  width: 80%;
+  width: 60%;
 `;
 export const StyledProfileInfoContent = styled.div`
   margin-bottom: 10px;
@@ -43,8 +43,4 @@ export const StyledButtons = styled.div`
 `;
 export const StyledInfo = styled.div`
   margin-left: auto;
-`;
-export const StyledSteamIdInfo = styled.div`
-  font-size: 10px;
-  color: red;
 `;
