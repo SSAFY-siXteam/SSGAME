@@ -10,9 +10,6 @@ import {
   InlineBlock,
 } from "./style";
 
-<<<<<<< HEAD
-const LongGameCard = ({ info, onClick }) => {
-=======
 export function sliceText(str, len) {
   if (str.length > len) {
     return str.slice(0, len) + "...";
@@ -22,7 +19,6 @@ export function sliceText(str, len) {
 }
 
 const LongGameCard = ({ info, onClick, isMovie }) => {
->>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0
   return (
     <ItemGrid onClick={onClick} isMovie={isMovie}>
       <ItemImg>
@@ -30,13 +26,8 @@ const LongGameCard = ({ info, onClick, isMovie }) => {
       </ItemImg>
       <InfoGrid price={info.price}>
         <NameText>
-<<<<<<< HEAD
-          <InfoText text={info.gameName} size="large" />
-          {info.averageRating && (
-=======
           <InfoText text={sliceText(info.gameName, 15)} size="large" />
           {info.averageRating !== undefined && (
->>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0
             <>
               <InlineBlock>
                 <InlineBlock>
@@ -58,12 +49,13 @@ const LongGameCard = ({ info, onClick, isMovie }) => {
             </InlineBlock>
           )}
         </NameText>
-        {info.genres.map((genre, index) => (
-          //   <InfoText key={index} text={genre} size="small" />
-          <TagText key={index} size="small">
-            #{genre}
-          </TagText>
-        ))}
+        {info.genres
+          .filter((g, index) => index < 3)
+          .map((genre, index) => (
+            <TagText key={index} size="small">
+              #{genre}
+            </TagText>
+          ))}
       </InfoGrid>
     </ItemGrid>
   );

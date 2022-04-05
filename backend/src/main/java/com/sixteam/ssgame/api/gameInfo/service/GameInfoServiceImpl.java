@@ -11,8 +11,7 @@ import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import com.sixteam.ssgame.global.common.util.LogUtil;
 
-import com.sixteam.ssgame.global.error.dto.ErrorStatus;
-import com.sixteam.ssgame.global.error.exception.EntityNotFoundException;
+import com.sixteam.ssgame.global.error.exception.CustomException;
 import com.sixteam.ssgame.global.error.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 
 @Transactional(readOnly = true)
 @Slf4j
@@ -45,9 +46,9 @@ public class GameInfoServiceImpl implements GameInfoService {
     public ResponseGameInfoDto findResponseGameInfoDto(Long gameSeq, Long memberSeq) {
 
         GameInfo gameInfo = gameInfoRepository.findByGameSeq(gameSeq)
-                .orElseThrow(() -> new EntityNotFoundException("게임정보가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), GAME_NOT_FOUND));
         Member member = memberRepository.findByMemberSeq(memberSeq)
-                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         // movie json parsing 함수 호출
         String movieUrl = jsonParsingMovies(gameInfo);
@@ -102,7 +103,7 @@ public class GameInfoServiceImpl implements GameInfoService {
                 JSONObject movieJson = (JSONObject) jsonArray.get(0);
                 movieUrl = (String) ((JSONObject) movieJson.get("mp4")).get("480");
             } catch (ParseException e) {
-                log.error("Parse Exception: {}", LogUtil.getClassAndMethodName());
+                log.error("Parse Exception: {}", LogUtil.getElement());
             }
         }
         return movieUrl;
@@ -113,17 +114,17 @@ public class GameInfoServiceImpl implements GameInfoService {
     public void updateMemberGameRating(Long memberSeq, Long gameSeq, Integer memberGameRating) {
 
         if (memberGameRating < 1 || memberGameRating > 5) {
-            throw new InvalidValueException("member game rating range over", ErrorStatus.INVALID_RANGE_OF_RATING);
+            throw new InvalidValueException(LogUtil.getElement(), INVALID_RANGE_OF_RATING);
         }
 
         Member member = memberRepository.findByMemberSeq(memberSeq)
-                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         GameInfo gameInfo = gameInfoRepository.findByGameSeq(gameSeq)
-                .orElseThrow(() -> new EntityNotFoundException("게임정보가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), GAME_NOT_FOUND));
 
         MemberGameList memberGameList = memberGameListRepository.findByMemberAndGameInfo(member, gameInfo)
-                .orElseThrow(() -> new EntityNotFoundException("해당 정보가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), ENTITY_NOT_FOUND));
 
         memberGameList.updateMemberGameRating(memberGameRating);
     }
