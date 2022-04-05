@@ -11,7 +11,7 @@ import { registerId } from "../../../apis/register";
 import { checkForm } from "../../../utils/register";
 import { useNavigate } from "react-router";
 import { getCookie } from "../../../utils/cookie";
-import { updateGameAnalysis } from "../../../apis/game";
+import { revokeDjango } from "../../../apis/game";
 // checkbox list 객체
 const SignUpPage = () => {
   const [userId, setUserId] = useState("");
@@ -57,10 +57,17 @@ const SignUpPage = () => {
             steamID: userId,
             email: info.emailInput,
             preferredCategories: Array.from(checkedItems),
-          }).then((res) => {
-            if (res.data.status === 201) {
-              alert("회원가입 성공");
-              updateGameAnalysis(
+          })
+            .then((res) => {
+              if (res.data.status === 201) {
+                alert("회원가입 성공");
+              } else {
+                alert("회원가입 실패");
+                console.log(res);
+              }
+            })
+            .then(() => {
+              revokeDjango(
                 getCookie("SSGAME_USER_TOKEN"),
                 getCookie("SSGAME_USER_SEQ")
               )
@@ -70,11 +77,7 @@ const SignUpPage = () => {
                 .then(() => {
                   navigate("/");
                 });
-            } else {
-              alert("회원가입 실패");
-              console.log(res);
-            }
-          });
+            });
         }
       });
     }

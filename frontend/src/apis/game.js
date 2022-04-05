@@ -49,7 +49,7 @@ async function putGameRating(token, data) {
   );
 }
 
-async function updateGameAnalysis(token, memberSeq) {
+async function revokeDjango(token, memberSeq) {
   console.log("start");
   return axios.get(DJANGO_URL + memberSeq, {
     headers: {
@@ -58,4 +58,4 @@ async function updateGameAnalysis(token, memberSeq) {
     },
   });
 }
-export { getGame, getGameList, putGameRating, updateGameAnalysis };
+export { getGame, getGameList, putGameRating, revokeDjango };
