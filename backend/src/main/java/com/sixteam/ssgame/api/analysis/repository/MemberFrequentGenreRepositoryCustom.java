@@ -8,4 +8,5 @@ import java.util.List;
 public interface MemberFrequentGenreRepositoryCustom {
 
     List<MemberFrequentGenre> findMostPlayedGenresByMember(Member member);
+
 }

@@ -7,11 +7,12 @@ import lombok.Getter;
 public class MostPlayedGenreDto {
 
     private String genre;
-    private double Ratio;
+
+    private double ratio;
 
     @Builder
     public MostPlayedGenreDto(String genre, double ratio) {
         this.genre = genre;
-        Ratio = ratio;
+        this.ratio = ratio;
     }
 }

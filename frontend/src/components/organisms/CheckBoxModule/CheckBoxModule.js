@@ -13,7 +13,7 @@ export function CheckBoxModule({ list, onChangeCheckBox, checked }) {
               id={index}
               list={lists}
               onChangeCheckBox={onChangeCheckBox}
-              checked={checked && checked[index]}
+              checked={checked[index]}
             />
           </div>
         ))}

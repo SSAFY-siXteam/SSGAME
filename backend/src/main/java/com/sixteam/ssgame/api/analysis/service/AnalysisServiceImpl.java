@@ -38,10 +38,8 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     public List<RadarChartInfoDto> getGraph(Long memberSeq) {
 
-        Member member = memberRepository.findByMemberSeq(memberSeq);
-        if (member == null){
-            throw new EntityNotFoundException("사용자가 존재하지 않습니다.");
-        }
+        Member member = memberRepository.findByMemberSeq(memberSeq)
+                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
 
         List<RadarChartInfoDto> radarChartInfoDtos = new LinkedList<>();
         for (RadarChartInfo radarChartInfo : radarChartInfoRepository.findByMember(member)) {
@@ -60,10 +58,8 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     public List<MostPlayedGenreDto> getMostPlayedGenres(Long memberSeq) {
 
-        Member member = memberRepository.findByMemberSeq(memberSeq);
-        if (member == null){
-            throw new EntityNotFoundException("사용자가 존재하지 않습니다.");
-        }
+        Member member = memberRepository.findByMemberSeq(memberSeq)
+                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
 
         List<MemberFrequentGenre> mostPlayedGenres = memberFrequentGenreRepository.findMostPlayedGenresByMember(member);
 
@@ -90,10 +86,8 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     public List<MostPlayedGamesDto> getMostPlayedGames(Long memberSeq) {
-        Member member = memberRepository.findByMemberSeq(memberSeq);
-        if (member == null){
-            throw new EntityNotFoundException("사용자가 존재하지 않습니다.");
-        }
+        Member member = memberRepository.findByMemberSeq(memberSeq)
+                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
 
         List<MemberGameList> memberGameLists = memberGameListRepository.findMostPlayedGamesByMember(member);
         List<MostPlayedGamesDto> mostPlayedGamesDtos = new LinkedList<>();

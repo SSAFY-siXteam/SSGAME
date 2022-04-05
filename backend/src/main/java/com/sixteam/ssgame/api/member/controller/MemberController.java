@@ -262,4 +262,31 @@ public class MemberController {
                 .data(data)
                 .build();
     }
+
+    @DeleteMapping
+    public BaseResponseDto DeleteMember(Authentication authentication) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        Integer status = null;
+        String msg = null;
+        Map<String, Object> data = new HashMap<>();
+
+        if (authentication == null) {
+            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+        }
+
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        String ssgameId = details.getUsername();
+
+        memberService.deleteMember(ssgameId);
+        status = OK.value();
+        msg = "탈퇴가 완료되었습니다.";
+
+
+        return BaseResponseDto.builder()
+                .status(status)
+                .msg(msg)
+                .data(data)
+                .build();
+    }
 }

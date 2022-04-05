@@ -3,6 +3,8 @@ package com.sixteam.ssgame.api.member.repository;
 import com.sixteam.ssgame.api.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsBySsgameId(String ssgameId);
@@ -11,7 +13,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsBySteamID(String steamID);
 
-    Member findBySsgameId(String id);
+    Optional<Member> findBySsgameId(String id);
 
-    Member findByMemberSeq(Long memberSeq);
+    Optional<Member> findByMemberSeq(Long memberSeq);
 }
