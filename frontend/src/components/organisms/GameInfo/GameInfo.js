@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import InfoText from "../../atoms/Text/InfoText/InfoText";
 import Title from "../../atoms/Title/Title";
 import GameInfoItem from "../../molecules/GameInfoItem/GameInfoItem";
-<<<<<<< HEAD
-=======
 import RatingStar from "../../atoms/RatingStar/RatingStar";
->>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0
 
 const GameInfo = ({ gameInfo, onStarChange }) => {
   return (
