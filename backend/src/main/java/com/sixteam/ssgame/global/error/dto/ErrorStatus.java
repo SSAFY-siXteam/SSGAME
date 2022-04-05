@@ -49,6 +49,7 @@ public enum ErrorStatus {
 
     // Game Info
     GAME_NOT_FOUND(BAD_GATEWAY.value(), "존재하지 않는 게임입니다."),
+    INVALID_RANGE_OF_RATING(BAD_REQUEST.value(), "별점은 1이상 5이하의 정수입니다."),
 
     // RecommendedGame
     LACK_OF_RECOMMENDED_GAME(FAILED_DEPENDENCY.value(), "추천 게임 목록 개수가 부족합니다.")

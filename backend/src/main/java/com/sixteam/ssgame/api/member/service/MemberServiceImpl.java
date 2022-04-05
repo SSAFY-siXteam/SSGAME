@@ -20,8 +20,10 @@ import com.sixteam.ssgame.api.member.repository.MemberRepository;
 import com.sixteam.ssgame.api.recommendation.repository.MemberRecommendedGameRepository;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.steamapi.SteamAPIScrap;
+import com.sixteam.ssgame.global.common.util.LogUtil;
 import com.sixteam.ssgame.global.error.exception.CustomException;
 
+import com.sixteam.ssgame.global.error.exception.EntityNotFoundException;
 import com.sixteam.ssgame.global.error.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -144,18 +146,17 @@ public class MemberServiceImpl implements MemberService {
 
             if (memberGameList.size() != 0) {
                 for (Long steamAppid : memberGameList.keySet()) {
-                    GameInfo gameInfo = gameInfoRepository.findBySteamAppid(steamAppid);
-                    // steam app id에 해당하는 게임 저장
-                    if (gameInfo == null) {
-                        continue;
-                    }
+                    Optional<GameInfo> gameInfo = gameInfoRepository.findBySteamAppid(steamAppid);
 
-                    memberGameListRepository.save(MemberGameList.builder()
-                            .member(savedMember)
-                            .gameInfo(gameInfo)
-                            .memberPlayTime(memberGameList.get(steamAppid))
-                            .memberGameRating(0)
-                            .build());
+                    // steam app id에 해당하는 게임 저장
+                    gameInfo.ifPresent(f -> {
+                        memberGameListRepository.save(MemberGameList.builder()
+                                .member(savedMember)
+                                .gameInfo(gameInfo.get())
+                                .memberPlayTime(memberGameList.get(steamAppid))
+                                .memberGameRating(0)
+                                .build());
+                    });
                 }
             }
 
@@ -170,10 +171,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDto findMemberDtoInLogin(RequestLoginMemberDto requestLoginMemberDto) {
 
-        Member member = memberRepository.findBySsgameId(requestLoginMemberDto.getSsgameId());
-        if (member == null) {
-            throw new CustomException("cannot find member by " + requestLoginMemberDto.getSsgameId(), SSGAMEID_NOT_FOUND);
-        } else if (!passwordEncoder.matches(requestLoginMemberDto.getPassword(), member.getPassword())) {
+        Member member = memberRepository.findBySsgameId(requestLoginMemberDto.getSsgameId())
+                .orElseThrow(() -> new CustomException("cannot find member by " + requestLoginMemberDto.getSsgameId(), SSGAMEID_NOT_FOUND));
+
+        if (!passwordEncoder.matches(requestLoginMemberDto.getPassword(), member.getPassword())) {
             throw new InvalidValueException("wrong password", PASSWORD_NOT_MATCH);
         }
 
@@ -184,10 +185,8 @@ public class MemberServiceImpl implements MemberService {
     public ResponseMemberDto findResponseMemberDto(CustomUserDetails details) {
 
         String ssgameId = details.getUsername();
-        Member member = memberRepository.findBySsgameId(ssgameId);
-        if (member == null) {
-            throw new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND);
-        }
+        Member member = memberRepository.findBySsgameId(ssgameId)
+                .orElseThrow(() -> new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND));
         MemberDto memberDto = findMemberDtoByMember(member);
 
         return ResponseMemberDto.builder()
@@ -226,7 +225,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member findMemberBySsgameId(String ssgameId) {
-        return memberRepository.findBySsgameId(ssgameId);
+        return memberRepository.findBySsgameId(ssgameId)
+                .orElseThrow(() -> new EntityNotFoundException("member not found by ssgameId " + ssgameId));
     }
 
     @Transactional
@@ -234,7 +234,7 @@ public class MemberServiceImpl implements MemberService {
     public boolean renewalMemberData(CustomUserDetails details) {
 
         String ssgameId = details.getUsername();
-        Member member = memberRepository.findBySsgameId(ssgameId);
+        Member member = memberRepository.findBySsgameId(ssgameId).orElse(null);
         if (member == null) {
             return false;
         }
@@ -253,6 +253,7 @@ public class MemberServiceImpl implements MemberService {
             Map<String, Object> steamMemberData = SteamAPIScrap.getMemberData(member.getSteamID());
             member.changeMemberSteamAPI((String) steamMemberData.get("steamNickname"), (String) steamMemberData.get("avatarUrl"), true, (Long) steamGameData.get("gameCount"));
         } catch (IOException | ParseException e) {
+            log.debug("IOException | ParseException in API: {}", LogUtil.getClassAndMethodName());
             return false;
         }
 
@@ -281,22 +282,22 @@ public class MemberServiceImpl implements MemberService {
                 Map<Long, Long> memberGameList = (Map<Long, Long>) gameData.get("memberGameList");
 
                 for (Long steamAppid : memberGameList.keySet()) {
-                    GameInfo gameInfo = gameInfoRepository.findBySteamAppid(steamAppid);
+                    Optional<GameInfo> gameInfoOptional = gameInfoRepository.findBySteamAppid(steamAppid);
                     //DB에 등록된 게임인지 확인
-                    if (gameInfo != null) {
+                    gameInfoOptional.ifPresent(f1 -> {
+                        GameInfo gameInfo = gameInfoOptional.get();
                         //이미 멤버 게임 리스트에 등록되어있는지 확인
-                        MemberGameList alreadySaved = memberGameListRepository
+                        Optional<MemberGameList> alreadySaved = memberGameListRepository
                                 .findByMemberAndGameInfo(member, gameInfo);
 
-                        if (alreadySaved != null) {
-                            //등록되어있다면 GameRating은 그대로 두고 playTime만 바꾸어 UPDATE
+                        alreadySaved.ifPresentOrElse(f2 -> {
                             memberGameListRepository.save(MemberGameList.builder()
                                     .member(member)
                                     .gameInfo(gameInfo)
                                     .memberPlayTime(memberGameList.get(steamAppid))
-                                    .memberGameRating(alreadySaved.getMemberGameRating())
+                                    .memberGameRating(alreadySaved.get().getMemberGameRating())
                                     .build());
-                        } else {
+                        }, () -> {
                             //등록되지 않은 게임이라면 GameRating을 0으로 하고 CREATE
                             memberGameListRepository.save(MemberGameList.builder()
                                     .member(member)
@@ -304,14 +305,15 @@ public class MemberServiceImpl implements MemberService {
                                     .memberPlayTime(memberGameList.get(steamAppid))
                                     .memberGameRating(0)
                                     .build());
-                        }
+                        });
 
-                        if (memberGameList.get(steamAppid) == 0) continue;
-                        List<GameGenre> gameGenres = gameGenreRepository.findAllByGameInfo(gameInfo);
-                        for (GameGenre gameGenre : gameGenres) {
-                            genresCount.put(gameGenre.getGenre().getGenreSeq(), genresCount.get(gameGenre.getGenre().getGenreSeq()) + 1);
+                        if (memberGameList.get(steamAppid) != 0) {
+                            List<GameGenre> gameGenres = gameGenreRepository.findAllByGameInfo(gameInfo);
+                            for (GameGenre gameGenre : gameGenres) {
+                                genresCount.put(gameGenre.getGenre().getGenreSeq(), genresCount.get(gameGenre.getGenre().getGenreSeq()) + 1);
+                            }
                         }
-                    }
+                    });
                 }
 
                 memberFrequentGenreRepository.deleteByMember(member);
@@ -326,7 +328,7 @@ public class MemberServiceImpl implements MemberService {
                 }
             }
         } catch (ParseException | IOException e) {
-            e.printStackTrace();
+            log.debug("IOException | ParseException in API: {}", LogUtil.getClassAndMethodName());
             responseData.put("isSuccess", false);
         }
 
@@ -376,7 +378,8 @@ public class MemberServiceImpl implements MemberService {
             if (memberGame.getMemberPlayTime() == 0) {
                 continue;
             }
-            GameInfo gameInfo = gameInfoRepository.findByGameSeq(memberGame.getGameInfo().getGameSeq());
+            GameInfo gameInfo = gameInfoRepository.findByGameSeq(memberGame.getGameInfo().getGameSeq())
+                    .orElseThrow(() -> new CustomException(memberGame.getGameInfo().getGameSeq().toString(), GAME_NOT_FOUND));
             List<GameTag> gameTags = gameTagRepository.getByGameInfo(gameInfo);
 
             //멤버가 가진 게임들의 태그마다의 Value를 tagsValue에 합산
@@ -385,7 +388,7 @@ public class MemberServiceImpl implements MemberService {
                 //게임의 태그값 * 플레이시간가중치 * 별점가중치 * 카테고리가중치를 합산한뒤 소수점 6자리에서 반올림.
                 double TimeWeight = memberGame.getMemberPlayTime() < (long) gameInfo.getAverageForever() ?
                         (double) memberGame.getMemberPlayTime() / (double) gameInfo.getAverageForever() : 1;
-                double GameRatingWeight = memberGame.getMemberGameRating() == 3 ?
+                double GameRatingWeight = memberGame.getMemberGameRating() == 3 || memberGame.getMemberGameRating() == 0 ?
                         1 : (1 + ((memberGame.getMemberGameRating() - 3) * 0.2));
 
                 tagsValue.put(gameTag.getTag().getTagSeq(), tagsValue.get(gameTag.getTag().getTagSeq())
@@ -447,10 +450,8 @@ public class MemberServiceImpl implements MemberService {
 
         String ssgameId = details.getUsername();
 
-        Member member = memberRepository.findBySsgameId(ssgameId);
-        if (member == null) {
-            throw new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND);
-        }
+        Member member = memberRepository.findBySsgameId(ssgameId)
+                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
 
         String password = member.getPassword();
         if (!passwordEncoder.matches(requestUpdateMemberDto.getPrePassword(), password)) {
@@ -485,10 +486,8 @@ public class MemberServiceImpl implements MemberService {
 
         String ssgameId = details.getUsername();
 
-        Member member = memberRepository.findBySsgameId(ssgameId);
-        if (member == null) {
-            throw new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND);
-        }
+        Member member = memberRepository.findBySsgameId(ssgameId)
+                .orElseThrow(() -> new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND));
 
         if (member.getSteamID().equals(steamID)) {
             throw new CustomException("cannot be changed to the same steam id", SAME_STEAM_ID);
