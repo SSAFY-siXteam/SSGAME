@@ -14,55 +14,58 @@ const AnalyzePage = () => {
   const [graphData, setGraphData] = useState([]);
   const [gamesData, setGamesData] = useState([]);
   const [genresData, setGenresData] = useState([]);
+  const [isSuccessToLoad, setIsSueccessToLoad] = useState(true);
+
+  const jwtToken = getCookie("SSGAME_USER_TOKEN");
 
   useEffect(() => {
-    // jwtToken = getCookie();
+    const isSuccess = true;
     getAnalyzeGraph(
       {
         headers: {
-          // Authorization: `Bearer ` + jwtToken,
+          Authorization: `Bearer ` + jwtToken,
         },
       },
       (response) => {
-        if (response.status === 200) {
-          setGraphData(response.data.data.categories);
-        }
+        console.log(response);
+        setGraphData(response.data.data.categories);
       },
       (e) => {
-        console.log(e);
+        // if (isSuccessToLoad) setIsSueccessToLoad(false);
       }
     );
     getAnalyzeGenres(
       {
         headers: {
-          // Authorization: `Bearer ` + jwtToken,
+          Authorization: `Bearer ` + jwtToken,
         },
       },
       (response) => {
-        if (response.status === 200) {
-          setGenresData(response.data.data.mostPlayedGenres);
-          console.log(response);
-        }
+        console.log(response);
+        setGenresData(response.data.data.MostPlayedGenres);
       },
       (e) => {
-        console.log(e);
+        // if (isSuccessToLoad) setIsSueccessToLoad(false);
       }
     );
     getAnalyzeGames(
       {
         headers: {
-          // Authorization: `Bearer ` + jwtToken,
+          Authorization: `Bearer ` + jwtToken,
         },
       },
       (response) => {
-        if (response.status === 200) {
-          setGamesData(response.data.data.mostPlayedGames);
-        }
+        console.log(response);
+        setGamesData(response.data.data.mostPlayedGames);
       },
       (e) => {
-        console.log(e);
+        // if (isSuccessToLoad) setIsSueccessToLoad(false);
       }
     );
+    return () => {
+      console.log(isSuccessToLoad);
+      if (!isSuccess) setIsSueccessToLoad(false);
+    };
   }, []);
 
   const args = {
@@ -74,15 +77,19 @@ const AnalyzePage = () => {
     genres: GenreCardList({ data: genresData }),
   };
 
+  console.log(genresData);
+
   return (
-    <div>
-      <AnalyzeTemplate
-        graph={args.graph}
-        games={args.games}
-        genres={args.genres}
-      />
-    </div>
+    <>
+      <div>
+        <AnalyzeTemplate
+          graph={args.graph}
+          games={args.games}
+          genres={args.genres}
+        />
+      </div>
+    </>
   );
 };
 
-export default AnalyzePage;
+export default React.memo(AnalyzePage);
