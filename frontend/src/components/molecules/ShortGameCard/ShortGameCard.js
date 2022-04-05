@@ -10,6 +10,7 @@ import {
   InlineImg,
 } from "./style";
 import { InlineBlock } from "../LongGameCard/style";
+import { sliceText } from "../LongGameCard/LongGameCard";
 
 const ShortGameCard = ({ info, onClick }) => {
   return (
@@ -17,16 +18,18 @@ const ShortGameCard = ({ info, onClick }) => {
       <CardImg>
         <Img path={info.headerImage} />
       </CardImg>
-      <InfoText text={info.gameName} size="large" />
+      <InfoText text={sliceText(info.gameName, 10)} size="large" />
       <GenreInfo>
         {info.genres != undefined &&
-          info.genres.map((genre, index) => (
-            <Genre key={index}>
-              <InfoText text={genre} size="small" />
-            </Genre>
-          ))}
+          info.genres
+            .filter((genre, index) => index < 3)
+            .map((genre, index) => (
+              <Genre key={index}>
+                <InfoText text={genre} size="small" />
+              </Genre>
+            ))}
         <div>
-          {info.averageRating && (
+          {info.averageRating !== undefined && (
             <InlineBlock>
               <InlineBlock>
                 <img
