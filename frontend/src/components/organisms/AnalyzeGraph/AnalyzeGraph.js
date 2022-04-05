@@ -22,7 +22,7 @@ const AnalyzeGraph = (info) => {
 
   return (
     <GraphWrapper>
-      <Title title={"nickname" + "님의 게임 취향 분석"} />
+      <Title title={`${info.steamNickname}님의 게임 취향 분석`} />
       {dataKorean && <RadarGraph data={dataKorean} />}
       <InfoText text="분석 시트는 사용자가 플레이한 게임에 매긴 별점 기준으로 산정됩니다." />
     </GraphWrapper>
