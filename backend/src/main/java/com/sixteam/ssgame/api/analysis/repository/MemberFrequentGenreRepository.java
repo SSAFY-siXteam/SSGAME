@@ -11,5 +11,4 @@ public interface MemberFrequentGenreRepository extends JpaRepository<MemberFrequ
 
     void deleteByMember(Member member);
 
-    List<MemberFrequentGenre> findByMember(Member member);
 }

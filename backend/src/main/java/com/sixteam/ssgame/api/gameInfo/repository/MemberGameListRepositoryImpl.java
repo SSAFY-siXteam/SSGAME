@@ -48,7 +48,7 @@ public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCus
 
         // filter == true : 미평가 게임만 필터링
         if (filter) {
-            query.where(memberGameList.memberGameRating.isNull());
+            query.where(memberGameList.memberGameRating.eq(0));
         }
 
         // 검색어가 있다면 검색

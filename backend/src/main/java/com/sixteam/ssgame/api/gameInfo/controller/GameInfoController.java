@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
-
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/games")
@@ -46,6 +45,8 @@ public class GameInfoController {
 
     @PutMapping("/{gameSeq}")
     public BaseResponseDto updateGamePoint(@PathVariable Long gameSeq, Authentication authentication, @RequestBody RequestMemberGameRatingDto requestMemberGameRatingDto) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
         if (authentication == null) {
             throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
         }
