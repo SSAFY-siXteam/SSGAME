@@ -62,7 +62,7 @@ const SignUpPage = () => {
               if (res.data.status === 201) {
                 alert("회원가입 성공");
               } else {
-                alert("회원가입 실패");
+                alert(res.data.msg);
                 console.log(res);
               }
             })
