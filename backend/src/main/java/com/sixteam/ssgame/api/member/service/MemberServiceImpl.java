@@ -379,7 +379,7 @@ public class MemberServiceImpl implements MemberService {
                 //게임의 태그값 * 플레이시간가중치 * 별점가중치 * 카테고리가중치를 합산한뒤 소수점 6자리에서 반올림.
                 double TimeWeight = memberGame.getMemberPlayTime() < (long) gameInfo.getAverageForever() ?
                         (double) memberGame.getMemberPlayTime() / (double) gameInfo.getAverageForever() : 1;
-                double GameRatingWeight = memberGame.getMemberGameRating() == 3 ?
+                double GameRatingWeight = memberGame.getMemberGameRating() == 3 || memberGame.getMemberGameRating() == 0 ?
                         1 : (1 + ((memberGame.getMemberGameRating() - 3) * 0.2));
 
                 tagsValue.put(gameTag.getTag().getTagSeq(), tagsValue.get(gameTag.getTag().getTagSeq())
