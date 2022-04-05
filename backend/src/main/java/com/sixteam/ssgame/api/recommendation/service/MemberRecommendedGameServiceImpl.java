@@ -37,10 +37,9 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
 
     @Override
     public ResponseMemberRecommendGameListDto getRecommendedGameList(Long memberSeq) {
-        Member member = memberRepository.findByMemberSeq(memberSeq);
-        if (member == null){
-            throw new EntityNotFoundException("사용자가 존재하지 않습니다.");
-        }
+
+        Member member = memberRepository.findByMemberSeq(memberSeq)
+                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
 
         List<ResponseMemberRecommendedGameInfoDto> responseMemberRecommendedGameInfoDtos = new ArrayList<>();
 
