@@ -10,14 +10,10 @@ import { setCookie, getCookie, removeCookie } from "./utils/cookie";
 import GamePage from "./components/pages/GamePage/GamePage";
 import { signIn } from "./apis/user";
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
-<<<<<<< HEAD
-import MyGamePage from "./components/pages/MyGamePage/MyGamePage";
-=======
 import MyGamePage from "./components/pages/MyPage/MyGamePage/MyGamePage";
 import { updateGameAnalyzation } from "./apis/analyze";
 import { updateRecommend } from "./apis/recommend";
 import { updateGameAnalysis } from "./apis/game";
->>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,9 +36,6 @@ function App() {
           setCookie("SSGAME_USER_NO", res.data.data.steamID, {
             path: "/",
           });
-<<<<<<< HEAD
-          setIsLoggedIn(true);
-=======
           setCookie("SSGAME_USER_SEQ", res.data.data.memberSeq, {
             path: "/",
           });
@@ -75,7 +68,6 @@ function App() {
               console.log(error);
             }
           );
->>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0
         } else {
           alert(res.data.msg);
           console.log(res);
