@@ -15,12 +15,12 @@ public enum ErrorStatus {
     // Common
     INVALID_INPUT_VALUE(BAD_REQUEST.value(), " Invalid Input Value"),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED.value(), " Invalid Input Value"),
-    ENTITY_NOT_FOUND(BAD_REQUEST.value(), " Entity Not Found"),
+    ENTITY_NOT_FOUND(BAD_REQUEST.value(), "해당 정보가 존재하지 않습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Server Error"),
     INVALID_TYPE_VALUE(BAD_REQUEST.value(), " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(FORBIDDEN.value(), "Access is Denied"),
     GLOBAL_ERROR(BAD_REQUEST.value(), "Global Error"),
-//    FIELD_ERROR(HttpStatus.BAD_REQUEST.value(), "Field Error in Post Mapping"),
+    //    FIELD_ERROR(HttpStatus.BAD_REQUEST.value(), "Field Error in Post Mapping"),
     UNAUTHORIZED_ACCESS(UNAUTHORIZED.value(), "인증 오류"),
     JSON_PARSE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "내부 데이터 오류"),
 
@@ -32,6 +32,7 @@ public enum ErrorStatus {
     STEAMID_DUPLICATION(CONFLICT.value(), "해당 Steam ID로 가입한 계정이 존재합니다."),    // 409, "Steam ID is Duplication"
     PASSWORD_CONTAINED_SSGAMEID(BAD_REQUEST.value(), "패스워드에 ID가 포함될 수 없습니다."),          // "ssgameId into password"
     FAIL_TO_REGISTER(HttpStatus.INTERNAL_SERVER_ERROR.value(), "회원가입 실패"),
+    MEMBER_NOT_FOUND(BAD_REQUEST.value(), "사용자가 존재하지 않습니다."),
     // id check
     INVALID_ID_FORMAT(BAD_REQUEST.value(), "ID 형식에 맞지 않습니다."),
     // login
@@ -48,7 +49,7 @@ public enum ErrorStatus {
     INVALID_STEAMID(BAD_REQUEST.value(), "확인되지 않는 Steam ID입니다."),
 
     // Game Info
-    GAME_NOT_FOUND(BAD_GATEWAY.value(), "존재하지 않는 게임입니다."),
+    GAME_NOT_FOUND(BAD_GATEWAY.value(), "게임 정보가 존재하지 않습니다."),
     INVALID_RANGE_OF_RATING(BAD_REQUEST.value(), "별점은 1이상 5이하의 정수입니다."),
 
     // RecommendedGame

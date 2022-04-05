@@ -22,8 +22,6 @@ import com.sixteam.ssgame.global.common.steamapi.SteamAPIScrap;
 import com.sixteam.ssgame.global.common.util.LogUtil;
 import com.sixteam.ssgame.global.error.exception.CustomException;
 
-import com.sixteam.ssgame.global.error.exception.EntityNotFoundException;
-import com.sixteam.ssgame.global.error.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -76,7 +74,7 @@ public class MemberServiceImpl implements MemberService {
         Pattern pattern = Pattern.compile(regx);
 
         if (!pattern.matcher(ssgameId).matches()) {
-            throw new InvalidValueException(ssgameId, INVALID_ID_FORMAT);
+            throw new CustomException(LogUtil.getElement(), INVALID_ID_FORMAT);
         }
 
         return memberRepository.existsBySsgameId(ssgameId);
@@ -100,13 +98,13 @@ public class MemberServiceImpl implements MemberService {
         String steamID = requestMemberDto.getSteamID();
         // validation check
         if (hasSsgameId(ssgameId)) {
-            throw new InvalidValueException(ssgameId, SSGAMEID_DUPLICATION);
+            throw new CustomException(LogUtil.getElement(), SSGAMEID_DUPLICATION);
         } else if (requestMemberDto.getPassword().contains(ssgameId)) {
-            throw new InvalidValueException(ssgameId, PASSWORD_CONTAINED_SSGAMEID);
+            throw new CustomException(LogUtil.getElement(), PASSWORD_CONTAINED_SSGAMEID);
         } else if (hasSteamID(steamID)) {
-            throw new InvalidValueException(steamID, STEAMID_DUPLICATION);
+            throw new CustomException(LogUtil.getElement(), STEAMID_DUPLICATION);
         } else if (hasEmail(requestMemberDto.getEmail())) {
-            throw new InvalidValueException(requestMemberDto.getEmail(), EMAIL_DUPLICATION);
+            throw new CustomException(LogUtil.getElement(), EMAIL_DUPLICATION);
         }
 
         String encryptedPassword = passwordEncoder.encode(requestMemberDto.getPassword());
@@ -156,9 +154,9 @@ public class MemberServiceImpl implements MemberService {
 
             return savedMember.getIsPublic();
         } catch (ParseException e) {
-            throw new CustomException("json parse error", JSON_PARSE_ERROR);
+            throw new CustomException(LogUtil.getElement(), JSON_PARSE_ERROR);
         } catch (Exception e) {
-            throw new CustomException("회원가입 실패", FAIL_TO_REGISTER);
+            throw new CustomException(LogUtil.getElement(), FAIL_TO_REGISTER);
         }
     }
 
@@ -166,10 +164,10 @@ public class MemberServiceImpl implements MemberService {
     public MemberDto findMemberDtoInLogin(RequestLoginMemberDto requestLoginMemberDto) {
 
         Member member = memberRepository.findBySsgameId(requestLoginMemberDto.getSsgameId())
-                .orElseThrow(() -> new CustomException("cannot find member by " + requestLoginMemberDto.getSsgameId(), SSGAMEID_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), SSGAMEID_NOT_FOUND));
 
         if (!passwordEncoder.matches(requestLoginMemberDto.getPassword(), member.getPassword())) {
-            throw new InvalidValueException("wrong password", PASSWORD_NOT_MATCH);
+            throw new CustomException(LogUtil.getElement(), PASSWORD_NOT_MATCH);
         }
 
         return findMemberDtoByMember(member);
@@ -180,7 +178,7 @@ public class MemberServiceImpl implements MemberService {
 
         String ssgameId = details.getUsername();
         Member member = memberRepository.findBySsgameId(ssgameId)
-                .orElseThrow(() -> new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
         MemberDto memberDto = findMemberDtoByMember(member);
 
         return ResponseMemberDto.builder()
@@ -220,7 +218,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findMemberBySsgameId(String ssgameId) {
         return memberRepository.findBySsgameId(ssgameId)
-                .orElseThrow(() -> new EntityNotFoundException("member not found by ssgameId " + ssgameId));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
     }
 
     @Transactional
@@ -247,7 +245,7 @@ public class MemberServiceImpl implements MemberService {
             Map<String, Object> steamMemberData = SteamAPIScrap.getMemberData(member.getSteamID());
             member.changeMemberSteamAPI((String) steamMemberData.get("steamNickname"), (String) steamMemberData.get("avatarUrl"), true, (Long) steamGameData.get("gameCount"));
         } catch (IOException | ParseException e) {
-            log.debug("IOException | ParseException in API: {}", LogUtil.getClassAndMethodName());
+            log.debug("IOException | ParseException in API: {}", LogUtil.getElement());
             return false;
         }
 
@@ -322,7 +320,7 @@ public class MemberServiceImpl implements MemberService {
                 }
             }
         } catch (ParseException | IOException e) {
-            log.debug("IOException | ParseException in API: {}", LogUtil.getClassAndMethodName());
+            log.debug("IOException | ParseException in API: {}", LogUtil.getElement());
             responseData.put("isSuccess", false);
         }
 
@@ -445,11 +443,11 @@ public class MemberServiceImpl implements MemberService {
         String ssgameId = details.getUsername();
 
         Member member = memberRepository.findBySsgameId(ssgameId)
-                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         String password = member.getPassword();
         if (!passwordEncoder.matches(requestUpdateMemberDto.getPrePassword(), password)) {
-            throw new CustomException("password not matches in update member", PASSWORD_NOT_MATCH);
+            throw new CustomException(LogUtil.getElement(), PASSWORD_NOT_MATCH);
         }
         String newPassword = requestUpdateMemberDto.getNewPassword();
         if (newPassword != null) {
@@ -458,7 +456,7 @@ public class MemberServiceImpl implements MemberService {
 
         String email = requestUpdateMemberDto.getEmail();
         if (!member.getEmail().equals(email) && hasEmail(email)) {
-            throw new CustomException("email duplication in update member", EMAIL_DUPLICATION);
+            throw new CustomException(LogUtil.getElement(), EMAIL_DUPLICATION);
         }
         member.changeMember(password, email);
 
@@ -481,21 +479,21 @@ public class MemberServiceImpl implements MemberService {
         String ssgameId = details.getUsername();
 
         Member member = memberRepository.findBySsgameId(ssgameId)
-                .orElseThrow(() -> new CustomException("cannot find member by " + ssgameId, SSGAMEID_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), SSGAMEID_NOT_FOUND));
 
         if (member.getSteamID().equals(steamID)) {
-            throw new CustomException("cannot be changed to the same steam id", SAME_STEAM_ID);
+            throw new CustomException(LogUtil.getElement(), SAME_STEAM_ID);
         }
 
         if (!member.getSteamID().equals(steamID) && hasSteamID(steamID)) {
-            throw new CustomException("steamID duplication in update member", STEAMID_DUPLICATION);
+            throw new CustomException(LogUtil.getElement(), STEAMID_DUPLICATION);
         }
 
         try {
             // 새로운 steamID.isPublic == false면 에러 반환
             Map<String, Object> steamGameData = SteamAPIScrap.getGameData(steamID);
             if(!(boolean) steamGameData.get("isPublic")) {
-                throw new CustomException("steamID is not public", PRIVATE_STEAMID);
+                throw new CustomException(LogUtil.getElement(), PRIVATE_STEAMID);
             }
 
             /**
@@ -518,7 +516,7 @@ public class MemberServiceImpl implements MemberService {
             loadGameInfoByMember(member);
             calcMemberPrefferred(member);
         } catch (ParseException | IOException e) {
-            throw new CustomException("json parse error", JSON_PARSE_ERROR);
+            throw new CustomException(LogUtil.getElement(), JSON_PARSE_ERROR);
         }
     }
 }
