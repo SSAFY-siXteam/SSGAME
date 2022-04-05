@@ -12,7 +12,15 @@ import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tb_member_game_list")
+@Table(
+        name = "tb_member_game_list",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "member_game_seq",
+                        columnNames = {"member_seq", "game_seq"}
+                )
+        }
+)
 @Entity
 public class MemberGameList {
 
@@ -20,17 +28,18 @@ public class MemberGameList {
     @Id
     private Long memberGameListSeq;
 
-    @JoinColumn(name = "member_seq")
+    @JoinColumn(name = "member_seq", nullable = false)
     @ManyToOne(fetch = LAZY)
     private Member member;
 
-    @JoinColumn(name = "game_seq")
+    @JoinColumn(name = "game_seq", nullable = false)
     @ManyToOne(fetch = LAZY)
     private GameInfo gameInfo;
 
     @Column(nullable = false)
     private Long memberPlayTime;
 
+    @Column(nullable = false)
     private Integer memberGameRating;
 
     @Builder
