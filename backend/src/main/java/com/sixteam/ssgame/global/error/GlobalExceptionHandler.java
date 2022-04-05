@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
         // 기존 에러 메세지 전체를 볼 수 있는 구문
 //        log.error("handleBusinessException", e);
         // 에러 메세지를 간략화해서 발생 에러와 발생 위치만 볼 수 있는 구문
-        log.error("[ " + e.getErrorStatus() + " ] " + e.getErrorStatus().getMsg());
+        log.error("[ " + e.getErrorStatus() + " ] {} ", e.getMessage());
         final ErrorStatus errorStatus = e.getErrorStatus();
         final ErrorResponseDto response = ErrorResponseDto.of(errorStatus);
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorStatus.getStatus()));

@@ -29,7 +29,7 @@ public class GameInfoController {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), ErrorStatus.UNAUTHORIZED_ACCESS);
         }
 
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
@@ -48,7 +48,7 @@ public class GameInfoController {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), ErrorStatus.UNAUTHORIZED_ACCESS);
         }
 
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
