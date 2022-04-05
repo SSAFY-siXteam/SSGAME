@@ -53,7 +53,8 @@ public enum ErrorStatus {
     INVALID_RANGE_OF_RATING(BAD_REQUEST.value(), "별점은 1이상 5이하의 정수입니다."),
 
     // RecommendedGame
-    LACK_OF_RECOMMENDED_GAME(FAILED_DEPENDENCY.value(), "추천 게임 목록 개수가 부족합니다.")
+    LACK_OF_RECOMMENDED_GAME(FAILED_DEPENDENCY.value(), "추천 게임 목록 개수가 부족합니다."),
+    NO_GAME_PLAYED(NO_CONTENT.value(), "사용자가 플레이한 게임이 없습니다.")
     ;
 
     private Integer status;

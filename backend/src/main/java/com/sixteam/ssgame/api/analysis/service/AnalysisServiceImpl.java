@@ -45,6 +45,10 @@ public class AnalysisServiceImpl implements AnalysisService {
         Member member = memberRepository.findByMemberSeq(memberSeq)
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
+        if (member.getGameCount() == 0) {
+            throw new CustomException(LogUtil.getElement(), NO_GAME_PLAYED);
+        }
+
         List<RadarChartInfoDto> radarChartInfoDtos = new LinkedList<>();
         for (RadarChartInfo radarChartInfo : radarChartInfoRepository.findByMember(member)) {
             if (radarChartInfo.getCategory().getCategoryName().equals("none")) {

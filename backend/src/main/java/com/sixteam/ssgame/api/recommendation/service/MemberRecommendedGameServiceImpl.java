@@ -20,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.sixteam.ssgame.global.error.dto.ErrorStatus.LACK_OF_RECOMMENDED_GAME;
-import static com.sixteam.ssgame.global.error.dto.ErrorStatus.MEMBER_NOT_FOUND;
+import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 
 @Transactional(readOnly = true)
 @Slf4j
@@ -40,6 +39,10 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
 
         Member member = memberRepository.findByMemberSeq(memberSeq)
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
+
+        if (member.getGameCount() == 0) {
+            throw new CustomException(LogUtil.getElement(), NO_GAME_PLAYED);
+        }
 
         List<ResponseMemberRecommendedGameInfoDto> responseMemberRecommendedGameInfoDtos = new ArrayList<>();
 
