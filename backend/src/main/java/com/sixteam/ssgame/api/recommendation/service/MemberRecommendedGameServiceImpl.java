@@ -5,7 +5,6 @@ import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.gameInfo.service.GameInfoService;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
-import com.sixteam.ssgame.api.recommendation.dto.ResponseMemberRecommendGameListDto;
 import com.sixteam.ssgame.api.recommendation.dto.ResponseMemberRecommendedGameInfoDto;
 import com.sixteam.ssgame.api.recommendation.entity.MemberRecommendedGame;
 import com.sixteam.ssgame.global.error.dto.ErrorStatus;
@@ -36,7 +35,7 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
     private final GameInfoService gameInfoService;
 
     @Override
-    public ResponseMemberRecommendGameListDto getRecommendedGameList(Long memberSeq) {
+    public List<ResponseMemberRecommendedGameInfoDto> getRecommendedGameList(Long memberSeq) {
 
         Member member = memberRepository.findByMemberSeq(memberSeq)
                 .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
@@ -58,7 +57,7 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
             responseMemberRecommendedGameInfoDtos.add(ResponseMemberRecommendedGameInfoDto.builder()
                     .gameSeq(gameInfo.getGameSeq())
                     .gameName(gameInfo.getGameName())
-                    .headerImg(gameInfo.getHeaderImage())
+                    .headerImage(gameInfo.getHeaderImage())
                     .genres(gameInfo.getGameGenres().stream()
                             .map(gameGenre -> {
                                 return gameGenre.getGenre().getGenreName();
@@ -76,8 +75,6 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
             throw new CustomException("lack of recommended game", LACK_OF_RECOMMENDED_GAME);
         }
 
-        return ResponseMemberRecommendGameListDto.builder()
-                .responseMemberRecommendedGameInfoDtos(responseMemberRecommendedGameInfoDtos)
-                .build();
+        return responseMemberRecommendedGameInfoDtos;
     }
 }
