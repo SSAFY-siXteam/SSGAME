@@ -10,7 +10,14 @@ import { setCookie, getCookie, removeCookie } from "./utils/cookie";
 import GamePage from "./components/pages/GamePage/GamePage";
 import { signIn } from "./apis/user";
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
+<<<<<<< HEAD
 import MyGamePage from "./components/pages/MyGamePage/MyGamePage";
+=======
+import MyGamePage from "./components/pages/MyPage/MyGamePage/MyGamePage";
+import { updateGameAnalyzation } from "./apis/analyze";
+import { updateRecommend } from "./apis/recommend";
+import { updateGameAnalysis } from "./apis/game";
+>>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,7 +31,6 @@ function App() {
       signIn({ ssgameId: userId, password: userPassword }).then((res) => {
         console.log(res.data.data);
         if (res.data.status === 200) {
-          console.log("성공");
           setCookie("SSGAME_USER_TOKEN", res.data.data.jwtToken, {
             path: "/",
           });
@@ -34,23 +40,48 @@ function App() {
           setCookie("SSGAME_USER_NO", res.data.data.steamID, {
             path: "/",
           });
+<<<<<<< HEAD
           setIsLoggedIn(true);
+=======
+          setCookie("SSGAME_USER_SEQ", res.data.data.memberSeq, {
+            path: "/",
+          });
+          // updateGameAnalysis(
+          //   getCookie("SSGAME_USER_TOKEN"),
+          //   getCookie("SSGAME_USER_SEQ")
+          // ).then((res) => {
+          //   console.log(res);
+          // });
+          setIsLoggedIn(true);
+          updateGameAnalyzation(
+            {
+              headers: {
+                Authorization: `Bearer ` + res.data.data.jwtToken,
+              },
+            },
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+          updateRecommend(
+            res.data.data.memberSeq,
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+>>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0
         } else {
-          alert("실패");
+          alert(res.data.msg);
           console.log(res);
         }
       });
     }
-    // const jwtToken = await signIn({ ssgameId: userId, password: userPassword });
-    // if (jwtToken.status === 200) {
-    //   setCookie("userToken", jwtToken.data.jwtToken, {
-    //     path: "/",
-    //   });
-    // } else {
-    //   alert("error");
-    // }
-
-    // 성공시
   };
   const onLogOut = () => {
     removeCookie("SSGAME_USER_TOKEN");

@@ -4,9 +4,15 @@ import { CheckBoxModule } from "../../organisms/CheckBoxModule/CheckBoxModule";
 
 import Button from "../../atoms/Buttons/Button";
 
+<<<<<<< HEAD:frontend/src/components/pages/MyPage/MyPage.js
 import { getUserInfo } from "../../../apis/user";
 import { getCookie } from "../../../utils/cookie";
 
+=======
+import { getUserInfo, putUserInfo } from "../../../../apis/user";
+import { getCookie } from "../../../../utils/cookie";
+import { updateGameAnalysis } from "../../../../apis/game";
+>>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0:frontend/src/components/pages/MyPage/MyPage/MyPage.js
 const MyPage = () => {
   const [checkedItems, setCheckedItems] = useState(new Set());
   const [checkedBox, setCheckedBox] = useState([
@@ -88,9 +94,55 @@ const MyPage = () => {
     }
     setDebounceState(!debounceState);
   };
+<<<<<<< HEAD:frontend/src/components/pages/MyPage/MyPage.js
 
   const onUpdateBtnClick = (info) => {
     console.log(info);
+=======
+  const onEmailChange = (e) => {
+    setEmail(e.target.value);
+    setNewUserInfo({ ...newUserInfo, email: e.target.value });
+  };
+  const onUpdateBtnClick = () => {
+    if (
+      newUserInfo.newPassword !== null &&
+      newUserInfo.newPassword !== undefined &&
+      newUserInfo.newPassword !== ""
+    ) {
+      if (newUserInfo.newPassword !== newPasswordCheck) {
+        alert("새로운 비밀번호를 확인해주세요!");
+      } else {
+        putUserInfo(getCookie("SSGAME_USER_TOKEN"), newUserInfo).then((res) => {
+          if (res.data.status === 200) {
+            alert(res.data.msg);
+          } else {
+            alert(res.data.msg);
+          }
+        });
+      }
+    } else {
+      if (newUserInfo.newPassword === "") {
+        delete newUserInfo.newPassword;
+      }
+      putUserInfo(getCookie("SSGAME_USER_TOKEN"), newUserInfo)
+        .then((res) => {
+          if (res.data.status === 200) {
+            alert(res.data.msg);
+            updateGameAnalysis(
+              getCookie("SSGAME_USER_TOKEN"),
+              getCookie("SSGAME_USER_SEQ")
+            ).then((res) => {
+              console.log(res, "장고 호출");
+            });
+          } else {
+            alert(res.data.msg);
+          }
+        })
+        .catch((error) => {
+          alert("비밀번호를 확인해주세요");
+        });
+    }
+>>>>>>> 1aa05f5181a3e56d42326c764fb68cbf9f66e1b0:frontend/src/components/pages/MyPage/MyPage/MyPage.js
   };
 
   const onWithdrawalBtnClick = (info) => {

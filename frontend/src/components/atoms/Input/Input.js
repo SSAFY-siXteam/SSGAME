@@ -12,6 +12,7 @@ export function Input({
   placeholder,
   value,
   onInputChange,
+  onKeyPress,
 }) {
   return (
     <UserInput
@@ -25,6 +26,7 @@ export function Input({
       size={size}
       value={value}
       onChange={onInputChange}
+      onKeyPress={onKeyPress}
     ></UserInput>
   );
 }
