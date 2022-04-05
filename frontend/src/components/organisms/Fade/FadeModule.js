@@ -16,7 +16,7 @@ const FadeModule = () => {
       <CenterWrapper>
         <Typist>
           <MainTitle>
-            <h1>Welcome, WE ARE SSGAME.</h1>
+            <h1>Welcome, WE ARE SSAGAME.</h1>
             <h2>맞춤형 게임 추천 및 성향 분석 사이트 SSGAME입니다.</h2>
           </MainTitle>
         </Typist>
