@@ -8,6 +8,7 @@ import normal from "../../../assets/img/medals/normal.png";
 import { GenreGrid, TopGenresWrapper } from "./style";
 
 const GenreCardList = ({ data }) => {
+  console.log(data);
   return (
     <>
       <TopGenresWrapper>
