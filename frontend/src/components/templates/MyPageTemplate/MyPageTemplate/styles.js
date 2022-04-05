@@ -48,3 +48,9 @@ export const StyledSteamIdInfo = styled.div`
   font-size: 10px;
   color: red;
 `;
+export const StyleNickName = styled.div`
+  display: flex;
+  font-size: 20px;
+  font-weight: bold;
+  justify-content: center;
+`;

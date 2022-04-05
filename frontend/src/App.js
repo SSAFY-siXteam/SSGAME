@@ -6,14 +6,14 @@ import Main from "./components/pages/Main/Main";
 import SignUpPage from "./components/pages/SignUpPage/SignUpPage";
 import AnalyzePage from "./components/pages/AnalyzePage/AnalyzePage";
 import MyPage from "./components/pages/MyPage/MyPage/MyPage";
-import { setCookie, getCookie, removeCookie } from "./utils/cookie";
+import { setCookie, getCookie, removeAllCookies } from "./utils/cookie";
 import GameInfoPage from "./components/pages/GameInfoPage/GameInfoPage";
 import { signIn } from "./apis/user";
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
 import MyGamePage from "./components/pages/MyPage/MyGamePage/MyGamePage";
 import { updateGameAnalyzation } from "./apis/analyze";
 import { updateRecommend } from "./apis/recommend";
-import { updateGameAnalysis } from "./apis/game";
+import { revokeDjango } from "./apis/game";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -39,12 +39,12 @@ function App() {
           setCookie("SSGAME_USER_SEQ", res.data.data.memberSeq, {
             path: "/",
           });
-          // updateGameAnalysis(
-          //   getCookie("SSGAME_USER_TOKEN"),
-          //   getCookie("SSGAME_USER_SEQ")
-          // ).then((res) => {
-          //   console.log(res);
-          // });
+          revokeDjango(
+            getCookie("SSGAME_USER_TOKEN"),
+            getCookie("SSGAME_USER_SEQ")
+          ).then((res) => {
+            console.log(res);
+          });
           setIsLoggedIn(true);
           updateGameAnalyzation(
             {
@@ -76,12 +76,12 @@ function App() {
     }
   };
   const onLogOut = () => {
-    removeCookie("SSGAME_USER_TOKEN");
-    removeCookie("SSGAME_USER_ID");
-    removeCookie("SSGAME_USER_NO");
+    removeAllCookies();
     setIsLoggedIn(false);
   };
-
+  const setLogInFalse = () => {
+    setIsLoggedIn(false);
+  };
   useEffect(() => {
     //cookie가 있을 때
     if (getCookie("SSGAME_USER_TOKEN")) {
@@ -97,7 +97,10 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/analyze" element={<AnalyzePage />} />
           <Route path="/register" element={<SignUpPage />} />
-          <Route path="/mypage" element={<MyPage />} />
+          <Route
+            path="/mypage"
+            element={<MyPage setLogInFalse={setLogInFalse} />}
+          />
           <Route path="/game/:gameSeq" element={<GameInfoPage />} />
           <Route path="/recommend" element={<RecommendPage />} />
           <Route path="/mygame" element={<MyGamePage />} />

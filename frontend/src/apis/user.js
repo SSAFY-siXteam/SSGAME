@@ -23,3 +23,10 @@ export function putUserInfo(token, data) {
     },
   });
 }
+export function deleteUser(token) {
+  return axios.delete(URL + "members", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+}
