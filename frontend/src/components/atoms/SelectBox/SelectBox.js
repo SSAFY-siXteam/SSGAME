@@ -1,8 +1,8 @@
 import React from "react";
 
-function Container({ options }) {
+function Container({ options, onChangeSelectBox }) {
   return (
-    <select>
+    <select onChange={onChangeSelectBox}>
       {options.map((option) => (
         <option key={option.value} value={option.value}>
           {option.name}

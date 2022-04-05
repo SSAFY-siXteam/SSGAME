@@ -10,7 +10,15 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tb_member_preferred_tag")
+@Table(
+        name = "tb_member_preferred_tag",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "member_tag_seq",
+                        columnNames = {"member_seq", "tag_seq"}
+                )
+        }
+)
 @Entity
 public class MemberPreferredTag {
 
@@ -21,11 +29,11 @@ public class MemberPreferredTag {
     @Column(nullable = false)
     private Double preferredTagRatio;
 
-    @JoinColumn(name = "member_seq")
+    @JoinColumn(name = "member_seq", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @JoinColumn(name = "tag_seq")
+    @JoinColumn(name = "tag_seq", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Tag tag;
 
