@@ -1,6 +1,6 @@
 import axios from "axios";
-import { MOCK_URL, URL } from "../commons/setting/apiConfig";
-// const tempURL = "http://localhost:8080/api/v1";
+import { URL, DJANGO_URL } from "../commons/setting/apiConfig";
+
 async function getGame(header, param, success, fail) {
   try {
     let response = await axios.get(URL + `games/${param.gameSeq}`, header);
@@ -21,7 +21,7 @@ async function getGameList(token, param) {
     search = "";
   }
   console.log(param);
-  return axios.get(URL + "/members/games", {
+  return axios.get(URL + "members/games", {
     params: {
       page: param.page,
       size: param.size,
@@ -48,4 +48,14 @@ async function putGameRating(token, data) {
     }
   );
 }
-export { getGame, getGameList, putGameRating };
+
+async function updateGameAnalysis(token, memberSeq) {
+  console.log("start");
+  return axios.get(DJANGO_URL + memberSeq, {
+    headers: {
+      Authorization: "Bearer" + token,
+      "Content-Type": "application/json",
+    },
+  });
+}
+export { getGame, getGameList, putGameRating, updateGameAnalysis };

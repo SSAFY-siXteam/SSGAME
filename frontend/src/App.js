@@ -12,6 +12,8 @@ import { signIn } from "./apis/user";
 import RecommendPage from "./components/pages/RecommendPage/RecommendPage";
 import MyGamePage from "./components/pages/MyPage/MyGamePage/MyGamePage";
 import { updateGameAnalyzation } from "./apis/analyze";
+import { updateRecommend } from "./apis/recommend";
+import { updateGameAnalysis } from "./apis/game";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,7 +27,6 @@ function App() {
       signIn({ ssgameId: userId, password: userPassword }).then((res) => {
         console.log(res.data.data);
         if (res.data.status === 200) {
-          console.log("성공");
           setCookie("SSGAME_USER_TOKEN", res.data.data.jwtToken, {
             path: "/",
           });
@@ -38,6 +39,12 @@ function App() {
           setCookie("SSGAME_USER_SEQ", res.data.data.memberSeq, {
             path: "/",
           });
+          // updateGameAnalysis(
+          //   getCookie("SSGAME_USER_TOKEN"),
+          //   getCookie("SSGAME_USER_SEQ")
+          // ).then((res) => {
+          //   console.log(res);
+          // });
           setIsLoggedIn(true);
           updateGameAnalyzation(
             {
@@ -52,22 +59,21 @@ function App() {
               console.log(error);
             }
           );
+          updateRecommend(
+            res.data.data.memberSeq,
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
         } else {
-          alert("실패");
+          alert(res.data.msg);
           console.log(res);
         }
       });
     }
-    // const jwtToken = await signIn({ ssgameId: userId, password: userPassword });
-    // if (jwtToken.status === 200) {
-    //   setCookie("userToken", jwtToken.data.jwtToken, {
-    //     path: "/",
-    //   });
-    // } else {
-    //   alert("error");
-    // }
-
-    // 성공시
   };
   const onLogOut = () => {
     removeCookie("SSGAME_USER_TOKEN");
