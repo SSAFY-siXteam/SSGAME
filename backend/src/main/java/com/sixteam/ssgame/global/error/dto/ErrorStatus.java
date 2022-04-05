@@ -15,12 +15,12 @@ public enum ErrorStatus {
     // Common
     INVALID_INPUT_VALUE(BAD_REQUEST.value(), " Invalid Input Value"),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED.value(), " Invalid Input Value"),
-    ENTITY_NOT_FOUND(BAD_REQUEST.value(), " Entity Not Found"),
+    ENTITY_NOT_FOUND(BAD_REQUEST.value(), "해당 정보가 존재하지 않습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Server Error"),
     INVALID_TYPE_VALUE(BAD_REQUEST.value(), " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(FORBIDDEN.value(), "Access is Denied"),
     GLOBAL_ERROR(BAD_REQUEST.value(), "Global Error"),
-//    FIELD_ERROR(HttpStatus.BAD_REQUEST.value(), "Field Error in Post Mapping"),
+    //    FIELD_ERROR(HttpStatus.BAD_REQUEST.value(), "Field Error in Post Mapping"),
     UNAUTHORIZED_ACCESS(UNAUTHORIZED.value(), "인증 오류"),
     JSON_PARSE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "내부 데이터 오류"),
 
@@ -49,11 +49,12 @@ public enum ErrorStatus {
     INVALID_STEAMID(BAD_REQUEST.value(), "확인되지 않는 Steam ID입니다."),
 
     // Game Info
-    GAME_NOT_FOUND(BAD_GATEWAY.value(), "존재하지 않는 게임입니다."),
+    GAME_NOT_FOUND(BAD_GATEWAY.value(), "게임 정보가 존재하지 않습니다."),
     INVALID_RANGE_OF_RATING(BAD_REQUEST.value(), "별점은 1이상 5이하의 정수입니다."),
 
     // RecommendedGame
-    LACK_OF_RECOMMENDED_GAME(FAILED_DEPENDENCY.value(), "추천 게임 목록 개수가 부족합니다.")
+    LACK_OF_RECOMMENDED_GAME(FAILED_DEPENDENCY.value(), "추천 게임 목록 개수가 부족합니다."),
+    NO_GAME_PLAYED(NO_CONTENT.value(), "사용자가 플레이한 게임이 없습니다.")
     ;
 
     private Integer status;
