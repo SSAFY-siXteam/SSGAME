@@ -18,16 +18,16 @@ export function sliceText(str, len) {
   }
 }
 
-const LongGameCard = ({ info, onClick }) => {
+const LongGameCard = ({ info, onClick, isMovie }) => {
   return (
-    <ItemGrid onClick={onClick}>
+    <ItemGrid onClick={onClick} isMovie={isMovie}>
       <ItemImg>
         <Img path={info.headerImage} />
       </ItemImg>
       <InfoGrid price={info.price}>
         <NameText>
           <InfoText text={sliceText(info.gameName, 15)} size="large" />
-          {info.averageRating && (
+          {info.averageRating !== undefined && (
             <>
               <InlineBlock>
                 <InlineBlock>
