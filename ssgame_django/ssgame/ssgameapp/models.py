@@ -121,7 +121,7 @@ class DjangoSession(models.Model):
         managed = False
         db_table = 'django_session'
 
-
+# ssgame
 class TbCategory(models.Model):
     category_seq = models.BigAutoField(primary_key=True)
     category_name = models.CharField(unique=True, max_length=255)
@@ -221,15 +221,25 @@ class TbMemberFrequentGenre(models.Model):
 
 
 class TbMemberGameList(models.Model):
-    game_seq = models.OneToOneField(TbGameInfo, models.DO_NOTHING, db_column='game_seq', primary_key=True)
-    member_seq = models.ForeignKey(TbMember, models.DO_NOTHING, db_column='member_seq')
+    member_game_list_seq = models.BigAutoField(primary_key=True)
     member_game_rating = models.IntegerField(blank=True, null=True)
     member_play_time = models.BigIntegerField()
+    game_seq = models.ForeignKey(TbGameInfo, models.DO_NOTHING, db_column='game_seq', blank=True, null=True)
+    member_seq = models.ForeignKey(TbMember, models.DO_NOTHING, db_column='member_seq', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'tb_member_game_list'
-        unique_together = (('game_seq', 'member_seq'),)
+
+
+class TbMemberPreferredCategory(models.Model):
+    category_seq = models.OneToOneField(TbCategory, models.DO_NOTHING, db_column='category_seq', primary_key=True)
+    member_seq = models.ForeignKey(TbMember, models.DO_NOTHING, db_column='member_seq')
+
+    class Meta:
+        managed = False
+        db_table = 'tb_member_preferred_category'
+        unique_together = (('category_seq', 'member_seq'),)
 
 
 class TbMemberPreferredTag(models.Model):

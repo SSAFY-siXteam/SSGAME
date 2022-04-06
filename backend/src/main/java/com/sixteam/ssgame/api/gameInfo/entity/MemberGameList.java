@@ -12,19 +12,20 @@ import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@IdClass(GameMemberSeq.class)
 @Table(name = "tb_member_game_list")
 @Entity
 public class MemberGameList {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    private Long memberGameListSeq;
+
     @JoinColumn(name = "member_seq")
     @ManyToOne(fetch = LAZY)
-    @Id
     private Member member;
 
     @JoinColumn(name = "game_seq")
     @ManyToOne(fetch = LAZY)
-    @Id
     private GameInfo gameInfo;
 
     @Column(nullable = false)
