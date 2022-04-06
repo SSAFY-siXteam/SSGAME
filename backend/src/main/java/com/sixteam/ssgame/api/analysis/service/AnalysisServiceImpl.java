@@ -94,13 +94,15 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     public List<MostPlayedGamesDto> getMostPlayedGames(Long memberSeq) {
+
         Member member = memberRepository.findByMemberSeq(memberSeq)
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         List<MemberGameList> memberGameLists = memberGameListRepository.findMostPlayedGamesByMember(member);
         List<MostPlayedGamesDto> mostPlayedGamesDtos = new LinkedList<>();
 
-        for (int i = 0; i < 5; i++) {
+        
+        for (int i = 0; i < Math.min(memberGameLists.size(),5); i++) {
             if (memberGameLists.get(i).getMemberPlayTime() == 0) {
                 break;
             }
