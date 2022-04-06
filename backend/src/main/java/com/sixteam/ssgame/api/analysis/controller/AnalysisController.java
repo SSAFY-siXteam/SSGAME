@@ -1,6 +1,7 @@
 package com.sixteam.ssgame.api.analysis.controller;
 
 import com.sixteam.ssgame.api.analysis.service.AnalysisService;
+import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
 import com.sixteam.ssgame.global.common.util.LogUtil;
@@ -25,6 +26,8 @@ import static org.springframework.http.HttpStatus.*;
 public class AnalysisController {
 
     private final AnalysisService analysisService;
+
+    private final MemberService memberService;
 
     @Transactional
     @GetMapping("/graph")
@@ -81,6 +84,23 @@ public class AnalysisController {
                 .data(new HashMap<>() {{
                     put("mostPlayedGames", analysisService.getMostPlayedGames(details.getMember().getMemberSeq()));
                 }})
+                .build();
+    }
+
+    @GetMapping("/calc")
+    public BaseResponseDto getCalcMemberPreferred(Authentication authentication) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        if (authentication == null) {
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
+        }
+
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        memberService.calcMemberPreferred(details);
+
+        return BaseResponseDto.builder()
+                .status(OK.value())
+                .msg("선호도 계산 성공")
                 .build();
     }
 }
