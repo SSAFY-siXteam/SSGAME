@@ -1,4 +1,5 @@
 import React from "react";
+import { NoMovie, NoMovieWrapper } from "./style";
 
 const Video = ({ path }) => {
   return (
@@ -8,7 +9,9 @@ const Video = ({ path }) => {
           <source src={path} type="video/mp4" />
         </video>
       ) : (
-        <div>트레일러가 없습니다 😂</div>
+        <NoMovieWrapper>
+          <NoMovie>트레일러가 없습니다 😂</NoMovie>
+        </NoMovieWrapper>
       )}
     </>
   );
