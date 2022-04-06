@@ -1,8 +1,10 @@
+from cgi import print_arguments
+from pymysql import NULL
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import TbMemberPreferredTag, TbGameTag, TbMemberRecommendedGame, TbGameInfo, TbMember
+from .models import TbMemberPreferredTag, TbGameTag, TbMemberRecommendedGame, TbGameInfo, TbMember, TbMemberGameList
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 
@@ -14,6 +16,7 @@ def recommendedGameList(request, member_seq):
         memberPreferredTagQueryset = TbMemberPreferredTag.objects.filter(member_seq = member_seq)
         memberPreferredTagQueryset_df = pd.DataFrame(list(memberPreferredTagQueryset.values('member_seq','tag_seq', 'preferred_tag_ratio')))
     except :
+        print(1)
         return Response(status = status.HTTP_400_BAD_REQUEST)
 
     try :
@@ -33,16 +36,30 @@ def recommendedGameList(request, member_seq):
             'game_seq' : matrix_dummy_ch.index,
             'ratio' : game_similarity[0]
         })
+
         df = df.sort_values(by='ratio',axis=0, ascending=False)
-        result_list = df.values.tolist()[0:11]
+        df_list = df.values.tolist()
+
+        cnt = 0
+        result_list = []
+
+        for cos in df_list:
+            if(cnt == 11): break
+            memberGameListQueryset = TbMemberGameList.objects.filter(game_seq = float(cos[0]), member_seq = member_seq)
+
+            if(memberGameListQueryset.exists() == False):
+                cnt+=1
+                result_list.append(cos)
     except :
-        return Response(status = status.HTTP_400_BAD_REQUEST)
-    
+        print(3)
+        return Response(status = status.HTTP_400_BAD_REQUEST)        
+
     try :
         # 해당 member_seq 게임추천 내역 삭제
         games = TbMemberRecommendedGame.objects.filter(member_seq = member_seq)
         games.delete()
     except :
+        print(3)
         return Response(status = status.HTTP_400_BAD_REQUEST)
 
     try :
@@ -54,6 +71,7 @@ def recommendedGameList(request, member_seq):
             gameinfo.save()
         print("저장 완료")
     except :
+        print(4)
         return Response(status = status.HTTP_400_BAD_REQUEST)
 
     return Response(status = status.HTTP_200_OK)
