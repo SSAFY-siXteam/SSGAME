@@ -26,6 +26,8 @@ public interface MemberService {
 
     boolean renewalMemberData(CustomUserDetails details);
 
+    void calcMemberPreferred(CustomUserDetails details);
+
     void updateMember(CustomUserDetails details, RequestUpdateMemberDto requestUpdateMemberDto);
 
     void updateMemberSteamID(CustomUserDetails details, String steamID);

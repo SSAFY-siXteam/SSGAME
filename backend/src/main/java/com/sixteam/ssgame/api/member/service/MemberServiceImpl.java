@@ -71,8 +71,6 @@ public class MemberServiceImpl implements MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final EntityManager em;
-
     @Override
     public boolean hasSsgameId(String ssgameId) {
 
@@ -244,9 +242,9 @@ public class MemberServiceImpl implements MemberService {
             return false;
         }
         // 게임 정보 최신화 이후에 가중치 업데이트
-        if (!calcMemberPrefferred(member)) {
-            return false;
-        }
+//        if (!calcMemberPrefferred(member)) {
+//            return false;
+//        }
 
         try {
             Map<String, Object> steamMemberData = SteamAPIScrap.getMemberData(member.getSteamID());
@@ -337,7 +335,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Transactional(readOnly = false)
-    public boolean calcMemberPrefferred(Member member) {
+    public void calcMemberPreferred(CustomUserDetails details) {
+
+        String ssgameId = details.getUsername();
+        Member member = memberRepository.findBySsgameId(ssgameId)
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         List<Tag> tags = tagRepository.findAll();
         List<Category> categories = categoryRepository.findAll();
@@ -416,21 +418,19 @@ public class MemberServiceImpl implements MemberService {
 
         //멤버 선호 태그 테이블에 save
         for (Tag tag : tags) {
-            MemberPreferredTag memberPreferredTag = memberPreferredTagRepository.findByMemberAndTag(member,tag);
-            if(memberPreferredTag==null){
-                memberPreferredTagRepository.save(MemberPreferredTag.builder()
-                        .member(member)
-                        .tag(tag)
-                        .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
-                        .build());
-            }else {
-                memberPreferredTagRepository.save(MemberPreferredTag.builder()
-                        .memberTagSeq(memberPreferredTag.getMemberTagSeq())
-                        .member(member)
-                        .tag(tag)
-                        .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
-                        .build());
-            }
+            Optional<MemberPreferredTag> memberPreferredTag = memberPreferredTagRepository.findByMemberAndTag(member,tag);
+            memberPreferredTag.
+                    ifPresentOrElse(f -> memberPreferredTagRepository.save(MemberPreferredTag.builder()
+                                    .memberTagSeq(memberPreferredTag.get().getMemberTagSeq())
+                                    .member(member)
+                                    .tag(tag)
+                                    .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
+                                    .build()),
+                            () -> memberPreferredTagRepository.save(MemberPreferredTag.builder()
+                                    .member(member)
+                                    .tag(tag)
+                                    .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
+                                    .build()));
         }
 
         radarChartInfoRepository.deleteByMember(member);
@@ -450,8 +450,6 @@ public class MemberServiceImpl implements MemberService {
                             / (double) categoryMax[category.getCategorySeq().intValue()] * 100)
                     .build());
         }
-
-        return true;
     }
 
     @Transactional
@@ -459,7 +457,6 @@ public class MemberServiceImpl implements MemberService {
     public void updateMember(CustomUserDetails details, RequestUpdateMemberDto requestUpdateMemberDto) {
 
         String ssgameId = details.getUsername();
-
         Member member = memberRepository.findBySsgameId(ssgameId)
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
@@ -487,7 +484,6 @@ public class MemberServiceImpl implements MemberService {
                         .category(categoryRepository.findByCategoryName(categoryName))
                         .build());
             }
-            calcMemberPrefferred(member);
         }
     }
 
@@ -533,7 +529,6 @@ public class MemberServiceImpl implements MemberService {
 
             // 새로운 steamID로 재등록
             loadGameInfoByMember(member);
-            calcMemberPrefferred(member);
         } catch (ParseException | IOException e) {
             throw new CustomException(LogUtil.getElement(), JSON_PARSE_ERROR);
         }
