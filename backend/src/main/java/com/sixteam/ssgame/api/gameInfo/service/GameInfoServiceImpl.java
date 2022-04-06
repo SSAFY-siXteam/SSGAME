@@ -9,7 +9,6 @@ import com.sixteam.ssgame.api.gameInfo.repository.GameInfoRepository;
 import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
-import com.sixteam.ssgame.api.member.service.MemberService;
 import com.sixteam.ssgame.api.member.service.MemberServiceImpl;
 import com.sixteam.ssgame.global.common.util.LogUtil;
 
@@ -131,7 +130,5 @@ public class GameInfoServiceImpl implements GameInfoService {
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), ENTITY_NOT_FOUND));
 
         memberGameList.updateMemberGameRating(memberGameRating);
-
-        memberServiceImpl.calcMemberPrefferred(member);
     }
 }
