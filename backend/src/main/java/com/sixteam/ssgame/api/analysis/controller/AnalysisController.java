@@ -4,7 +4,6 @@ import com.sixteam.ssgame.api.analysis.service.AnalysisService;
 import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.dto.BaseResponseDto;
 import com.sixteam.ssgame.global.common.util.LogUtil;
-import com.sixteam.ssgame.global.error.dto.ErrorStatus;
 import com.sixteam.ssgame.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+
+import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class AnalysisController {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
@@ -50,7 +51,7 @@ public class AnalysisController {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
@@ -69,7 +70,7 @@ public class AnalysisController {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", ErrorStatus.UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
