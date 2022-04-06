@@ -42,7 +42,8 @@ public class AnalysisController {
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
 
         Map<String, Object> data = new HashMap<>();
-        data.put("userNickName", memberService.findMemberBySsgameId(details.getUsername()).getSteamNickname());
+        data.put("userNickName", memberService.findMemberBySsgameId(details.getUsername())
+                                                                        .getSteamNickname());
         data.put("categories", analysisService.getGraph(details.getMember().getMemberSeq()));
         return BaseResponseDto.builder()
                 .status(HttpStatus.OK.value())
