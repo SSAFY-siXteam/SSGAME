@@ -43,6 +43,7 @@ const MyGameTemplate = ({
 
         <StyledBarRight>{selectBox}</StyledBarRight>
       </StyledBar>
+      {!gameList.length > 0 && <>게임이 존재하지 않습니다...</>}
       <StyledGameList>
         {gameList.map((content, index) => {
           return (
