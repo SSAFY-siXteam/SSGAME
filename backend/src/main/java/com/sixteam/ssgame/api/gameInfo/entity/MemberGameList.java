@@ -51,17 +51,6 @@ public class MemberGameList {
         this.memberGameRating = memberGameRating;
     }
 
-    @Override
-    public String toString() {
-        return "MemberGameList{" +
-                "memberGameListSeq=" + memberGameListSeq +
-                ", member=" + member +
-                ", gameInfo=" + gameInfo +
-                ", memberPlayTime=" + memberPlayTime +
-                ", memberGameRating=" + memberGameRating +
-                '}';
-    }
-
     public void updateMemberGameRating (Integer memberGameRating){
         this.memberGameRating = memberGameRating;
     }
