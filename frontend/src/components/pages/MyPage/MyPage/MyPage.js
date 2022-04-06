@@ -4,10 +4,12 @@ import { CheckBoxModule } from "../../../organisms/CheckBoxModule/CheckBoxModule
 
 import Button from "../../../atoms/Buttons/Button";
 
-import { getUserInfo, putUserInfo } from "../../../../apis/user";
-import { getCookie } from "../../../../utils/cookie";
-import { updateGameAnalysis } from "../../../../apis/game";
-const MyPage = () => {
+import { deleteUser, getUserInfo, putUserInfo } from "../../../../apis/user";
+import { getCookie, removeAllCookies } from "../../../../utils/cookie";
+import { revokeDjango } from "../../../../apis/game";
+import { useNavigate } from "react-router-dom";
+const MyPage = ({ setLogInFalse }) => {
+  const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState(new Set());
   const [checkedBox, setCheckedBox] = useState([
     false,
@@ -139,7 +141,7 @@ const MyPage = () => {
         .then((res) => {
           if (res.data.status === 200) {
             alert(res.data.msg);
-            updateGameAnalysis(
+            revokeDjango(
               getCookie("SSGAME_USER_TOKEN"),
               getCookie("SSGAME_USER_SEQ")
             ).then((res) => {
@@ -155,8 +157,15 @@ const MyPage = () => {
     }
   };
 
-  const onWithdrawalBtnClick = (info) => {
-    console.log(info);
+  const onWithdrawalBtnClick = () => {
+    if (window.confirm("정말 회원탈퇴를 진행하시겠습니까?")) {
+      deleteUser(getCookie("SSGAME_USER_TOKEN")).then((res) => {
+        alert(res.data.msg);
+        removeAllCookies();
+        setLogInFalse();
+        navigate("/");
+      });
+    }
   };
   const onInputChangePassword = (e) => {
     setNewUserInfo({ ...newUserInfo, prePassword: e.target.value });

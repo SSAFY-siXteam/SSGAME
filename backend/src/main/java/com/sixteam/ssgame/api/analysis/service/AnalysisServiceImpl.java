@@ -94,7 +94,6 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     public List<MostPlayedGamesDto> getMostPlayedGames(Long memberSeq) {
-
         Member member = memberRepository.findByMemberSeq(memberSeq)
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
