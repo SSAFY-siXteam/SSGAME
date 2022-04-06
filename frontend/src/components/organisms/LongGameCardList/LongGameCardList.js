@@ -1,6 +1,6 @@
 import React from "react";
 import Title from "../../atoms/Title/Title";
-import MostPlayedGameItem from "../../molecules/LongGameCard/LongGameCard";
+import LongGameCard from "../../molecules/LongGameCard/LongGameCard";
 import { StyledTitle, GameItems, MovieBtn } from "./style.js";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +25,7 @@ const LongGameCardList = ({
                   src="https://svgsilh.com/svg/303309-ff5722.svg"
                   width="10"
                 /> */}
-                <MostPlayedGameItem
+                <LongGameCard
                   onClick={() => {
                     // changeVideo(info.movies);
                     navigate(`/game/${info.gameSeq}`);
