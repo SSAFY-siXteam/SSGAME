@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 import static org.springframework.http.HttpStatus.*;
@@ -40,12 +41,14 @@ public class AnalysisController {
 
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("userNickName", memberService.findMemberBySsgameId(details.getUsername())
+                                                                        .getSteamNickname());
+        data.put("categories", analysisService.getGraph(details.getMember().getMemberSeq()));
         return BaseResponseDto.builder()
                 .status(OK.value())
                 .msg("그래프 정보 조회 성공")
-                .data(new HashMap<>() {{
-                    put("categories", analysisService.getGraph(details.getMember().getMemberSeq()));
-                }})
+                .data(data)
                 .build();
     }
 
