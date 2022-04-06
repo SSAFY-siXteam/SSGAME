@@ -7,7 +7,7 @@ import blank_star from "../../../assets/img/star/blank_star.png";
 import filled_star from "../../../assets/img/star/filled_star.png";
 import { putGameRating } from "../../../apis/game";
 import { getCookie } from "../../../utils/cookie";
-import { updateGameAnalysis } from "../../../apis/game";
+import { revokeDjango } from "../../../apis/game";
 const cardColor = "#1D0553";
 //test
 
@@ -23,7 +23,7 @@ const GameRatingCard = ({ content, onStarChange }) => {
         onStarChange();
       })
       .then(() => {
-        updateGameAnalysis(
+        revokeDjango(
           getCookie("SSGAME_USER_TOKEN"),
           getCookie("SSGAME_USER_SEQ")
         ).then((res) => {
