@@ -46,7 +46,6 @@ const MyPageTemplate = ({
           <StyledProfileInfoContent>
             SteamID: <StyledInfo>{userInfo.steamID}</StyledInfo>
           </StyledProfileInfoContent>
-
           <br />
           <StyledProfileInfoContent>
             현재 비밀번호:{" "}
@@ -57,6 +56,13 @@ const MyPageTemplate = ({
                 size="25"
                 onInputChange={onInputChangePassword}
               />
+            </StyledInfo>
+          </StyledProfileInfoContent>
+          <StyledProfileInfoContent>
+            <StyledInfo>
+              <div style={{ color: "red", fontSize: "12px" }}>
+                회원 수정을 위해 비밀번호 입력은 필수입니다
+              </div>
             </StyledInfo>
           </StyledProfileInfoContent>
           <StyledProfileInfoContent>
