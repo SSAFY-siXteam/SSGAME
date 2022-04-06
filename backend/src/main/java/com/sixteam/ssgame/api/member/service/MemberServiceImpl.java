@@ -418,21 +418,19 @@ public class MemberServiceImpl implements MemberService {
 
         //멤버 선호 태그 테이블에 save
         for (Tag tag : tags) {
-            MemberPreferredTag memberPreferredTag = memberPreferredTagRepository.findByMemberAndTag(member,tag);
-            if(memberPreferredTag==null){
-                memberPreferredTagRepository.save(MemberPreferredTag.builder()
-                        .member(member)
-                        .tag(tag)
-                        .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
-                        .build());
-            }else {
-                memberPreferredTagRepository.save(MemberPreferredTag.builder()
-                        .memberTagSeq(memberPreferredTag.getMemberTagSeq())
-                        .member(member)
-                        .tag(tag)
-                        .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
-                        .build());
-            }
+            Optional<MemberPreferredTag> memberPreferredTag = memberPreferredTagRepository.findByMemberAndTag(member,tag);
+            memberPreferredTag.
+                    ifPresentOrElse(f -> memberPreferredTagRepository.save(MemberPreferredTag.builder()
+                                    .memberTagSeq(memberPreferredTag.get().getMemberTagSeq())
+                                    .member(member)
+                                    .tag(tag)
+                                    .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
+                                    .build()),
+                            () -> memberPreferredTagRepository.save(MemberPreferredTag.builder()
+                                    .member(member)
+                                    .tag(tag)
+                                    .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
+                                    .build()));
         }
 
         radarChartInfoRepository.deleteByMember(member);
