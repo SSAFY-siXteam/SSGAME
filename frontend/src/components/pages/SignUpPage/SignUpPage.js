@@ -10,8 +10,6 @@ import { openIDLogIn, openIDLogInCheck } from "../../../apis/openID";
 import { registerId } from "../../../apis/register";
 import { checkForm } from "../../../utils/register";
 import { useNavigate } from "react-router";
-import { getCookie } from "../../../utils/cookie";
-import { revokeDjango } from "../../../apis/game";
 // checkbox list 객체
 const SignUpPage = () => {
   const [userId, setUserId] = useState("");
@@ -62,21 +60,12 @@ const SignUpPage = () => {
               if (res.data.status === 201) {
                 alert("회원가입 성공");
               } else {
-                alert("회원가입 실패");
+                alert(res.data.msg);
                 console.log(res);
               }
             })
             .then(() => {
-              revokeDjango(
-                getCookie("SSGAME_USER_TOKEN"),
-                getCookie("SSGAME_USER_SEQ")
-              )
-                .then((res) => {
-                  console.log(res, "장고 호출");
-                })
-                .then(() => {
-                  navigate("/");
-                });
+              navigate("/");
             });
         }
       });
