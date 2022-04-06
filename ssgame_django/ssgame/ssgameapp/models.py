@@ -7,7 +7,6 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
-
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
@@ -121,7 +120,7 @@ class DjangoSession(models.Model):
         managed = False
         db_table = 'django_session'
 
-
+# ssgame
 class TbCategory(models.Model):
     category_seq = models.BigAutoField(primary_key=True)
     category_name = models.CharField(unique=True, max_length=255)
@@ -173,12 +172,13 @@ class TbGameTag(models.Model):
     game_tag_seq = models.BigAutoField(primary_key=True)
     tag_count = models.BigIntegerField()
     tag_ratio = models.FloatField()
-    game_seq = models.ForeignKey(TbGameInfo, models.DO_NOTHING, db_column='game_seq', blank=True, null=True)
-    tag_seq = models.ForeignKey('TbTag', models.DO_NOTHING, db_column='tag_seq', blank=True, null=True)
+    game_seq = models.ForeignKey(TbGameInfo, models.DO_NOTHING, db_column='game_seq')
+    tag_seq = models.ForeignKey('TbTag', models.DO_NOTHING, db_column='tag_seq')
 
     class Meta:
         managed = False
         db_table = 'tb_game_tag'
+        unique_together = (('tag_seq', 'game_seq'),)
 
 
 class TbGenre(models.Model):
@@ -221,37 +221,50 @@ class TbMemberFrequentGenre(models.Model):
 
 
 class TbMemberGameList(models.Model):
-    game_seq = models.OneToOneField(TbGameInfo, models.DO_NOTHING, db_column='game_seq', primary_key=True)
-    member_seq = models.ForeignKey(TbMember, models.DO_NOTHING, db_column='member_seq')
-    member_game_rating = models.IntegerField(blank=True, null=True)
+    member_game_list_seq = models.BigAutoField(primary_key=True)
+    member_game_rating = models.IntegerField()
     member_play_time = models.BigIntegerField()
+    game_seq = models.ForeignKey(TbGameInfo, models.DO_NOTHING, db_column='game_seq')
+    member_seq = models.ForeignKey(TbMember, models.DO_NOTHING, db_column='member_seq')
 
     class Meta:
         managed = False
         db_table = 'tb_member_game_list'
-        unique_together = (('game_seq', 'member_seq'),)
+        unique_together = (('member_seq', 'game_seq'),)
+
+
+class TbMemberPreferredCategory(models.Model):
+    category_seq = models.OneToOneField(TbCategory, models.DO_NOTHING, db_column='category_seq', primary_key=True)
+    member_seq = models.ForeignKey(TbMember, models.DO_NOTHING, db_column='member_seq')
+
+    class Meta:
+        managed = False
+        db_table = 'tb_member_preferred_category'
+        unique_together = (('category_seq', 'member_seq'),)
 
 
 class TbMemberPreferredTag(models.Model):
     member_tag_seq = models.BigAutoField(primary_key=True)
     preferred_tag_ratio = models.FloatField()
-    member_seq = models.ForeignKey(TbMember, models.DO_NOTHING, db_column='member_seq', blank=True, null=True)
-    tag_seq = models.ForeignKey('TbTag', models.DO_NOTHING, db_column='tag_seq', blank=True, null=True)
+    member_seq = models.ForeignKey(TbMember, models.DO_NOTHING, db_column='member_seq')
+    tag_seq = models.ForeignKey('TbTag', models.DO_NOTHING, db_column='tag_seq')
 
     class Meta:
         managed = False
         db_table = 'tb_member_preferred_tag'
+        unique_together = (('member_seq', 'tag_seq'),)
 
 
 class TbMemberRecommendedGame(models.Model):
     recommended_game_seq = models.BigAutoField(primary_key=True)
     recommended_ratio = models.FloatField()
-    game_seq = models.ForeignKey(TbGameInfo, models.DO_NOTHING, db_column='game_seq', blank=True, null=True)
-    member_seq = models.ForeignKey(TbMember, models.DO_NOTHING, db_column='member_seq', blank=True, null=True)
+    game_seq = models.ForeignKey(TbGameInfo, models.DO_NOTHING, db_column='game_seq')
+    member_seq = models.ForeignKey(TbMember, models.DO_NOTHING, db_column='member_seq')
 
     class Meta:
         managed = False
         db_table = 'tb_member_recommended_game'
+        unique_together = (('member_seq', 'game_seq'),)
 
 
 class TbRedarChartInfo(models.Model):

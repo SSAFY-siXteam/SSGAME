@@ -19,7 +19,7 @@ import static com.sixteam.ssgame.api.gameInfo.entity.QGameInfo.gameInfo;
 import static com.sixteam.ssgame.api.gameInfo.entity.QMemberGameList.memberGameList;
 import static com.sixteam.ssgame.api.member.entity.QMember.member;
 
-public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCustom{
+public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
