@@ -459,7 +459,6 @@ public class MemberServiceImpl implements MemberService {
     public void updateMember(CustomUserDetails details, RequestUpdateMemberDto requestUpdateMemberDto) {
 
         String ssgameId = details.getUsername();
-
         Member member = memberRepository.findBySsgameId(ssgameId)
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
