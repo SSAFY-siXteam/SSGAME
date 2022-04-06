@@ -162,6 +162,7 @@ public class MemberServiceImpl implements MemberService {
         } catch (ParseException e) {
             throw new CustomException(LogUtil.getElement(), JSON_PARSE_ERROR);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new CustomException(LogUtil.getElement(), FAIL_TO_REGISTER);
         }
     }
@@ -290,6 +291,7 @@ public class MemberServiceImpl implements MemberService {
 
                         alreadySaved.ifPresentOrElse(f2 -> {
                             memberGameListRepository.save(MemberGameList.builder()
+                                    .memberGameListSeq(alreadySaved.get().getMemberGameListSeq())
                                     .member(member)
                                     .gameInfo(gameInfo)
                                     .memberPlayTime(memberGameList.get(steamAppid))
