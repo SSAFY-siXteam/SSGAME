@@ -398,7 +398,7 @@ public class MemberServiceImpl implements MemberService {
                 if (memberGame.getMemberPlayTime() != 0) {
                     categoryMax[tagsCategory.get(gameTag.getTag().getTagSeq())] += 5;
                     categoryValue[tagsCategory.get(gameTag.getTag().getTagSeq())] +=
-                            memberGame.getMemberGameRating() != 0 ? memberGame.getMemberGameRating() : 3;
+                            memberGame.getMemberGameRating() != 0 ? memberGame.getMemberGameRating() : 2;
                 }
             }
         }
@@ -416,11 +416,21 @@ public class MemberServiceImpl implements MemberService {
 
         //멤버 선호 태그 테이블에 save
         for (Tag tag : tags) {
-            memberPreferredTagRepository.save(MemberPreferredTag.builder()
-                    .member(member)
-                    .tag(tag)
-                    .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
-                    .build());
+            MemberPreferredTag memberPreferredTag = memberPreferredTagRepository.findByMemberAndTag(member,tag);
+            if(memberPreferredTag==null){
+                memberPreferredTagRepository.save(MemberPreferredTag.builder()
+                        .member(member)
+                        .tag(tag)
+                        .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
+                        .build());
+            }else {
+                memberPreferredTagRepository.save(MemberPreferredTag.builder()
+                        .memberTagSeq(memberPreferredTag.getMemberTagSeq())
+                        .member(member)
+                        .tag(tag)
+                        .preferredTagRatio(tagsValue.get(tag.getTagSeq()))
+                        .build());
+            }
         }
 
         radarChartInfoRepository.deleteByMember(member);
@@ -477,6 +487,7 @@ public class MemberServiceImpl implements MemberService {
                         .category(categoryRepository.findByCategoryName(categoryName))
                         .build());
             }
+            calcMemberPrefferred(member);
         }
     }
 

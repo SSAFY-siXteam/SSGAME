@@ -38,7 +38,8 @@ public class MemberPreferredTag {
     private Tag tag;
 
     @Builder
-    public MemberPreferredTag(Member member, Tag tag, Double preferredTagRatio) {
+    public MemberPreferredTag(Long memberTagSeq, Member member, Tag tag, Double preferredTagRatio) {
+        this.memberTagSeq = memberTagSeq;
         this.member = member;
         this.tag = tag;
         this.preferredTagRatio = preferredTagRatio;
