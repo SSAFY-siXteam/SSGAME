@@ -6,11 +6,12 @@ import com.sixteam.ssgame.api.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberPreferredTagRepository extends JpaRepository<MemberPreferredTag, Long> {
 
     void deleteByMember(Member member);
 
-    MemberPreferredTag findByMemberAndTag(Member member, Tag tag);
+    Optional<MemberPreferredTag> findByMemberAndTag(Member member, Tag tag);
 
 }

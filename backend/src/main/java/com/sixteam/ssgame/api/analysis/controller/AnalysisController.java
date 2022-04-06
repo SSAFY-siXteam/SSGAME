@@ -8,7 +8,6 @@ import com.sixteam.ssgame.global.common.util.LogUtil;
 import com.sixteam.ssgame.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,7 +46,7 @@ public class AnalysisController {
                                                                         .getSteamNickname());
         data.put("categories", analysisService.getGraph(details.getMember().getMemberSeq()));
         return BaseResponseDto.builder()
-                .status(HttpStatus.OK.value())
+                .status(OK.value())
                 .msg("그래프 정보 조회 성공")
                 .data(data)
                 .build();
@@ -63,7 +63,7 @@ public class AnalysisController {
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
 
         return BaseResponseDto.builder()
-                .status(HttpStatus.OK.value())
+                .status(OK.value())
                 .msg("가장 많이 플레이한 장르 조회 성공")
                 .data(new HashMap<>() {{
                     put("MostPlayedGenres", analysisService.getMostPlayedGenres(details.getMember().getMemberSeq()));
@@ -82,11 +82,28 @@ public class AnalysisController {
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
 
         return BaseResponseDto.builder()
-                .status(HttpStatus.OK.value())
+                .status(OK.value())
                 .msg("가장 많이 플레이한 장르 게임 성공")
                 .data(new HashMap<>() {{
                     put("mostPlayedGames", analysisService.getMostPlayedGames(details.getMember().getMemberSeq()));
                 }})
+                .build();
+    }
+
+    @GetMapping("/calc")
+    public BaseResponseDto getCalcMemberPreferred(Authentication authentication) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        if (authentication == null) {
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
+        }
+
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        memberService.calcMemberPreferred(details);
+
+        return BaseResponseDto.builder()
+                .status(OK.value())
+                .msg("선호도 계산 성공")
                 .build();
     }
 }
