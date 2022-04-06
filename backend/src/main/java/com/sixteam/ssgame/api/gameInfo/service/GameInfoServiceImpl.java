@@ -9,6 +9,8 @@ import com.sixteam.ssgame.api.gameInfo.repository.GameInfoRepository;
 import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
+import com.sixteam.ssgame.api.member.service.MemberService;
+import com.sixteam.ssgame.api.member.service.MemberServiceImpl;
 import com.sixteam.ssgame.global.common.util.LogUtil;
 
 import com.sixteam.ssgame.global.error.exception.CustomException;
@@ -41,6 +43,8 @@ public class GameInfoServiceImpl implements GameInfoService {
     private final GameGenreRepository gameGenreRepository;
 
     private final MemberRepository memberRepository;
+
+    private final MemberServiceImpl memberServiceImpl;
 
     @Override
     public ResponseGameInfoDto findResponseGameInfoDto(Long gameSeq, Long memberSeq) {
@@ -127,5 +131,7 @@ public class GameInfoServiceImpl implements GameInfoService {
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), ENTITY_NOT_FOUND));
 
         memberGameList.updateMemberGameRating(memberGameRating);
+
+        memberServiceImpl.calcMemberPrefferred(member);
     }
 }
