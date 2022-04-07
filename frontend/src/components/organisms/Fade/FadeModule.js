@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Fade from "react-reveal/Fade";
 import Bounce from "react-reveal/Bounce";
 import {
@@ -9,6 +9,8 @@ import {
   ScrollSpan,
   MainTitle,
   ImgWrapper,
+  Text,
+  MoveToTop,
 } from "./style";
 import Typist from "react-typist";
 import gamesImg from "../../../assets/img/mainImage/games.png";
@@ -61,6 +63,18 @@ const FadeModule = () => {
             <img src={graphImg} width="500px" />
           </ImgViewWrapper>
         </Fade>
+        <Bounce top>
+          <ViewWrapper>
+            <h2>지금 바로 시작해보세요</h2>
+            <MoveToTop
+              onClick={() => {
+                window.scrollTo(0, 0);
+              }}
+            >
+              👉 맞춤 게임 추천 받으러 가기 👈
+            </MoveToTop>
+          </ViewWrapper>
+        </Bounce>
       </CenterWrapper>
     </div>
   );
