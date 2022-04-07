@@ -1,5 +1,6 @@
 package com.sixteam.ssgame.api.gameInfo.service;
 
+import com.sixteam.ssgame.api.gameInfo.dto.ReleaseDateDto;
 import com.sixteam.ssgame.api.gameInfo.dto.response.ResponseGameInfoDto;
 import com.sixteam.ssgame.api.gameInfo.entity.GameGenre;
 import com.sixteam.ssgame.api.gameInfo.entity.GameInfo;
@@ -9,7 +10,6 @@ import com.sixteam.ssgame.api.gameInfo.repository.GameInfoRepository;
 import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
-import com.sixteam.ssgame.api.member.service.MemberServiceImpl;
 import com.sixteam.ssgame.global.common.util.LogUtil;
 
 import com.sixteam.ssgame.global.error.exception.CustomException;
@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.StringTokenizer;
 
 import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 
@@ -42,8 +43,6 @@ public class GameInfoServiceImpl implements GameInfoService {
     private final GameGenreRepository gameGenreRepository;
 
     private final MemberRepository memberRepository;
-
-    private final MemberServiceImpl memberServiceImpl;
 
     @Override
     public ResponseGameInfoDto findResponseGameInfoDto(Long gameSeq, Long memberSeq) {
@@ -85,6 +84,13 @@ public class GameInfoServiceImpl implements GameInfoService {
                 .isRated(isMemberRated)
                 .memberGameRating(isMemberRated ? memberGameList.get().getMemberGameRating() : 0)
                 .genres(genreNames)
+                .averageForever(gameInfo.getAverageForever())
+                .platforms(jsonParsingPlatforms(gameInfo.getPlatforms()))
+                .website(gameInfo.getWebsite().equals("0") ? "" : gameInfo.getWebsite())
+                .languages(stringToList(gameInfo.getLanguages()))
+                .publisher(stringToList(gameInfo.getPublisher()))
+                .developers(stringToList(gameInfo.getDevelopers()))
+                .releaseDateDto(jsonParsingReleaseDate(gameInfo.getReleaseDate()))
                 .build();
     }
 
@@ -110,6 +116,73 @@ public class GameInfoServiceImpl implements GameInfoService {
             }
         }
         return movieUrl;
+    }
+
+    private List<String> jsonParsingPlatforms(String jsonString) {
+
+        List<String> platforms = new ArrayList<>();
+
+        if (jsonString != null && jsonString.length() > 1) {
+            jsonString = jsonString.replaceAll("'", "\"").replaceAll("True", "true").replaceAll("False", "false");
+            // JSONParser로 JSONObject로 변환
+            JSONParser parser = new JSONParser();
+            JSONArray jsonArray = null;
+
+            try {
+                JSONObject jsonObject = (JSONObject) parser.parse(jsonString);
+                if ((boolean) jsonObject.get("windows")) {
+                    platforms.add("windows");
+                }
+                if ((boolean) jsonObject.get("mac")) {
+                    platforms.add("mac");
+                }
+                if ((boolean) jsonObject.get("linux")) {
+                    platforms.add("linux");
+                }
+            } catch (ParseException e) {
+                log.error("Parse Exception: {}", LogUtil.getElement());
+            }
+        }
+
+        return platforms;
+    }
+
+    private List<String> stringToList(String stringData) {
+
+        List<String> listData = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(stringData, ",");
+        
+        while (st.hasMoreTokens()) {
+            listData.add(st.nextToken().trim());
+        }
+
+        return listData;
+    }
+
+    private ReleaseDateDto jsonParsingReleaseDate(String jsonString) {
+
+        boolean comingSoon = false;
+        String date = null;
+
+        if (jsonString != null && jsonString.length() > 1) {
+            jsonString = jsonString.replaceAll("'", "\"").replaceAll("True", "true").replaceAll("False", "false");
+            // JSONParser로 JSONObject로 변환
+            JSONParser parser = new JSONParser();
+            JSONArray jsonArray = null;
+
+            try {
+                JSONObject jsonObject = (JSONObject) parser.parse(jsonString);
+                comingSoon = (boolean) jsonObject.get("coming_soon");
+                date = (String) jsonObject.get("date");
+            } catch (ParseException e) {
+                log.error("Parse Exception: {}", LogUtil.getElement());
+            }
+        }
+
+        return ReleaseDateDto.builder()
+                .comingSoon(comingSoon)
+                .date(date == null ? "" : date)
+                .build();
     }
 
     @Override
