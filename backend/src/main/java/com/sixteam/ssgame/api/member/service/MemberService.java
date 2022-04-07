@@ -16,7 +16,7 @@ public interface MemberService {
 
     boolean hasSteamID(String steamID);
 
-    boolean register(RequestMemberDto requestMemberDto);
+    void register(RequestMemberDto requestMemberDto);
 
     MemberDto findMemberDtoInLogin(RequestLoginMemberDto requestLoginMemberDto);
 
@@ -26,8 +26,11 @@ public interface MemberService {
 
     boolean renewalMemberData(CustomUserDetails details);
 
+    void calcMemberPreferred(CustomUserDetails details);
+
     void updateMember(CustomUserDetails details, RequestUpdateMemberDto requestUpdateMemberDto);
 
     void updateMemberSteamID(CustomUserDetails details, String steamID);
 
+    void deleteMember(String ssgameId);
 }

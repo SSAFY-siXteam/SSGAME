@@ -12,28 +12,39 @@ import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@IdClass(GameMemberSeq.class)
-@Table(name = "tb_member_game_list")
+@Table(
+        name = "tb_member_game_list",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "member_game_seq",
+                        columnNames = {"member_seq", "game_seq"}
+                )
+        }
+)
 @Entity
 public class MemberGameList {
 
-    @JoinColumn(name = "member_seq")
-    @ManyToOne(fetch = LAZY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    private Long memberGameListSeq;
+
+    @JoinColumn(name = "member_seq", nullable = false)
+    @ManyToOne(fetch = LAZY)
     private Member member;
 
-    @JoinColumn(name = "game_seq")
+    @JoinColumn(name = "game_seq", nullable = false)
     @ManyToOne(fetch = LAZY)
-    @Id
     private GameInfo gameInfo;
 
     @Column(nullable = false)
     private Long memberPlayTime;
 
+    @Column(nullable = false)
     private Integer memberGameRating;
 
     @Builder
-    public MemberGameList(Member member, GameInfo gameInfo, Long memberPlayTime, Integer memberGameRating) {
+    public MemberGameList(Long memberGameListSeq, Member member, GameInfo gameInfo, Long memberPlayTime, Integer memberGameRating) {
+        this.memberGameListSeq = memberGameListSeq;
         this.member = member;
         this.gameInfo = gameInfo;
         this.memberPlayTime = memberPlayTime;

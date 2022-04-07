@@ -19,7 +19,7 @@ import static com.sixteam.ssgame.api.gameInfo.entity.QGameInfo.gameInfo;
 import static com.sixteam.ssgame.api.gameInfo.entity.QMemberGameList.memberGameList;
 import static com.sixteam.ssgame.api.member.entity.QMember.member;
 
-public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCustom{
+public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
@@ -48,7 +48,7 @@ public class MemberGameListRepositoryImpl implements MemberGameListRepositoryCus
 
         // filter == true : 미평가 게임만 필터링
         if (filter) {
-            query.where(memberGameList.memberGameRating.isNull());
+            query.where(memberGameList.memberGameRating.eq(0));
         }
 
         // 검색어가 있다면 검색

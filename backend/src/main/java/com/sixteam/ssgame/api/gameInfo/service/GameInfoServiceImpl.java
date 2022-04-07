@@ -9,11 +9,11 @@ import com.sixteam.ssgame.api.gameInfo.repository.GameInfoRepository;
 import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
+import com.sixteam.ssgame.api.member.service.MemberServiceImpl;
 import com.sixteam.ssgame.global.common.util.LogUtil;
-import com.sixteam.ssgame.global.error.dto.ErrorStatus;
-import com.sixteam.ssgame.global.error.exception.CustomException;
 
-import com.sixteam.ssgame.global.error.exception.EntityNotFoundException;
+import com.sixteam.ssgame.global.error.exception.CustomException;
+import com.sixteam.ssgame.global.error.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -25,6 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static com.sixteam.ssgame.global.error.dto.ErrorStatus.*;
 
 @Transactional(readOnly = true)
 @Slf4j
@@ -40,13 +43,15 @@ public class GameInfoServiceImpl implements GameInfoService {
 
     private final MemberRepository memberRepository;
 
+    private final MemberServiceImpl memberServiceImpl;
+
     @Override
     public ResponseGameInfoDto findResponseGameInfoDto(Long gameSeq, Long memberSeq) {
 
-        GameInfo gameInfo = gameInfoRepository.findByGameSeq(gameSeq);
-        if (gameInfo == null) {
-            throw new CustomException("game not found by " + gameSeq, ErrorStatus.GAME_NOT_FOUND);
-        }
+        GameInfo gameInfo = gameInfoRepository.findByGameSeq(gameSeq)
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), GAME_NOT_FOUND));
+        Member member = memberRepository.findByMemberSeq(memberSeq)
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         // movie json parsing 함수 호출
         String movieUrl = jsonParsingMovies(gameInfo);
@@ -55,9 +60,10 @@ public class GameInfoServiceImpl implements GameInfoService {
         Double averageRating = memberGameListRepository.getAverageRatingByGameSeq(gameSeq).getAverageRating();
 
         // 회원 관련 속성 - isPlayed, isRated, memberGameRating
-        MemberGameList memberGameList = memberGameListRepository.findByMemberAndGameInfo(memberRepository.findByMemberSeq(memberSeq), gameInfo);
-        boolean isMemberPlayedGame = (memberGameList != null);
-        boolean isMemberRated = isMemberPlayedGame && (memberGameList.getMemberGameRating() != null);
+        Optional<MemberGameList> memberGameList = memberGameListRepository.findByMemberAndGameInfo(member, gameInfo);
+
+        boolean isMemberPlayedGame = memberGameList.isPresent();
+        boolean isMemberRated = isMemberPlayedGame && (memberGameList.get().getMemberGameRating() != 0);
 
         // genre
         List<GameGenre> gameGenres = gameGenreRepository.findAllByGameInfo(gameInfo);
@@ -77,7 +83,7 @@ public class GameInfoServiceImpl implements GameInfoService {
                 .averageRating(averageRating)
                 .isPlayed(isMemberPlayedGame)
                 .isRated(isMemberRated)
-                .memberGameRating(isMemberRated ? memberGameList.getMemberGameRating() : 0)
+                .memberGameRating(isMemberRated ? memberGameList.get().getMemberGameRating() : 0)
                 .genres(genreNames)
                 .build();
     }
@@ -97,11 +103,10 @@ public class GameInfoServiceImpl implements GameInfoService {
 
             try {
                 jsonArray = (JSONArray) parser.parse(movieString);
-                // 왠진 모르겠지만 다 날라가고 mp4부터 남는다. 나중에 오류 발생 여지 있음
                 JSONObject movieJson = (JSONObject) jsonArray.get(0);
                 movieUrl = (String) ((JSONObject) movieJson.get("mp4")).get("480");
             } catch (ParseException e) {
-                log.error("Parse Exception: {}", LogUtil.getClassAndMethodName());
+                log.error("Parse Exception: {}", LogUtil.getElement());
             }
         }
         return movieUrl;
@@ -110,20 +115,19 @@ public class GameInfoServiceImpl implements GameInfoService {
     @Override
     @Transactional
     public void updateMemberGameRating(Long memberSeq, Long gameSeq, Integer memberGameRating) {
-        Member member = memberRepository.findByMemberSeq(memberSeq);
-        if(member == null){
-            throw new EntityNotFoundException("사용자가 존재하지 않습니다.");
+
+        if (memberGameRating < 1 || memberGameRating > 5) {
+            throw new InvalidValueException(LogUtil.getElement(), INVALID_RANGE_OF_RATING);
         }
 
-        GameInfo gameInfo = gameInfoRepository.findByGameSeq(gameSeq);
-        if(gameInfo == null){
-            throw new EntityNotFoundException("게임정보가 존재하지 않습니다.");
-        }
+        Member member = memberRepository.findByMemberSeq(memberSeq)
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
-        MemberGameList memberGameList = memberGameListRepository.findByMemberAndGameInfo(member, gameInfo);
-        if(memberGameList == null){
-            throw new EntityNotFoundException("해당 정보가 존재하지 않습니다.");
-        }
+        GameInfo gameInfo = gameInfoRepository.findByGameSeq(gameSeq)
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), GAME_NOT_FOUND));
+
+        MemberGameList memberGameList = memberGameListRepository.findByMemberAndGameInfo(member, gameInfo)
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), ENTITY_NOT_FOUND));
 
         memberGameList.updateMemberGameRating(memberGameRating);
     }
