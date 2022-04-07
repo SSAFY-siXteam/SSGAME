@@ -32,13 +32,11 @@ public class GameInfoController {
             throw new CustomException(LogUtil.getElement(), ErrorStatus.UNAUTHORIZED_ACCESS);
         }
 
-        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-
         return BaseResponseDto.builder()
                 .status(HttpStatus.OK.value())
                 .msg("게임 정보 조회 성공")
                 .data(new HashMap<>() {{
-                    put("gameInfo",  gameInfoService.findResponseGameInfoDto(gameSeq, details.getMember().getMemberSeq()));
+                    put("gameInfo",  gameInfoService.findResponseGameInfoDto(gameSeq, (CustomUserDetails) authentication.getDetails()));
                 }})
                 .build();
     }
@@ -51,9 +49,7 @@ public class GameInfoController {
             throw new CustomException(LogUtil.getElement(), ErrorStatus.UNAUTHORIZED_ACCESS);
         }
 
-        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-
-        gameInfoService.updateMemberGameRating(details.getMember().getMemberSeq(), gameSeq, requestMemberGameRatingDto.getPoint());
+        gameInfoService.updateMemberGameRating((CustomUserDetails) authentication.getDetails(), gameSeq, requestMemberGameRatingDto.getPoint());
 
         return BaseResponseDto.builder()
                 .status(HttpStatus.OK.value())
