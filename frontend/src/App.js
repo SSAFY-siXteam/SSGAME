@@ -102,7 +102,6 @@ function App() {
       <Grid>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/game/:gameSeq" element={<GameInfoPage />} />
 
           {/* Public */}
           <Route element={<PublicRoute isLoggedIn={isLoggedIn} />}>
@@ -119,6 +118,7 @@ function App() {
               path="/mypage"
               element={<MyPage setLogInFalse={setLogInFalse} />}
             />
+            <Route path="/game/:gameSeq" element={<GameInfoPage />} />
             <Route path="/recommend" element={<RecommendPage />} />
             <Route path="/mygame" element={<MyGamePage />} />
             <Route path="/analyze" element={<AnalyzePage />} />
