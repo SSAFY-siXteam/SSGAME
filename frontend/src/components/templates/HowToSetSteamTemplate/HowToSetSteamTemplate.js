@@ -8,7 +8,20 @@ import { ExplanationDiv, PictureDiv } from "./styles";
 export default function HowToSetSteamTemplate() {
   return (
     <div>
-      <div>스팀 아이디 공개 설정 방법</div>
+      <p>
+        성향 분석, 게임 추천이 서비스가 불가한 이유는 1. 스팀 아이디가 비공개일
+        경우, 2. 플레이한 게임이 없는 경우에요!
+      </p>
+      <p>
+        만약, 스팀 아이디가 공개 되어 있는데도 서비스 이용이 불가한다면 플레이
+        한 게임이 있는지 확인해주세요!
+      </p>
+      <p>
+        또한 플레이한 게임을 평가해야 게임 추천 기능을 원활하게 사용하실 수
+        있어요 :)
+      </p>
+      <br /> <br />
+      <h3>스팀 아이디 공개 설정 방법</h3>
       <br /> <br />
       <ExplanationDiv>
         1. 스팀에 로그인을 해주신 후, 우측 상단 자신의 닉네임을 클릭해주세요

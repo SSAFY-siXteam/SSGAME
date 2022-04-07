@@ -8,7 +8,7 @@ export async function getAnalyzeGraph(header, success, fail) {
       success(response);
     } else if (response.data.status == 204) {
       alert(
-        "플레이한 게임이 없어서 성향을 파악하기 힘들어요 :( \n 게임을 몇 개 플레이 한 뒤 서비스를 이용해보시겠어요?"
+        "플레이한 게임이 없어서 성향을 파악하기 힘들어요 :( \n게임을 몇 개 플레이 한 뒤 서비스를 이용해보시겠어요?"
       );
     } else if (response.data.status !== 200) {
       throw new Error("analyzation is failed");
@@ -64,7 +64,7 @@ export async function calWeight(header, success, fail) {
       success(response);
     } else if (response.data.status == 204) {
       alert(
-        "플레이한 게임이 없어서 데이터 분석이 힘들어요 :( \n 게임을 몇 개 플레이 한 뒤 평가하시고 서비스를 이용해보시겠어요?"
+        "플레이한 게임이 없어서 데이터 분석이 힘들어요 :( \n게임을 몇 개 플레이 한 뒤 평가하시고 서비스를 이용해보시겠어요?"
       );
       fail();
     } else if (response.data.status !== 200) {
