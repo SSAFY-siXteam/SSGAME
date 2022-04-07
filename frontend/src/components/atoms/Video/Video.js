@@ -10,7 +10,7 @@ const Video = ({ path }) => {
         </video>
       ) : (
         <NoMovieWrapper>
-          <NoMovie>트레일러가 없습니다 😂</NoMovie>
+          <NoMovie>😂 트레일러가 없습니다 😂</NoMovie>
         </NoMovieWrapper>
       )}
     </>

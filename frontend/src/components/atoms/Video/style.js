@@ -9,6 +9,6 @@ export const NoMovie = styled.div`
   font-size: 1.6rem;
   margin-top: 50%;
   padding: 10px;
-  background: skyblue;
-  color: black;
+  /* background: skyblue; */
+  /* color: black; */
 `;
