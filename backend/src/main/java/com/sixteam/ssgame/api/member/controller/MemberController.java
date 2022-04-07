@@ -179,9 +179,8 @@ public class MemberController {
         }
 
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-        Long memberSeq = details.getMember().getMemberSeq();
 
-        ResponseMemberGamePageDto responseMemberGamePageDto = memberGameListService.getResponseMemberGamePageDto(memberSeq, pageable, filter, search);
+        ResponseMemberGamePageDto responseMemberGamePageDto = memberGameListService.getResponseMemberGamePageDto(details, pageable, filter, search);
 
         return BaseResponseDto.builder()
                 .status(OK.value())
