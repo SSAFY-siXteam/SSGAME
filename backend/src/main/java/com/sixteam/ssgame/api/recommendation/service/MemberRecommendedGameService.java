@@ -1,9 +1,11 @@
 package com.sixteam.ssgame.api.recommendation.service;
 
-import com.sixteam.ssgame.api.recommendation.dto.ResponseMemberRecommendGameListDto;
+import com.sixteam.ssgame.api.recommendation.dto.ResponseMemberRecommendedGameInfoDto;
+
+import java.util.List;
 
 public interface MemberRecommendedGameService {
 
-    ResponseMemberRecommendGameListDto getRecommendedGameList(Long memberSeq);
+    List<ResponseMemberRecommendedGameInfoDto> getRecommendedGameList(Long memberSeq);
 
 }

@@ -13,7 +13,7 @@ public class ResponseMemberRecommendedGameInfoDto {
 
     private String gameName;
 
-    private String headerImg;
+    private String headerImage;
 
     private List<String> genres = new ArrayList<>();
 
@@ -26,10 +26,10 @@ public class ResponseMemberRecommendedGameInfoDto {
     private Integer recommendRanking;
 
     @Builder
-    public ResponseMemberRecommendedGameInfoDto(Long gameSeq, String gameName, String headerImg, List<String> genres, double averageRating, Integer price, String movies, Integer recommendRanking){
+    public ResponseMemberRecommendedGameInfoDto(Long gameSeq, String gameName, String headerImage, List<String> genres, double averageRating, Integer price, String movies, Integer recommendRanking){
         this.gameSeq = gameSeq;
         this.gameName = gameName;
-        this.headerImg = headerImg;
+        this.headerImage = headerImage;
         this.genres = genres;
         this.averageRating = averageRating;
         this.price = price;

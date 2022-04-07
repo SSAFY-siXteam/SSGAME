@@ -51,10 +51,10 @@ public class MemberController {
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
-                throw new CustomException("global error", GLOBAL_ERROR);
+                throw new CustomException(LogUtil.getElement(), GLOBAL_ERROR);
             }
         } else {
-            data.put("isPublic", memberService.register(requestMemberDto));
+            memberService.register(requestMemberDto);
             status = CREATED.value();
             msg = "회원가입 성공";
         }
@@ -102,7 +102,7 @@ public class MemberController {
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
-                throw new CustomException("global error", GLOBAL_ERROR);
+                throw new CustomException(LogUtil.getElement(), GLOBAL_ERROR);
             }
         } else {
             MemberDto memberDto = memberService.findMemberDtoInLogin(requestLoginMemberDto);
@@ -110,6 +110,7 @@ public class MemberController {
 
             status = OK.value();
             msg = "로그인에 성공했습니다.";
+            data.put("isPublic", memberDto.getIsPublic());
             data.put("memberSeq", memberDto.getMemberSeq());
             data.put("ssgameId", memberDto.getSsgameId());
             data.put("steamID", memberDto.getSteamID());
@@ -128,7 +129,7 @@ public class MemberController {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         return BaseResponseDto.builder()
@@ -140,7 +141,6 @@ public class MemberController {
                 .build();
     }
 
-
     @GetMapping("/renewal")
     public BaseResponseDto renewal(Authentication authentication) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
@@ -149,7 +149,7 @@ public class MemberController {
         String msg = null;
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         if (memberService.renewalMemberData((CustomUserDetails) authentication.getDetails())) {
@@ -175,7 +175,7 @@ public class MemberController {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
@@ -204,7 +204,7 @@ public class MemberController {
         Map<String, Object> data = new HashMap<>();
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         if (errors.hasErrors()) {
@@ -214,7 +214,7 @@ public class MemberController {
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
-                throw new CustomException("global error", GLOBAL_ERROR);
+                throw new CustomException(LogUtil.getElement(), GLOBAL_ERROR);
             }
         } else {
             memberService.updateMember((CustomUserDetails) authentication.getDetails(), requestUpdateMemberDto);
@@ -238,7 +238,7 @@ public class MemberController {
         Map<String, Object> data = new HashMap<>();
 
         if (authentication == null) {
-            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
         if (errors.hasErrors()) {
@@ -248,13 +248,40 @@ public class MemberController {
                 data.put("field", errors.getFieldError().getField());
                 msg = errors.getFieldError().getDefaultMessage();
             } else {
-                throw new CustomException("global error", GLOBAL_ERROR);
+                throw new CustomException(LogUtil.getElement(), GLOBAL_ERROR);
             }
         } else {
             memberService.updateMemberSteamID((CustomUserDetails) authentication.getDetails(), steamID);
             status = OK.value();
             msg = "steamID를 수정했습니다.";
         }
+
+        return BaseResponseDto.builder()
+                .status(status)
+                .msg(msg)
+                .data(data)
+                .build();
+    }
+
+    @DeleteMapping
+    public BaseResponseDto DeleteMember(Authentication authentication) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        Integer status = null;
+        String msg = null;
+        Map<String, Object> data = new HashMap<>();
+
+        if (authentication == null) {
+            throw new CustomException("authentication is null", UNAUTHORIZED_ACCESS);
+        }
+
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        String ssgameId = details.getUsername();
+
+        memberService.deleteMember(ssgameId);
+        status = OK.value();
+        msg = "탈퇴가 완료되었습니다.";
+
 
         return BaseResponseDto.builder()
                 .status(status)

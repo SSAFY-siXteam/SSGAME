@@ -10,7 +10,15 @@ import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tb_game_tag")
+@Table(
+        name = "tb_game_tag",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "game_tag_seq",
+                        columnNames = {"tag_seq", "game_seq"}
+                )
+        }
+)
 @Entity
 public class GameTag {
 
@@ -24,11 +32,11 @@ public class GameTag {
     @Column(nullable = false)
     private Double tagRatio;
 
-    @JoinColumn(name = "game_seq")
+    @JoinColumn(name = "game_seq", nullable = false)
     @ManyToOne(fetch = LAZY)
     private GameInfo gameInfo;
 
-    @JoinColumn(name = "tag_seq")
+    @JoinColumn(name = "tag_seq", nullable = false)
     @ManyToOne(fetch = LAZY)
     private Tag tag;
 
