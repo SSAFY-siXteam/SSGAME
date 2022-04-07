@@ -16,7 +16,7 @@ public interface MemberService {
 
     boolean hasSteamID(String steamID);
 
-    boolean register(RequestMemberDto requestMemberDto);
+    void register(RequestMemberDto requestMemberDto);
 
     MemberDto findMemberDtoInLogin(RequestLoginMemberDto requestLoginMemberDto);
 

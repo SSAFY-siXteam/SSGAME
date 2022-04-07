@@ -54,7 +54,7 @@ public class MemberController {
                 throw new CustomException(LogUtil.getElement(), GLOBAL_ERROR);
             }
         } else {
-            data.put("isPublic", memberService.register(requestMemberDto));
+            memberService.register(requestMemberDto);
             status = CREATED.value();
             msg = "회원가입 성공";
         }
@@ -110,6 +110,7 @@ public class MemberController {
 
             status = OK.value();
             msg = "로그인에 성공했습니다.";
+            data.put("isPublic", memberDto.getIsPublic());
             data.put("memberSeq", memberDto.getMemberSeq());
             data.put("ssgameId", memberDto.getSsgameId());
             data.put("steamID", memberDto.getSteamID());
@@ -139,7 +140,6 @@ public class MemberController {
                 }})
                 .build();
     }
-
 
     @GetMapping("/renewal")
     public BaseResponseDto renewal(Authentication authentication) {

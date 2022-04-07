@@ -30,7 +30,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -96,7 +95,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public boolean register(RequestMemberDto requestMemberDto) {
+    public void register(RequestMemberDto requestMemberDto) {
 
         String ssgameId = requestMemberDto.getSsgameId();
         String steamID = requestMemberDto.getSteamID();
@@ -155,8 +154,6 @@ public class MemberServiceImpl implements MemberService {
                     });
                 }
             }
-
-            return savedMember.getIsPublic();
         } catch (ParseException e) {
             throw new CustomException(LogUtil.getElement(), JSON_PARSE_ERROR);
         } catch (Exception e) {
@@ -241,10 +238,6 @@ public class MemberServiceImpl implements MemberService {
         if (!(boolean) steamGameData.get("isSuccess")) {
             return false;
         }
-        // 게임 정보 최신화 이후에 가중치 업데이트
-//        if (!calcMemberPrefferred(member)) {
-//            return false;
-//        }
 
         try {
             Map<String, Object> steamMemberData = SteamAPIScrap.getMemberData(member.getSteamID());
@@ -340,6 +333,10 @@ public class MemberServiceImpl implements MemberService {
         String ssgameId = details.getUsername();
         Member member = memberRepository.findBySsgameId(ssgameId)
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
+
+        if (member.getGameCount() == 0) {
+            throw new CustomException(LogUtil.getElement(), NO_GAME_PLAYED);
+        }
 
         List<Tag> tags = tagRepository.findAll();
         List<Category> categories = categoryRepository.findAll();
