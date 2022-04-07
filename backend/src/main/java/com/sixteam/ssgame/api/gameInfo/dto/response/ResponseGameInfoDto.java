@@ -43,10 +43,10 @@ public class ResponseGameInfoDto {
 
     private List<String> developers;
 
-    private ReleaseDateDto releaseDateDto;
+    private ReleaseDateDto releaseDate;
 
     @Builder
-    public ResponseGameInfoDto(Long gameSeq, String gameName, String shortDescriptionKr, String headerImage, String movies, Double averageRating, Boolean isPlayed, Boolean isRated, Integer memberGameRating, List<String> genres, Integer averageForever, List<String> platforms, String website, List<String> languages, List<String> publisher, List<String> developers, ReleaseDateDto releaseDateDto) {
+    public ResponseGameInfoDto(Long gameSeq, String gameName, String shortDescriptionKr, String headerImage, String movies, Double averageRating, Boolean isPlayed, Boolean isRated, Integer memberGameRating, List<String> genres, Integer averageForever, List<String> platforms, String website, List<String> languages, List<String> publisher, List<String> developers, ReleaseDateDto releaseDate) {
         this.gameSeq = gameSeq;
         this.gameName = gameName;
         this.shortDescriptionKr = shortDescriptionKr;
@@ -63,6 +63,6 @@ public class ResponseGameInfoDto {
         this.languages = languages;
         this.publisher = publisher;
         this.developers = developers;
-        this.releaseDateDto = releaseDateDto;
+        this.releaseDate = releaseDate;
     }
 }
