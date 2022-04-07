@@ -6,6 +6,8 @@ import RecommendTemplate from "../../templates/RecommendTemplate/RecommendTempla
 import LongGameCardList from "../../organisms/LongGameCardList/LongGameCardList";
 import { getRecommendGames } from "../../../apis/recommend";
 import { getCookie } from "../../../utils/cookie";
+import LoadingBar from "../../atoms/spinner/LoadingBar";
+import { calWeight } from "../../../apis/analyze";
 
 const RecommendPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,23 +17,33 @@ const RecommendPage = () => {
   const [selectVideo, setSelectVideo] = useState(""); // 트레일러 보기로 선택된 비디오
 
   useEffect(() => {
-    getRecommendGames(
+    calWeight(
       {
         headers: {
           Authorization: `Bearer ` + getCookie("SSGAME_USER_TOKEN"),
         },
       },
-      (response) => {
-        // response.data.data.recommendedGameList.responseMemberRecommendedGameInfoDtos;
-        const recommendedGameList = response.data.data.recommendedGameList;
-        setRecommendedGameList(response.data.data.recommendedGameList);
-        setSelectVideo(response.data.data.recommendedGameList[0].movies);
+      () => {
+        getRecommendGames(
+          {
+            headers: {
+              Authorization: `Bearer ` + getCookie("SSGAME_USER_TOKEN"),
+            },
+          },
+          (response) => {
+            // response.data.data.recommendedGameList.responseMemberRecommendedGameInfoDtos;
+            const recommendedGameList = response.data.data.recommendedGameList;
+            setRecommendedGameList(response.data.data.recommendedGameList);
+            setSelectVideo(response.data.data.recommendedGameList[0].movies);
+          },
+          (e) => {
+            // alert("문제가 발생했습니다.");
+            console.log(e);
+          }
+        );
         setIsLoading(false);
       },
-      (e) => {
-        // alert("문제가 발생했습니다.");
-        console.log(e);
-      }
+      () => {}
     );
   }, []);
 
@@ -47,29 +59,37 @@ const RecommendPage = () => {
 
   return (
     <>
-      <div>
-        {recommendedGameList.length > 0 && (
-          <div>
-            <Title title="맞춤 게임 추천" />
-            <RecommendTemplate
-              video={<Video path={selectVideo} />}
-              topRec={
-                <LongGameCardList
-                  data={recommendedGameList.filter((game, index) => index < 3)}
-                  itemBtn="트레일러 확인하기"
-                  itemBtnOnClick={changeVideo}
-                  isMovie={true}
-                />
-              }
-              otherRec={
-                <ShortGameCardList
-                  data={recommendedGameList.filter((game, index) => index >= 3)}
-                />
-              }
-            />
-          </div>
-        )}
-      </div>
+      {isLoading ? (
+        <LoadingBar />
+      ) : (
+        <div>
+          {recommendedGameList.length > 0 && (
+            <div>
+              <Title title="맞춤 게임 추천" />
+              <RecommendTemplate
+                video={<Video path={selectVideo} />}
+                topRec={
+                  <LongGameCardList
+                    data={recommendedGameList.filter(
+                      (game, index) => index < 3
+                    )}
+                    itemBtn="트레일러 확인하기"
+                    itemBtnOnClick={changeVideo}
+                    isMovie={true}
+                  />
+                }
+                otherRec={
+                  <ShortGameCardList
+                    data={recommendedGameList.filter(
+                      (game, index) => index >= 3
+                    )}
+                  />
+                }
+              />
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };
