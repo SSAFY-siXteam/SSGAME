@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   StyledMyGame,
   StyledBar,
@@ -6,12 +7,14 @@ import {
   StyledBarRight,
   StyledGameList,
   GameRatingCardDiv,
+  NoGame,
 } from "./style";
 import Title from "../../../atoms/Title/Title";
 import { Input } from "../../../atoms/Input/Input";
 import { CheckBoxItem } from "../../../molecules/CheckBoxItem/CheckBoxItem";
 import GameRatingCard from "../../../organisms/GameRatingCard/GameRatingCard";
 import Pagination from "../../../organisms/Pagination/Pagination";
+import HowToSetSteamTemplate from "../../HowToSetSteamTemplate/HowToSetSteamTemplate";
 const MyGameTemplate = ({
   onInput,
   onChangeCheck,
@@ -43,7 +46,16 @@ const MyGameTemplate = ({
 
         <StyledBarRight>{selectBox}</StyledBarRight>
       </StyledBar>
-      {!gameList.length > 0 && <>게임이 존재하지 않습니다...</>}
+      {!gameList.length > 0 && (
+        <NoGame>
+          게임이 존재하지 않습니다... <br /> 게임이 있지만 나타나지 않으면
+          <Link to="/howtosetsteam" style={{ color: "red" }}>
+            {" "}
+            &nbsp;이곳
+          </Link>
+          을 확인해주세요{" "}
+        </NoGame>
+      )}
       <StyledGameList>
         {gameList.map((content, index) => {
           return (
