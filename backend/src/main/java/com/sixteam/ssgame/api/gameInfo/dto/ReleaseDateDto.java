@@ -1,7 +1,9 @@
 package com.sixteam.ssgame.api.gameInfo.dto;
 
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class ReleaseDateDto {
 
     private Boolean comingSoon;
