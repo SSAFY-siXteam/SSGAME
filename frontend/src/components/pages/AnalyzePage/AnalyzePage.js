@@ -40,7 +40,7 @@ const AnalyzePage = () => {
           (response) => {
             console.log(response);
             setGraphData(response.data.data.categories);
-            setSteamNickname(response.data.data.steamNickname);
+            setSteamNickname(response.data.data.userNickName);
           },
           (e) => {
             // if (isSuccessToLoad) setIsSueccessToLoad(false);
@@ -75,13 +75,14 @@ const AnalyzePage = () => {
           }
         );
         setIsLoading(false);
-        return () => {
-          console.log(isSuccessToLoad);
-          if (!isSuccess) setIsSueccessToLoad(false);
-        };
       },
       () => {}
     );
+
+    return () => {
+      console.log(isSuccessToLoad);
+      if (!isSuccess) setIsSueccessToLoad(false);
+    };
   }, []);
 
   const args = {
