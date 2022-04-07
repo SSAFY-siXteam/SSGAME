@@ -16,23 +16,23 @@
 
 ### 로그인
 
-<img src="readme_img/로그인.png" width="100%" height="100%">
+![로그인](./readme_img/로그인.png)
 
 ### 성향분석
 
-<img src="readme_img/성향분석.png" width="100%" height="100%">
+![성향분석](./readme_img/성향분석.png)
 
 ### 맞춤 게임 추천
 
-<img src="readme_img/게임추천.png" width="100%" height="100%">
+![게임추천](./readme_img/게임추천.png)
 
 ### 내 게임 목록
 
-<img src="readme_img/내게임목록.png" width="100%" height="100%">
+![내게임목록](./readme_img/내게임목록.png)
 
 ### 회원정보 수정
 
-<img src="readme_img/회원정보.png" width="100%" height="100%">
+![회원정보](./readme_img/회원정보.png)
 
 ---
 
@@ -167,25 +167,25 @@ git clone한 디렉토리에서 git pull을 받습니다.
 
 ### 📺 화면 설계
 
-<img src="readme_img/화면설계.png" width="100%" height="100%">
+![화면설계](./readme_img/화면설계.png)
 
 ---
 
 ### ⌨️ 기능 명세
 
-<img src="readme_img/기능명세.png" width="100%" height="100%">
+![기능명세](./readme_img/기능명세.png)
 
 ---
 
 ### 💡 API 명세
 
-<img src="readme_img/API명세.png" width="100%" height="100%">
+![API명세](./readme_img/API명세.png)
 
 ---
 
 ### 🌐 ER Diagram
 
-<img src="readme_img/API명세.png" width="100%" height="100%">
+![ssagme_ERD](./readme_img/ssagme_ERD.png)
 
 ---
 
