@@ -26,3 +26,6 @@ export const StyledGameList = styled.div`
 export const GameRatingCardDiv = styled.div`
   margin: 10px;
 `;
+export const NoGame = styled.div`
+  text-align: center;
+`;
