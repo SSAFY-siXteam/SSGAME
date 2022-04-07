@@ -6,7 +6,9 @@ export const InfoLine = styled.div`
 `;
 
 export const InfoItem = styled.div`
-  /* margin: 10px; */
+  /* margin: 20px; */
+  width: 100%;
+  border-bottom: solid 1px;
 `;
 
 export const TitleWrapper = styled(InfoLine)`
@@ -14,6 +16,7 @@ export const TitleWrapper = styled(InfoLine)`
 `;
 
 export const TextWrapper = styled(InfoLine)`
-  margin-left: 10px;
-  margin-right: 10px;
+  /* margin-left: 10px;
+  margin-right: 10px; */
+  margin: 10px;
 `;
