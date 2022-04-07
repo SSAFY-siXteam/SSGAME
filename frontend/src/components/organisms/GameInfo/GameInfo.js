@@ -22,7 +22,9 @@ const GameInfo = ({ gameInfo, onStarChange }) => {
       <GameInfoItem title="지원 언어" text={gameInfo.languages + " "} />
       <GameInfoItem title="제작사" text={gameInfo.publisher + " "} />
       <GameInfoItem title="개발자" text={gameInfo.developers + " "} />
-      <GameInfoItem title="출시 일자" text={gameInfo.releaseDate.date} />
+      {gameInfo.releaseDate !== undefined && (
+        <GameInfoItem title="출시 일자" text={gameInfo.releaseDate.date} />
+      )}
       <GameInfoItem title="평균 플레이 타임" text={gameInfo.averageForever} />
     </div>
   );
