@@ -341,6 +341,10 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findBySsgameId(ssgameId)
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
+        if (member.getGameCount() == 0) {
+            throw new CustomException(LogUtil.getElement(), NO_GAME_PLAYED);
+        }
+
         List<Tag> tags = tagRepository.findAll();
         List<Category> categories = categoryRepository.findAll();
         //카테고리 퍼센트를 구하기 위한 배열들
