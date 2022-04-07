@@ -83,7 +83,7 @@ public class AnalysisController {
 
         return BaseResponseDto.builder()
                 .status(OK.value())
-                .msg("가장 많이 플레이한 장르 게임 성공")
+                .msg("가장 많이 플레이한 게임 조회 성공")
                 .data(new HashMap<>() {{
                     put("mostPlayedGames", analysisService.getMostPlayedGames(details.getMember().getMemberSeq()));
                 }})

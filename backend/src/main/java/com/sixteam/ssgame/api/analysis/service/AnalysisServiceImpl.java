@@ -69,6 +69,10 @@ public class AnalysisServiceImpl implements AnalysisService {
         Member member = memberRepository.findByMemberSeq(memberSeq)
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
+        if (member.getGameCount() == 0) {
+            throw new CustomException(LogUtil.getElement(), NO_GAME_PLAYED);
+        }
+
         List<MemberFrequentGenre> mostPlayedGenres = memberFrequentGenreRepository.findMostPlayedGenresByMember(member);
 
         List<MostPlayedGenreDto> mostPlayedGenreDtos = new LinkedList<>();
@@ -77,7 +81,7 @@ public class AnalysisServiceImpl implements AnalysisService {
             sum += memberFrequentGenre.getGenreCount();
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < Math.min(5,mostPlayedGenres.size()); i++) {
             if (mostPlayedGenres.get(i).getGenreCount() == 0) {
                 break;
             }
@@ -97,9 +101,12 @@ public class AnalysisServiceImpl implements AnalysisService {
         Member member = memberRepository.findByMemberSeq(memberSeq)
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
+        if (member.getGameCount() == 0) {
+            throw new CustomException(LogUtil.getElement(), NO_GAME_PLAYED);
+        }
+
         List<MemberGameList> memberGameLists = memberGameListRepository.findMostPlayedGamesByMember(member);
         List<MostPlayedGamesDto> mostPlayedGamesDtos = new LinkedList<>();
-
         
         for (int i = 0; i < Math.min(memberGameLists.size(),5); i++) {
             if (memberGameLists.get(i).getMemberPlayTime() == 0) {

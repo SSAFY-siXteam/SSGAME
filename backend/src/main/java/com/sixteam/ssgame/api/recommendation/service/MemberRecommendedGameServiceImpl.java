@@ -64,7 +64,7 @@ public class MemberRecommendedGameServiceImpl implements MemberRecommendedGameSe
                     .headerImage(gameInfo.getHeaderImage())
                     .genres(gameInfo.getGameGenres().stream()
                             .map(gameGenre -> {
-                                return gameGenre.getGenre().getGenreName();
+                                return gameGenre.getGenre().getGenreNameKr();
                             })
                             .collect(Collectors.toList()))
                     .averageRating(averageRating)
