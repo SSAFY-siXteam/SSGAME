@@ -1,4 +1,3 @@
-
 # 📣 서비스 소개
 
 7만여개의 스팀 게임을 고르기 어려운 겜린이들에게 작은 도움을 드리고자 만들었습니다.
@@ -17,23 +16,23 @@
 
 ### 로그인
 
-<img src="로그인.png" width="100%" height="100%">
+<img src="readme_img/로그인.png" width="100%" height="100%">
 
 ### 성향분석
 
-<img src="성향분석.png" width="100%" height="100%">
+<img src="readme_img/성향분석.png" width="100%" height="100%">
 
 ### 맞춤 게임 추천
 
-<img src="게임추천.png" width="100%" height="100%">
+<img src="readme_img/게임추천.png" width="100%" height="100%">
 
 ### 내 게임 목록
 
-<img src="내게임목록.png" width="100%" height="100%">
+<img src="readme_img/내게임목록.png" width="100%" height="100%">
 
 ### 회원정보 수정
 
-<img src="회원정보.png" width="100%" height="100%">
+<img src="readme_img/회원정보.png" width="100%" height="100%">
 
 ---
 
@@ -168,25 +167,26 @@ git clone한 디렉토리에서 git pull을 받습니다.
 
 ### 📺 화면 설계
 
-<img src="화면설계.png" width="100%" height="100%">
+<img src="readme_img/화면설계.png" width="100%" height="100%">
 
 ---
 
 ### ⌨️ 기능 명세
 
-<img src="기능명세.png" width="100%" height="100%">
+<img src="readme_img/기능명세.png" width="100%" height="100%">
 
 ---
 
 ### 💡 API 명세
 
-<img src="API명세.png" width="100%" height="100%">
+<img src="readme_img/API명세.png" width="100%" height="100%">
 
 ---
 
 ### 🌐 ER Diagram
 
-<img src="API명세.png" width="100%" height="100%">
+<img src="readme_img/API명세.png" width="100%" height="100%">
+
 ---
 
 ### 🗂️ 디렉토리 구조
