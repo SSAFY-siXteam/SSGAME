@@ -1,5 +1,6 @@
 package com.sixteam.ssgame.api.gameInfo.dto.response;
 
+import com.sixteam.ssgame.api.gameInfo.dto.ReleaseDateDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -30,8 +31,22 @@ public class ResponseGameInfoDto {
 
     private List<String> genres;
 
+    private Integer averageForever;
+
+    private List<String> platforms;
+
+    private String website;
+
+    private List<String> languages;
+
+    private List<String> publisher;
+
+    private List<String> developers;
+
+    private ReleaseDateDto releaseDateDto;
+
     @Builder
-    public ResponseGameInfoDto(Long gameSeq, String gameName, String shortDescriptionKr, String headerImage, String movies, Double averageRating, Boolean isPlayed, Boolean isRated, Integer memberGameRating, List<String> genres) {
+    public ResponseGameInfoDto(Long gameSeq, String gameName, String shortDescriptionKr, String headerImage, String movies, Double averageRating, Boolean isPlayed, Boolean isRated, Integer memberGameRating, List<String> genres, Integer averageForever, List<String> platforms, String website, List<String> languages, List<String> publisher, List<String> developers, ReleaseDateDto releaseDateDto) {
         this.gameSeq = gameSeq;
         this.gameName = gameName;
         this.shortDescriptionKr = shortDescriptionKr;
@@ -42,5 +57,12 @@ public class ResponseGameInfoDto {
         this.isRated = isRated;
         this.memberGameRating = memberGameRating;
         this.genres = genres;
+        this.averageForever = averageForever;
+        this.platforms = platforms;
+        this.website = website;
+        this.languages = languages;
+        this.publisher = publisher;
+        this.developers = developers;
+        this.releaseDateDto = releaseDateDto;
     }
 }
