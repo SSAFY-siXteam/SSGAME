@@ -185,7 +185,7 @@ git clone한 디렉토리에서 git pull을 받습니다.
 
 ### 🌐 ER Diagram
 
-![ssagme_ERD](./readme_img/ssagme_ERD.png)
+![ssgame_ERD](./readme_img/ssgame_ERD.png)
 
 ---
 
