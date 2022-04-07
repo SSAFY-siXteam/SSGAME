@@ -151,10 +151,13 @@ public class GameInfoServiceImpl implements GameInfoService {
     private List<String> stringToList(String stringData) {
 
         List<String> listData = new ArrayList<>();
-        StringTokenizer st = new StringTokenizer(stringData, ",");
-        
-        while (st.hasMoreTokens()) {
-            listData.add(st.nextToken().trim());
+
+        if (stringData != null && stringData.length() > 1) {
+            StringTokenizer st = new StringTokenizer(stringData, ",");
+
+            while (st.hasMoreTokens()) {
+                listData.add(st.nextToken().trim());
+            }
         }
 
         return listData;
