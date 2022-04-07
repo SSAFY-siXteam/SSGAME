@@ -11,6 +11,7 @@ import GenreCardList from "../../organisms/GenreCardList/GenreCardList";
 import AnalyzeTemplate from "../../templates/AnalyzeTemplate/AnalyzeTemplate";
 import { getCookie } from "../../../utils/cookie";
 import LoadingBar from "../../atoms/spinner/LoadingBar";
+import HowToSetSteamTemplate from "../../templates/HowToSetSteamTemplate/HowToSetSteamTemplate";
 
 const AnalyzePage = () => {
   const [graphData, setGraphData] = useState([]);
@@ -19,7 +20,7 @@ const AnalyzePage = () => {
   const [isSuccessToLoad, setIsSueccessToLoad] = useState(true);
   const [steamNickname, setSteamNickname] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
+  const [noGamePlayed, setNoGamePlayed] = useState(false);
   const jwtToken = getCookie("SSGAME_USER_TOKEN");
 
   useEffect(() => {
@@ -76,7 +77,10 @@ const AnalyzePage = () => {
         );
         setIsLoading(false);
       },
-      () => {}
+      () => {
+        setIsLoading(false);
+        setNoGamePlayed(true);
+      }
     );
 
     return () => {
@@ -100,6 +104,8 @@ const AnalyzePage = () => {
     <>
       {isLoading ? (
         <LoadingBar />
+      ) : noGamePlayed ? (
+        <HowToSetSteamTemplate />
       ) : (
         <div>
           <AnalyzeTemplate

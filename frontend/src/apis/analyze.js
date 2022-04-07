@@ -66,6 +66,7 @@ export async function calWeight(header, success, fail) {
       alert(
         "플레이한 게임이 없어서 데이터 분석이 힘들어요 :( \n 게임을 몇 개 플레이 한 뒤 평가하시고 서비스를 이용해보시겠어요?"
       );
+      fail();
     } else if (response.data.status !== 200) {
       throw new Error("analyzation is failed");
     }

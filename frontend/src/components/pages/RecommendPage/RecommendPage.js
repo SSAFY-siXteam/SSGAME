@@ -8,6 +8,7 @@ import { getRecommendGames } from "../../../apis/recommend";
 import { getCookie } from "../../../utils/cookie";
 import LoadingBar from "../../atoms/spinner/LoadingBar";
 import { calWeight } from "../../../apis/analyze";
+import HowToSetSteamTemplate from "../../templates/HowToSetSteamTemplate/HowToSetSteamTemplate";
 
 const RecommendPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,6 +16,7 @@ const RecommendPage = () => {
   const [topRec, setTopRec] = useState([]); // 트레일러를 볼 수 있는 추천 게임 중 top3 게임들
   const [otherRec, setOtherRec] = useState([]); // top3에 포함되지 않은 나머지 8개의 게임들(트레일러 시청 지원하지 않음)
   const [selectVideo, setSelectVideo] = useState(""); // 트레일러 보기로 선택된 비디오
+  const [noGamePlayed, setNoGamePlayed] = useState(false);
 
   useEffect(() => {
     calWeight(
@@ -43,7 +45,10 @@ const RecommendPage = () => {
         );
         setIsLoading(false);
       },
-      () => {}
+      () => {
+        setIsLoading(false);
+        setNoGamePlayed(true);
+      }
     );
   }, []);
 
@@ -61,6 +66,8 @@ const RecommendPage = () => {
     <>
       {isLoading ? (
         <LoadingBar />
+      ) : noGamePlayed ? (
+        <HowToSetSteamTemplate />
       ) : (
         <div>
           {recommendedGameList.length > 0 && (

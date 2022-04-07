@@ -3,10 +3,13 @@ import set_steam_public_1 from "../../../assets/img/howto/set_steam_public_1.PNG
 import set_steam_public_2 from "../../../assets/img/howto/set_steam_public_2.PNG";
 import set_steam_public_3 from "../../../assets/img/howto/set_steam_public_3.PNG";
 import set_steam_public_4 from "../../../assets/img/howto/set_steam_public_4.PNG";
+import Title from "../../atoms/Title/Title";
 import { ExplanationDiv, PictureDiv } from "./styles";
 export default function HowToSetSteamTemplate() {
   return (
     <div>
+      <div>스팀 아이디 공개 설정 방법</div>
+      <br /> <br />
       <ExplanationDiv>
         1. 스팀에 로그인을 해주신 후, 우측 상단 자신의 닉네임을 클릭해주세요
         <PictureDiv src={set_steam_public_1} style={{ width: "100%" }} />
