@@ -52,3 +52,16 @@ export async function updateGameAnalyzation(header, success, fail) {
     fail(error);
   }
 }
+
+export async function calWeight(header, success, fail) {
+  try {
+    let response = await axios.get(URL + `analysis/calc`, header);
+    if (response.data.status == 200) {
+      success(response);
+    } else if (response.data.status !== 200) {
+      throw new Error("analyzation is failed");
+    }
+  } catch (error) {
+    fail(error);
+  }
+}
