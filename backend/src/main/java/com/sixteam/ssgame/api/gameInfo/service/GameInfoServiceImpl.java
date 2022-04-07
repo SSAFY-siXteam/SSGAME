@@ -10,6 +10,7 @@ import com.sixteam.ssgame.api.gameInfo.repository.GameInfoRepository;
 import com.sixteam.ssgame.api.gameInfo.repository.MemberGameListRepository;
 import com.sixteam.ssgame.api.member.entity.Member;
 import com.sixteam.ssgame.api.member.repository.MemberRepository;
+import com.sixteam.ssgame.global.common.auth.CustomUserDetails;
 import com.sixteam.ssgame.global.common.util.LogUtil;
 
 import com.sixteam.ssgame.global.error.exception.CustomException;
@@ -45,11 +46,11 @@ public class GameInfoServiceImpl implements GameInfoService {
     private final MemberRepository memberRepository;
 
     @Override
-    public ResponseGameInfoDto findResponseGameInfoDto(Long gameSeq, Long memberSeq) {
+    public ResponseGameInfoDto findResponseGameInfoDto(Long gameSeq, CustomUserDetails details) {
 
         GameInfo gameInfo = gameInfoRepository.findByGameSeq(gameSeq)
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), GAME_NOT_FOUND));
-        Member member = memberRepository.findByMemberSeq(memberSeq)
+        Member member = memberRepository.findBySsgameId(details.getUsername())
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         // movie json parsing 함수 호출
@@ -187,13 +188,13 @@ public class GameInfoServiceImpl implements GameInfoService {
 
     @Override
     @Transactional
-    public void updateMemberGameRating(Long memberSeq, Long gameSeq, Integer memberGameRating) {
+    public void updateMemberGameRating(CustomUserDetails details, Long gameSeq, Integer memberGameRating) {
 
         if (memberGameRating < 1 || memberGameRating > 5) {
             throw new InvalidValueException(LogUtil.getElement(), INVALID_RANGE_OF_RATING);
         }
 
-        Member member = memberRepository.findByMemberSeq(memberSeq)
+        Member member = memberRepository.findBySsgameId(details.getUsername())
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         GameInfo gameInfo = gameInfoRepository.findByGameSeq(gameSeq)
