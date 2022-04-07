@@ -50,7 +50,7 @@ const LongGameCard = ({ info, onClick, isMovie }) => {
           )}
         </NameText>
         {info.genres
-          .filter((g, index) => index < 3)
+          .filter((g, index) => index < 2)
           .map((genre, index) => (
             <TagText key={index} size="small">
               #{genre}
