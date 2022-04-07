@@ -4,11 +4,20 @@ import Bounce from "react-reveal/Bounce";
 import {
   CenterWrapper,
   ViewWrapper,
+  ImgViewWrapper,
   ScrollWrapper,
   ScrollSpan,
   MainTitle,
+  ImgWrapper,
 } from "./style";
 import Typist from "react-typist";
+import gamesImg from "../../../assets/img/mainImage/games.png";
+import genreImg from "../../../assets/img/mainImage/genre.png";
+import graphImg from "../../../assets/img/mainImage/graph.png";
+import topRecImg from "../../../assets/img/mainImage/topRec.png";
+import otherRecImg from "../../../assets/img/mainImage/otherRec.png";
+import ratingImg from "../../../assets/img/mainImage/rating.png";
+import loginImg from "../../../assets/img/mainImage/login.png";
 
 const FadeModule = () => {
   return (
@@ -24,20 +33,33 @@ const FadeModule = () => {
           <ScrollSpan />
           <ScrollWrapper>Scroll</ScrollWrapper>
         </div>
+        <Fade right>
+          <ImgViewWrapper>
+            <h2>STEAM 계정 연동을 통해</h2>
+            <img src={loginImg} width="300px" />
+          </ImgViewWrapper>
+        </Fade>
         <Fade left>
-          <ViewWrapper>
+          <ImgViewWrapper>
             <h2>내가 매긴 별점을 기반으로,</h2>
-          </ViewWrapper>
+            <ImgWrapper>
+              <img src={ratingImg} width="700px" />
+            </ImgWrapper>
+          </ImgViewWrapper>
         </Fade>
         <Fade right>
-          <ViewWrapper>
+          <ImgViewWrapper>
+            <ImgWrapper>
+              <img src={topRecImg} width="500px" />
+            </ImgWrapper>
             <h2>나에게 딱 맞는 게임을 추천받고 싶을 때</h2>
-          </ViewWrapper>
+          </ImgViewWrapper>
         </Fade>
         <Fade top>
-          <ViewWrapper>
+          <ImgViewWrapper>
             <h2>내 게임 성향을 분석해서 볼 수 있습니다.</h2>
-          </ViewWrapper>
+            <img src={graphImg} width="500px" />
+          </ImgViewWrapper>
         </Fade>
       </CenterWrapper>
     </div>
