@@ -62,3 +62,9 @@ export const ScrollSpan = styled.span`
 export const ScrollWrapper = styled.div`
   padding-top: 70px;
 `;
+
+export const MoveToTop = styled.h1`
+  &:hover {
+    cursor: pointer;
+  }
+`;
