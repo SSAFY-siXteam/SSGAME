@@ -91,7 +91,7 @@ public class GameInfoServiceImpl implements GameInfoService {
                 .languages(stringToList(gameInfo.getLanguages()))
                 .publisher(stringToList(gameInfo.getPublisher()))
                 .developers(stringToList(gameInfo.getDevelopers()))
-                .releaseDateDto(jsonParsingReleaseDate(gameInfo.getReleaseDate()))
+                .releaseDate(jsonParsingReleaseDate(gameInfo.getReleaseDate()))
                 .build();
     }
 
