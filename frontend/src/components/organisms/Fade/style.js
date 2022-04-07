@@ -14,6 +14,18 @@ export const ViewWrapper = styled.div`
   /* border: solid white; */
 `;
 
+export const ImgViewWrapper = styled(ViewWrapper)`
+  margin-bottom: 20%;
+  display: inline-block;
+`;
+
+export const ImgWrapper = styled.div`
+  /* filter: drop-shadow(5px 5px 10px white); */
+  /* box-shadow: -5px -5px 20px grey; */
+  border: solid 2px black;
+  display: inline-block;
+`;
+
 export const MainTitle = styled(ViewWrapper)`
   height: 33vh;
 `;
