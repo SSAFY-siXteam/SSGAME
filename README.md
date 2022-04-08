@@ -10,6 +10,8 @@
 
 ## 📽️ 소개 영상
 
+[![스겜](./readme_img/스겜.png)](https://www.youtube.com/watch?v=zo0h5yhdiJY)
+
 ---
 
 ## 👀 서비스 시연
@@ -145,6 +147,9 @@ git clone한 디렉토리에서 git pull을 받습니다.
 - Django
 - Pandas
 - Node.js
+	- express
+	- Steam Web API
+	- node openid-client
 
 **Frontend**
 
