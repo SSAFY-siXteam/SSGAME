@@ -8,6 +8,7 @@ import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 
+@Setter
 @Getter
 @ToString(of = {"gameSeq", "steamAppid", "isFree", "shortDescription", "shortDescriptionKr",
         "headerImage", "website", "developers", "publisher", "platforms", "positive", "negative",

@@ -52,7 +52,7 @@ public class GameInfoController {
         }
 
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-
+gameInfoService.upm
         gameInfoService.updateMemberGameRating(details.getMember().getMemberSeq(), gameSeq, requestMemberGameRatingDto.getPoint());
 
         return BaseResponseDto.builder()
