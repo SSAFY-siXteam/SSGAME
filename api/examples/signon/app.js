@@ -40,6 +40,8 @@ var cors = require("cors");
 
 var store = require("store");
 
+require("dotenv").config();
+
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
 //   serialize users into and deserialize users out of the session.  Typically,
@@ -64,7 +66,7 @@ passport.use(
     {
       returnURL: "https://j6a306.p.ssafy.io/node/auth/steam/return",
       realm: "https://j6a306.p.ssafy.io/node",
-      apiKey: "A523B13BD02DE21FB0088B9CD46DE699",
+      apiKey: process.env.API_KEY,
     },
     function (identifier, profile, done) {
       // asynchronous verification, for effect...

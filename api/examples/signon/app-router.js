@@ -34,7 +34,7 @@
 //       // returnURL: "http://localhost:4000/auth/steam/return",
 //       returnURL: "http://localhost:3000/register",
 //       realm: "http://localhost:4000/",
-//       apiKey: "A523B13BD02DE21FB0088B9CD46DE699",
+//       apiKey: "",
 //     },
 //     function (identifier, profile, done) {
 //       // asynchronous verification, for effect...
